@@ -1,570 +1,2172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Register - Staff Management System</title>
-  <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
-
-    #welcomeOverlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: #1e3c72; color: white; display: flex; flex-direction: column;
-      justify-content: center; align-items: center; z-index: 9999;
-      animation: fadeOut 1s ease-in-out 2s forwards;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Madrasa Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emeraldDeep: '#0f5132',
+            emeraldDark: '#093822',
+            emeraldLight: '#e8f5ee',
+            goldAccent: '#d4af37',
+            goldLight: '#f8f0d5',
+            creamBg: '#faf9f5',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            arabic: ['"Amiri"', 'serif'],
+          }
+        }
+      }
     }
-    #welcomeOverlay h1 { font-size: 34px; margin-bottom: 8px; animation: zoomIn 1s ease-in-out; }
-    #welcomeOverlay p { font-size: 16px; opacity: 0.8; }
+  </script>
+  <style>
+    body {
+      background-color: #faf9f5;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
 
-    @keyframes zoomIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+    /* Subtle Islamic Geometric Pattern Background */
+    .islamic-pattern {
+      background-color: #0f5132;
+      background-image: radial-gradient(rgba(212, 175, 55, 0.16) 1.5px, transparent 1.5px),
+                        radial-gradient(rgba(212, 175, 55, 0.1) 1.5px, #0f5132 1.5px);
+      background-size: 36px 36px;
+      background-position: 0 0, 18px 18px;
+    }
 
-    header { background: #1e3c72; color: white; padding: 15px; text-align: center; }
-    header h1 { margin: 0; font-size: 22px; }
+    .gold-border-glow {
+      box-shadow: 0 10px 30px -5px rgba(15, 81, 50, 0.15), 0 0 0 1px rgba(212, 175, 55, 0.35);
+    }
 
-    nav { background: #2a5298; display: flex; justify-content: center; gap: 5px; padding: 8px; flex-wrap: wrap; }
-    nav button { background: white; border: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer; color: #1e3c72; font-size: 13px; }
-    nav button:hover, nav button.active-tab { background: #ffc107; color: #000; }
+    .page-section {
+      display: none;
+      animation: fadeSlideUp 0.35s ease-out forwards;
+    }
 
-    .container { max-width: 1000px; margin: 15px auto; padding: 0 10px; }
-    .card { background: white; padding: 20px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; }
-    .card h2 { margin-top: 0; color: #1e3c72; border-bottom: 2px solid #eee; padding-bottom: 8px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .page-section.active {
+      display: block;
+    }
 
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 10px; }
-    .form-group { display: flex; flex-direction: column; }
-    .form-group label { font-size: 12px; font-weight: bold; margin-bottom: 4px; }
-    .form-group input, .form-group select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-    .btn-submit { background: #28a745; color: white; border: none; padding: 10px 15px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 12px; width: 100%; }
-    .btn-danger-sm { background: #dc3545; color: white; border: none; padding: 4px 8px; font-size: 11px; font-weight: bold; border-radius: 4px; cursor: pointer; }
-    .btn-danger-sm:hover { background: #c82333; }
+    /* Signature Canvas styling */
+    .sig-canvas {
+      touch-action: none;
+      cursor: crosshair;
+      background-color: #ffffff;
+    }
 
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #0f5132;
+      border-radius: 9999px;
+    }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-    table th, table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    table th { background-color: #1e3c72; color: white; }
-    table tr:nth-child(even) { background-color: #f9f9f9; }
-
-    .status-msg { padding: 8px; margin-bottom: 10px; border-radius: 4px; display: none; font-weight: bold; text-align: center; font-size: 13px; }
-    .status-success { background: #d4edda; color: #155724; }
-    .status-loading { background: #cce5ff; color: #004085; }
-
-    .payslip-box { border: 2px dashed #1e3c72; padding: 20px; border-radius: 6px; background: #fff; margin-top: 15px; }
-
+    /* Print Styles */
     @media print {
-      body * { visibility: hidden; }
-      #printablePayslip, #printablePayslip * { visibility: visible; }
-      #printablePayslip { position: absolute; left: 0; top: 0; width: 100%; border: none; }
-      .no-print { display: none !important; }
+      body {
+        background: #ffffff !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only-container {
+        display: block !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+      }
+      .page-section {
+        display: none !important;
+      }
+      .page-section.print-active {
+        display: block !important;
+      }
     }
   </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col font-sans antialiased">
 
-  <div id="welcomeOverlay">
-    <h1>Smart Register System</h1>
-    <p>Staff & Attendance Management System</p>
-  </div>
+  <!-- Toast Notification -->
+  <div id="toastContainer" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none no-print"></div>
 
-  <header class="no-print">
-    <h1>Smart Register System</h1>
-    <p style="margin:3px 0 0; font-size:12px;">Staff & Attendance Management System</p>
+  <!-- Top Header & Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-emeraldDeep text-white shadow-lg border-b-2 border-goldAccent no-print">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      <!-- Brand / Institution Title -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('page1')">
+          <div class="w-10 h-10 rounded-xl bg-white/10 border border-goldAccent/60 flex items-center justify-center text-goldAccent shrink-0">
+            <!-- Crescent & Book SVG Icon -->
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <div>
+            <h1 id="headerMadrasaName" class="text-base sm:text-lg font-bold tracking-tight text-white leading-tight">
+              Smart Madrasa Register
+            </h1>
+            <p id="headerMadrasaSub" class="text-xs text-goldLight/90">
+              Islamic Educational Management Portal
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick Data Actions on Mobile -->
+        <div class="flex items-center gap-1.5 lg:hidden">
+          <button onclick="loadDemoData(true)" title="Load Sample Data" class="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-white/10 hover:bg-white/20 text-goldLight border border-goldAccent/30">
+            Demo
+          </button>
+          <button onclick="openResetModal()" title="Reset All Data" class="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-red-900/50 hover:bg-red-800 text-red-100 border border-red-400/30">
+            Reset
+          </button>
+      <!-- 6-Page Navigation Tabs -->
+      <nav class="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0">
+        <button onclick="navigateTo('page1')" id="nav-page1" class="nav-btn active whitespace-nowrap px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 bg-goldAccent text-emeraldDark shadow">
+          <span>1. Welcome</span>
+        </button>
+        <button onclick="navigateTo('page2')" id="nav-page2" class="nav-btn whitespace-nowrap px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 text-white/90 hover:bg-white/10">
+          <span>2. Madrasa Profile</span>
+        </button>
+        <button onclick="navigateTo('page3')" id="nav-page3" class="nav-btn whitespace-nowrap px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 text-white/90 hover:bg-white/10">
+          <span>3. Students & Sign</span>
+        </button>
+        <button onclick="navigateTo('page4')" id="nav-page4" class="nav-btn whitespace-nowrap px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 text-white/90 hover:bg-white/10">
+          <span>4. Rules & Charter</span>
+        </button>
+        <button onclick="navigateTo('page5')" id="nav-page5" class="nav-btn whitespace-nowrap px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 text-white/90 hover:bg-white/10">
+          <span>5. Marks & Skills</span>
+        </button>
+        <button onclick="navigateTo('page6')" id="nav-page6" class="nav-btn whitespace-nowrap px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 text-white/90 hover:bg-white/10">
+          <span>6. WhatsApp Notice 💬</span>
+        </button>
+      </nav>
+
+      <!-- Desktop Data Controls -->
+      <div class="hidden lg:flex items-center gap-2">
+        <button onclick="loadDemoData(true)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white/10 hover:bg-white/20 text-goldLight border border-goldAccent/40 transition">
+          Load Demo Data
+        </button>
+        <button onclick="openResetModal()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-950/60 hover:bg-red-800 text-red-100 border border-red-400/30 transition">
+          Reset
+        </button>
+      </div>
+    </div>
   </header>
 
-  <nav class="no-print">
-    <button id="tab-btn-teachers" class="active-tab" onclick="switchTab('teachers')">1. Teacher Registration</button>
-    <button id="tab-btn-attendance" onclick="switchTab('attendance')">2. Attendance</button>
-    <button id="tab-btn-salary" onclick="switchTab('salary')">3. Salary Master</button>
-    <button id="tab-btn-payments" onclick="switchTab('payments')">4. Salary Payments</button>
-    <button id="tab-btn-reports" onclick="switchTab('reports')">5. Reports & Payslip</button>
-  </nav>
+  <!-- Main Content Wrapper -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6">
 
-  <div class="container no-print">
-    <div id="statusAlert" class="status-msg"></div>
+    <!-- ===================================================================== -->
+    <!-- PAGE 1: WELCOME PAGE & NAVIGATION HUB                                 -->
+    <!-- ===================================================================== -->
+    <section id="page1" class="page-section active">
+      <div class="islamic-pattern rounded-3xl p-6 sm:p-12 text-white shadow-xl border-2 border-goldAccent/50 relative overflow-hidden">
+        <!-- Decorative Gold Corner Accents -->
+        <div class="absolute -top-16 -right-16 w-56 h-56 rounded-full border-4 border-goldAccent/20 pointer-events-none"></div>
+        <div class="absolute -bottom-20 -left-20 w-64 h-64 rounded-full border-4 border-goldAccent/15 pointer-events-none"></div>
 
-    <!-- TAB 1: Teachers -->
-    <div id="teachers" class="tab-content active">
-      <div class="card">
-        <h2>Teacher Registration Form</h2>
-        <form id="teacherForm" onsubmit="handleTeacherSubmit(event)">
-          <div class="form-grid">
-            <div class="form-group"><label>Admission No</label><input type="text" id="admNo" required placeholder="Eg: T-101"></div>
-            <div class="form-group"><label>Full Name</label><input type="text" id="tName" required placeholder="Full Name"></div>
-            <div class="form-group"><label>Basic Salary (₹)</label><input type="number" id="tBasicSalary" required placeholder="Basic Monthly Salary"></div>
-            <div class="form-group"><label>Aadhaar Number</label><input type="text" id="aadhaar" required placeholder="12 Digit Number"></div>
-            <div class="form-group"><label>Phone Number</label><input type="tel" id="phone" required placeholder="Mobile Number"></div>
-            <div class="form-group"><label>Address</label><input type="text" id="address" required placeholder="Address"></div>
-            <div class="form-group"><label>Designation</label>
-              <select id="designation">
-                <option value="Headmaster">Headmaster</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Staff">Staff</option>
-              </select>
-            </div>
-            <div class="form-group"><label>Joining Date</label><input type="date" id="joiningDate" required></div>
+        <div class="max-w-3xl mx-auto text-center relative z-10">
+          <p class="font-arabic text-2xl sm:text-3xl text-goldAccent mb-2 tracking-wide">
+            بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم
+          </p>
+          <span class="inline-block px-4 py-1 rounded-full bg-white/10 border border-goldAccent/40 text-goldLight text-xs sm:text-sm font-semibold uppercase tracking-wider mb-4">
+            Digital Madrasa Administration & Academic Suite
+          </span>
+
+          <h2 id="welcomeHeroTitle" class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3">
+            Smart Madrasa Management System
+          </h2>
+          <p id="welcomeHeroPlace" class="text-base sm:text-xl text-goldAccent font-semibold mb-4 hidden"></p>
+
+          <p class="text-sm sm:text-base text-emerald-100/90 max-w-2xl mx-auto leading-relaxed mb-8">
+            "Seeking knowledge is an obligation upon every Muslim." — Manage institution records, student admissions with digital Father & Child signatures, Madrasa rules, 4-Term exams, Monthly assessments, and custom skill evaluations seamlessly.
+          </p>
+
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <button onclick="navigateTo('page2')" class="px-7 py-3.5 rounded-2xl bg-goldAccent hover:bg-yellow-500 text-emeraldDark font-extrabold text-sm sm:text-base shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+              <span>Enter Madrasa Portal</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </button>
+            <button onclick="navigateTo('page6')" class="px-6 py-3.5 rounded-2xl bg-emerald-600/80 hover:bg-emerald-500 text-white border border-goldAccent/50 font-bold text-sm sm:text-base shadow-md transition flex items-center gap-2">
+              <span>💬 WhatsApp Notice Center</span>
+            </button>
+            <button onclick="navigateTo('page5')" class="px-6 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold text-sm sm:text-base transition">
+              Mark List & Skills
+            </button>
           </div>
-          <button type="submit" class="btn-submit">Save Teacher</button>
-        </form>
-      </div>
-      <div class="card">
-        <h2>Registered Teachers List</h2>
-        <table id="teacherTable">
-          <thead><tr><th>Adm No</th><th>Name</th><th>Designation</th><th>Basic Salary</th><th>Phone</th></tr></thead>
-          <tbody><tr><td colspan="5" style="text-align:center;">Loading...</td></tr></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- TAB 2: Attendance -->
-    <div id="attendance" class="tab-content">
-      <div class="card">
-        <h2>Mark Attendance</h2>
-        <form id="attendanceForm" onsubmit="handleAttendanceSubmit(event)">
-          <div class="form-grid">
-            <div class="form-group"><label>Date</label><input type="date" id="attDate" required></div>
-            <div class="form-group"><label>Select Teacher</label><select id="attTeacherSelect" required><option value="">Select...</option></select></div>
-            <div class="form-group"><label>Time In</label><input type="time" id="timeIn" required></div>
-            <div class="form-group"><label>Time Out</label><input type="time" id="timeOut" required></div>
-            <div class="form-group"><label>Status</label>
-              <select id="attStatus">
-                <option value="Present">Present</option>
-                <option value="Late">Late</option>
-                <option value="Leave">Leave</option>
-                <option value="Absent">Absent</option>
-              </select>
-            </div>
-          </div>
-          <button type="submit" class="btn-submit" style="background: #1e3c72;">Mark Attendance</button>
-        </form>
-      </div>
-      <div class="card">
-        <h2>Daily Attendance History</h2>
-        <table id="attendanceTable">
-          <thead><tr><th>Date</th><th>Adm No</th><th>Name</th><th>Time In</th><th>Time Out</th><th>Work Hours</th><th>Status</th><th>Action</th></tr></thead>
-          <tbody><tr><td colspan="8" style="text-align:center;">Loading...</td></tr></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- TAB 3: Salary Master -->
-    <div id="salary" class="tab-content">
-      <div class="card">
-        <h2>Salary Master Structure</h2>
-        <form id="salaryForm" onsubmit="handleSalarySubmit(event)">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Select Teacher</label>
-              <select id="salTeacherSelect" required onchange="autoFillSalaryStructure()"><option value="">Select...</option></select>
-            </div>
-            <div class="form-group"><label>Basic Salary (₹)</label><input type="number" id="basicSal" required oninput="calcNetSalary()"></div>
-            <div class="form-group"><label>Allowances (₹)</label><input type="number" id="allowanceSal" value="0" oninput="calcNetSalary()"></div>
-            <div class="form-group"><label>Deductions (₹)</label><input type="number" id="deductionSal" value="0" oninput="calcNetSalary()"></div>
-            <div class="form-group"><label>Net Salary (₹)</label><input type="number" id="netSal" readonly style="background: #eee;"></div>
-          </div>
-          <button type="submit" class="btn-submit">Update Structure</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- TAB 4: Salary Payments -->
-    <div id="payments" class="tab-content">
-      <div class="card">
-        <h2>Salary Payment Register</h2>
-        <form id="paymentForm" onsubmit="handlePaymentSubmit(event)">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Select Teacher</label>
-              <select id="payTeacherSelect" required onchange="autoFillPayAmount()"><option value="">Select...</option></select>
-            </div>
-            <div class="form-group"><label>Payment Month</label><input type="month" id="payMonth" required></div>
-            <div class="form-group"><label>Paid Amount (₹)</label><input type="number" id="payAmount" required placeholder="₹ 0"></div>
-            <div class="form-group"><label>Payment Mode</label>
-              <select id="payMode">
-                <option value="Cash">Cash</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-                <option value="UPI / GPay">UPI / GPay</option>
-              </select>
-            </div>
-          </div>
-          <button type="submit" class="btn-submit" style="background:#ff9800; color:#000;">Submit Payment</button>
-        </form>
-      </div>
-
-      <div class="card">
-        <h2>Payment History (Month-wise)</h2>
-        <table id="paymentsTable">
-          <thead><tr><th>Date</th><th>Adm No</th><th>Name</th><th>Month</th><th>Amount</th><th>Mode</th><th>Status</th></tr></thead>
-          <tbody><tr><td colspan="7" style="text-align:center;">Loading...</td></tr></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- TAB 5: Reports & Payslip -->
-    <div id="reports" class="tab-content">
-      <div class="card">
-        <h2>Payslip Generator</h2>
-        <div class="form-grid">
-          <div class="form-group"><label>Select Teacher</label><select id="reportTeacherSelect"><option value="">Select...</option></select></div>
-          <div class="form-group"><label>Select Month</label><input type="month" id="reportMonth"></div>
         </div>
-        <button class="btn-submit" style="background:#007bff;" onclick="generatePayslip()">Generate Payslip</button>
+      </div>
+
+      <!-- Quick Summary Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+        <div onclick="navigateTo('page2')" class="cursor-pointer bg-white rounded-2xl p-5 border border-slate-200/80 gold-border-glow hover:border-goldAccent transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Institution Status</span>
+            <span class="w-8 h-8 rounded-xl bg-emeraldLight text-emeraldDeep flex items-center justify-center font-bold">🏛️</span>
+          </div>
+          <p id="statInstitution" class="text-lg font-extrabold text-slate-800 truncate">Not Configured</p>
+          <p id="statRegNo" class="text-xs text-slate-500 mt-1">Click to setup Madrasa Profile</p>
+        </div>
+
+        <div onclick="navigateTo('page3')" class="cursor-pointer bg-white rounded-2xl p-5 border border-slate-200/80 gold-border-glow hover:border-goldAccent transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Total Students</span>
+            <span class="w-8 h-8 rounded-xl bg-emeraldLight text-emeraldDeep flex items-center justify-center font-bold">🎓</span>
+          </div>
+          <p id="statStudents" class="text-2xl font-extrabold text-slate-800">0</p>
+          <p class="text-xs text-slate-500 mt-1">Admissions & Digital Signatures</p>
+        </div>
+
+        <div onclick="navigateTo('page3')" class="cursor-pointer bg-white rounded-2xl p-5 border border-slate-200/80 gold-border-glow hover:border-goldAccent transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Active Classes</span>
+            <span class="w-8 h-8 rounded-xl bg-emeraldLight text-emeraldDeep flex items-center justify-center font-bold">📚</span>
+          </div>
+          <p id="statClasses" class="text-2xl font-extrabold text-slate-800">0</p>
+          <p class="text-xs text-slate-500 mt-1">Across enrolled divisions</p>
+        </div>
+
+        <div onclick="navigateTo('page5')" class="cursor-pointer bg-white rounded-2xl p-5 border border-slate-200/80 gold-border-glow hover:border-goldAccent transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Subjects & Skills</span>
+            <span class="w-8 h-8 rounded-xl bg-emeraldLight text-emeraldDeep flex items-center justify-center font-bold">⭐</span>
+          </div>
+          <p id="statSkills" class="text-2xl font-extrabold text-slate-800">0</p>
+          <p class="text-xs text-slate-500 mt-1">Customizable per Madrasa</p>
+        </div>
+      </div>
+
+      <!-- Quick Module Directory Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-6">
+        <div onclick="navigateTo('page2')" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:shadow-md transition group">
+          <div class="text-emeraldDeep font-bold text-sm mb-1 group-hover:text-goldAccent transition">Page 2 &rarr;</div>
+          <h3 class="font-bold text-slate-900 text-base">Madrasa Details</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Register Institution Name, Recognition (Angeegara) No, Place, Mobile & Email.</p>
+        </div>
+        <div onclick="navigateTo('page3')" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:shadow-md transition group">
+          <div class="text-emeraldDeep font-bold text-sm mb-1 group-hover:text-goldAccent transition">Page 3 &rarr;</div>
+          <h3 class="font-bold text-slate-900 text-base">Student Admission</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Sl No, Adm No, Class, Aadhaar, Parent Mobile/WhatsApp & Father/Child Digital Signs.</p>
+        </div>
+        <div onclick="navigateTo('page4')" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:shadow-md transition group">
+          <div class="text-emeraldDeep font-bold text-sm mb-1 group-hover:text-goldAccent transition">Page 4 &rarr;</div>
+          <h3 class="font-bold text-slate-900 text-base">Rules & Regulations</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Manage Madrasa Niyamangalum Chattangalum and print official notice sheets.</p>
+        </div>
+        <div onclick="navigateTo('page5')" class="cursor-pointer bg-white p-5 rounded-2xl border border-slate-200 hover:shadow-md transition group">
+          <div class="text-emeraldDeep font-bold text-sm mb-1 group-hover:text-goldAccent transition">Page 5 &rarr;</div>
+          <h3 class="font-bold text-slate-900 text-base">4-Term Marks & Skills</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Add custom Madrasa skills, 4-Term & Monthly exam marks, Grades & Report Cards.</p>
+        </div>
+        <div onclick="navigateTo('page6')" class="cursor-pointer bg-emeraldLight/50 p-5 rounded-2xl border-2 border-emeraldDeep/30 hover:border-emeraldDeep hover:shadow-md transition group">
+          <div class="text-emeraldDeep font-extrabold text-sm mb-1 group-hover:text-goldAccent transition">Page 6 &rarr;</div>
+          <h3 class="font-bold text-slate-900 text-base">WhatsApp Notices 💬</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">Send meetings, programs & class-specific notices individually or via One-Click Queue.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 2: MADRASA PROFILE & REGISTRATION                                -->
+    <!-- ===================================================================== -->
+    <section id="page2" class="page-section">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 2 • Institution Identity</span>
+          <h2 class="text-2xl font-extrabold text-slate-900">Madrasa Profile & Registration</h2>
+        </div>
+        <button onclick="navigateTo('page3')" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
+          Next: Student Admission &rarr;
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Form Card -->
+        <div class="lg:col-span-7 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="text-base font-bold text-emeraldDeep border-b border-slate-100 pb-3 mb-4">
+            Enter Institution Details (സ്ഥാപനത്തിന്റെ വിവരങ്ങൾ)
+          </h3>
+          <form id="madrasaProfileForm" onsubmit="saveMadrasaProfile(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Institution Name (Sthapanathinte Name) *</label>
+              <input type="text" id="instName" required placeholder="e.g., Hidayathul Islam Madrassa"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Recognition / Affiliation No (Angeegara No) *</label>
+                <input type="text" id="instRegNo" required placeholder="e.g., REG-KL-4829"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Place / Location (Place) *</label>
+                <input type="text" id="instPlace" required placeholder="e.g., Malappuram, Kerala"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Mobile Number *</label>
+                <input type="tel" id="instMobile" required placeholder="e.g., +91 98470 12345"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Email Address *</label>
+                <input type="email" id="instEmail" required placeholder="e.g., office@hidayathulmadrasa.org"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Academic Year (Hijri / Gregorian)</label>
+              <input type="text" id="instAcademicYear" placeholder="e.g., 2026 - 2027 (1447 - 1448 AH)"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" class="w-full py-3 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-sm shadow-md transition">
+                Save Madrasa Profile
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Saved Profile Preview Card -->
+        <div class="lg:col-span-5">
+          <div class="islamic-pattern rounded-2xl p-6 text-white shadow-lg border-2 border-goldAccent/60 h-full flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b border-white/15 pb-3 mb-4">
+                <span class="text-xs font-bold uppercase tracking-wider text-goldAccent">Official Madrasa Certificate</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-goldAccent/20 text-goldLight text-xs font-semibold">Verified Record</span>
+              </div>
+
+              <h3 id="previewInstName" class="text-2xl font-extrabold text-white mb-1">
+                Hidayathul Islam Madrassa
+              </h3>
+              <p id="previewInstPlace" class="text-sm text-goldAccent font-medium mb-6">
+                Malappuram, Kerala
+              </p>
+
+              <div class="space-y-3 bg-white/10 rounded-xl p-4 border border-white/10 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-emerald-200">Angeegara No:</span>
+                  <span id="previewInstRegNo" class="font-bold text-white">REG-KL-4829</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-emerald-200">Mobile:</span>
+                  <span id="previewInstMobile" class="font-semibold text-white">+91 98470 12345</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-emerald-200">Email:</span>
+                  <span id="previewInstEmail" class="font-semibold text-white truncate max-w-[200px]">office@hidayathulmadrasa.org</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-emerald-200">Academic Year:</span>
+                  <span id="previewInstYear" class="font-semibold text-goldAccent">2026 - 2027</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="text-xs text-emerald-100/75 mt-6 italic">
+              * These details automatically appear on the Welcome Screen, Rules Notice, and Student Report Cards.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 3: STUDENT ADMISSION & DIRECTORY (WITH DIGITAL SIGNATURES)       -->
+    <!-- ===================================================================== -->
+    <section id="page3" class="page-section">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 3 • Student Records & Verification</span>
+          <h2 class="text-2xl font-extrabold text-slate-900">Student Admission & Digital Signatures</h2>
+        </div>
+        <button onclick="navigateTo('page4')" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
+          Next: Madrasa Rules &rarr;
+        </button>
+      </div>
+
+      <!-- Student Registration Form -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+          <h3 id="studentFormTitle" class="text-base font-bold text-emeraldDeep">New Student Admission Form</h3>
+          <button type="button" id="cancelEditStudentBtn" onclick="resetStudentForm()" class="hidden text-xs font-semibold text-red-600 hover:underline">
+            Cancel Edit
+          </button>
+        </div>
+
+        <form id="studentForm" onsubmit="saveStudent(event)" class="space-y-5">
+          <input type="hidden" id="editStudentId" value="" />
+
+          <!-- Row 1: Sl No, Adm No, Name, Class -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Serial No (Sl No) *</label>
+              <input type="number" id="stuSlNo" required min="1"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm bg-slate-50 font-semibold" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Admission Number *</label>
+              <input type="text" id="stuAdmNo" required placeholder="e.g., ADM-2026-01"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Student Full Name *</label>
+              <input type="text" id="stuName" required placeholder="e.g., Muhammed Rayyan"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Class *</label>
+              <select id="stuClass" required
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm bg-white">
+                <option value="Pre-Primary">Pre-Primary (Busthan)</option>
+                <option value="Class 1">Class 1</option>
+                <option value="Class 2">Class 2</option>
+                <option value="Class 3">Class 3</option>
+                <option value="Class 4">Class 4</option>
+                <option value="Class 5" selected>Class 5</option>
+                <option value="Class 6">Class 6</option>
+                <option value="Class 7">Class 7</option>
+                <option value="Class 8">Class 8</option>
+                <option value="Class 9">Class 9</option>
+                <option value="Class 10">Class 10</option>
+                <option value="Class 11">Class 11 (+1)</option>
+                <option value="Class 12">Class 12 (+2)</option>
+                <option value="Hifz">Hifz Division</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2: Aadhaar, Parent Name, Mobile, WhatsApp -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Aadhaar Number (12 Digits) *</label>
+              <input type="text" id="stuAadhaar" required maxlength="14" oninput="formatAadhaarInput(this)" placeholder="XXXX XXXX XXXX"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm font-mono" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Parent / Father Name *</label>
+              <input type="text" id="stuParent" required placeholder="e.g., Abdul Kareem"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Mobile Number *</label>
+              <input type="tel" id="stuMobile" required oninput="syncWhatsappIfChecked()" placeholder="e.g., 9847112233"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-bold text-slate-700">WhatsApp Number *</label>
+                <label class="flex items-center gap-1 text-[11px] text-emeraldDeep font-semibold cursor-pointer">
+                  <input type="checkbox" id="sameAsMobileCheck" onchange="syncWhatsappIfChecked()" class="rounded text-emeraldDeep" />
+                  Same as Mobile
+                </label>
+              </div>
+              <input type="tel" id="stuWhatsapp" required placeholder="e.g., 9847112233"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+            </div>
+          </div>
+
+          <!-- Row 3: Father's Google Sign & Child's Google Sign (Interactive Digital Signature Pads) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <!-- Father Signature Box -->
+            <div class="bg-creamBg p-4 rounded-2xl border border-slate-200">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <label class="text-xs font-extrabold text-emeraldDeep uppercase tracking-wide">
+                  Father's Google Sign / Digital Signature
+                </label>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" onclick="typeSignature('father')" class="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-700">
+                    Auto-Sign Text
+                  </button>
+                  <button type="button" onclick="clearSignature('father')" class="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-red-50 border border-red-200 hover:bg-red-100 text-red-700">
+                    Clear
+                  </button>
+                </div>
+              </div>
+              <div class="border-2 border-dashed border-slate-300 rounded-xl overflow-hidden bg-white">
+                <canvas id="fatherSigCanvas" class="sig-canvas w-full h-28 block"></canvas>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1.5">Draw signature above using finger or mouse, or click "Auto-Sign Text".</p>
+            </div>
+
+            <!-- Child Signature Box -->
+            <div class="bg-creamBg p-4 rounded-2xl border border-slate-200">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <label class="text-xs font-extrabold text-emeraldDeep uppercase tracking-wide">
+                  Child's Google Sign / Digital Signature
+                </label>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" onclick="typeSignature('child')" class="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-700">
+                    Auto-Sign Text
+                  </button>
+                  <button type="button" onclick="clearSignature('child')" class="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-red-50 border border-red-200 hover:bg-red-100 text-red-700">
+                    Clear
+                  </button>
+                </div>
+              </div>
+              <div class="border-2 border-dashed border-slate-300 rounded-xl overflow-hidden bg-white">
+                <canvas id="childSigCanvas" class="sig-canvas w-full h-28 block"></canvas>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1.5">Draw student signature above using finger or mouse, or click "Auto-Sign Text".</p>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit" id="saveStudentBtn" class="w-full sm:w-auto px-8 py-3 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-sm shadow-md transition">
+              Register Student & Save Signatures
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Student Directory Table -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+          <h3 class="text-base font-bold text-emeraldDeep">Registered Student Directory</h3>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="text" id="studentSearchInput" oninput="renderStudentTable()" placeholder="Search name, Adm No, parent..."
+              class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:border-emeraldDeep outline-none" />
+            <select id="studentClassFilter" onchange="renderStudentTable()"
+              class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:border-emeraldDeep outline-none bg-white">
+              <option value="ALL">All Classes</option>
+              <option value="Pre-Primary">Pre-Primary</option>
+              <option value="Class 1">Class 1</option>
+              <option value="Class 2">Class 2</option>
+              <option value="Class 3">Class 3</option>
+              <option value="Class 4">Class 4</option>
+              <option value="Class 5">Class 5</option>
+              <option value="Class 6">Class 6</option>
+              <option value="Class 7">Class 7</option>
+              <option value="Class 8">Class 8</option>
+              <option value="Class 9">Class 9</option>
+              <option value="Class 10">Class 10</option>
+              <option value="Class 11">Class 11</option>
+              <option value="Class 12">Class 12</option>
+              <option value="Hifz">Hifz Division</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-emeraldDeep text-white">
+                <th class="p-3 rounded-tl-xl">Sl</th>
+                <th class="p-3">Adm No</th>
+                <th class="p-3">Student Name</th>
+                <th class="p-3">Class</th>
+                <th class="p-3">Aadhaar No</th>
+                <th class="p-3">Parent & Contact</th>
+                <th class="p-3">Father Sign</th>
+                <th class="p-3">Child Sign</th>
+                <th class="p-3 rounded-tr-xl text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody" class="divide-y divide-slate-100">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 4: MADRASA RULES & REGULATIONS (NIYAMANGALUM CHATTANGALUM)       -->
+    <!-- ===================================================================== -->
+    <section id="page4" class="page-section">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 no-print">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 4 • Niyamangalum Chattangalum</span>
+          <h2 class="text-2xl font-extrabold text-slate-900">Madrasa Rules & Regulations</h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="printRulesNotice()" class="px-4 py-2 rounded-xl bg-goldAccent text-emeraldDark text-xs font-extrabold hover:bg-yellow-500 transition shadow-sm">
+            🖨️ Print Rules Notice
+          </button>
+          <button onclick="navigateTo('page5')" class="px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
+            Next: Marks & Skills &rarr;
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Add / Edit Rule Form (Hidden on Print) -->
+        <div class="lg:col-span-4 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm h-fit no-print">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+            <h3 id="ruleFormHeading" class="text-base font-bold text-emeraldDeep">
+              Add New Rule / Guideline
+            </h3>
+            <button type="button" id="cancelRuleEditBtn" onclick="resetRuleForm()" class="hidden text-xs font-bold text-red-600 hover:underline">
+              Cancel
+            </button>
+          </div>
+          <form onsubmit="saveMadrasaRule(event)" class="space-y-4">
+            <input type="hidden" id="editRuleId" value="" />
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Category</label>
+              <select id="ruleCategory" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white outline-none focus:border-emeraldDeep">
+                <option value="General & Attendance">General & Attendance</option>
+                <option value="Student Discipline & Dress Code">Student Discipline & Dress Code</option>
+                <option value="Parents Guidelines">Parents Guidelines</option>
+                <option value="Examination Rules">Examination Rules</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Rule Title</label>
+              <input type="text" id="ruleTitle" required placeholder="e.g., Punctuality & Morning Assembly"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:border-emeraldDeep" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Rule Description (English / Malayalam)</label>
+              <textarea id="ruleDesc" rows="4" required placeholder="Write the detailed rule or regulation here..."
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:border-emeraldDeep"></textarea>
+            </div>
+            <button type="submit" id="saveRuleBtn" class="w-full py-3 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-sm transition">
+              + Add Rule to Charter
+            </button>
+          </form>
+        </div>
+
+        <!-- Printable Madrasa Charter / Rules Display -->
+        <div class="lg:col-span-8 bg-white rounded-2xl p-6 sm:p-8 border-2 border-goldAccent/50 shadow-sm print-only-container">
+          <div class="text-center border-b-2 border-emeraldDeep pb-4 mb-6">
+            <p class="font-arabic text-xl text-emeraldDeep">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p>
+            <h3 id="rulesHeaderMadrasaName" class="text-xl sm:text-2xl font-extrabold text-emeraldDeep uppercase tracking-wide mt-1">
+              Hidayathul Islam Madrassa
+            </h3>
+            <p id="rulesHeaderSub" class="text-xs text-slate-600 font-medium">
+              Madrasa Rules, Regulations & Discipline Charter (നിയമങ്ങളും ചട്ടങ്ങളും)
+            </p>
+          </div>
+
+          <div id="rulesListContainer" class="space-y-4">
+            <!-- Rules rendered here -->
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between text-xs text-slate-600">
+            <div>
+              <p class="font-bold text-slate-800">Sadar Muallim / Headmaster</p>
+              <p class="mt-4">_______________________</p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-slate-800">Madrasa Committee Secretary</p>
+              <p class="mt-4">_______________________</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 5: 4-TERM MARK LIST, MONTHLY EXAMS & CUSTOM SKILLS EVALUATION    -->
+    <!-- ===================================================================== -->
+    <section id="page5" class="page-section">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 no-print">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 5 • Academic & Skill Assessment</span>
+          <h2 class="text-2xl font-extrabold text-slate-900">4-Term Mark List, Monthly Exams & Custom Skills</h2>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="toggleSkillManager()" class="px-4 py-2 rounded-xl bg-goldAccent text-emeraldDark text-xs font-extrabold hover:bg-yellow-500 transition shadow-sm flex items-center gap-1.5">
+            <span>⚙️ Configure Subjects & Skills</span>
+          </button>
+          <button onclick="navigateTo('page6')" class="px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
+            Next: WhatsApp Notices &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Student & Exam Mode Selector Bar -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm mb-6 no-print">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">1. Filter by Class</label>
+            <select id="marksClassFilter" onchange="populateMarksStudentDropdown()"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white outline-none focus:border-emeraldDeep">
+              <option value="ALL">All Classes</option>
+              <option value="Pre-Primary">Pre-Primary</option>
+              <option value="Class 1">Class 1</option>
+              <option value="Class 2">Class 2</option>
+              <option value="Class 3">Class 3</option>
+              <option value="Class 4">Class 4</option>
+              <option value="Class 5">Class 5</option>
+              <option value="Class 6">Class 6</option>
+              <option value="Class 7">Class 7</option>
+              <option value="Class 8">Class 8</option>
+              <option value="Class 9">Class 9</option>
+              <option value="Class 10">Class 10</option>
+              <option value="Class 11">Class 11</option>
+              <option value="Class 12">Class 12</option>
+              <option value="Hifz">Hifz Division</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">2. Select Student *</label>
+            <select id="marksStudentSelect" onchange="loadStudentMarksForm()"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white font-semibold outline-none focus:border-emeraldDeep">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">3. Assessment View Mode</label>
+            <div class="grid grid-cols-2 gap-1.5 bg-slate-100 p-1 rounded-xl">
+              <button type="button" id="modeTermBtn" onclick="switchAssessmentMode('term')" class="py-1.5 px-2 rounded-lg text-xs font-bold bg-emeraldDeep text-white shadow-sm transition">
+                4-Term & Skills
+              </button>
+              <button type="button" id="modeMonthlyBtn" onclick="switchAssessmentMode('monthly')" class="py-1.5 px-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+                Monthly Exams
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODE A: 4-TERM EXAMS & CUSTOM SKILLS ENTRY -->
+      <div id="termAssessmentView" class="no-print">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-6">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4 mb-5">
+            <div>
+              <h3 class="text-base font-extrabold text-emeraldDeep">4-Term Marks & Skill Evaluation Entry</h3>
+              <p class="text-xs text-slate-500">Enter marks across Term 1, Term 2, Term 3, and Term 4. Grades auto-calculate or can be customized.</p>
+            </div>
+            <!-- Term Tabs -->
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="selectTermTab('term1')" id="tab-term1" class="term-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emeraldDeep text-white">Term 1</button>
+              <button type="button" onclick="selectTermTab('term2')" id="tab-term2" class="term-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Term 2</button>
+              <button type="button" onclick="selectTermTab('term3')" id="tab-term3" class="term-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Term 3</button>
+              <button type="button" onclick="selectTermTab('term4')" id="tab-term4" class="term-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Term 4</button>
+            </div>
+          </div>
+
+          <div id="termMarksEntryContainer">
+            <!-- Dynamic Table for Active Term -->
+          </div>
+        </div>
+      </div>
+
+      <!-- MODE B: MONTHLY EXAMS ENTRY -->
+      <div id="monthlyAssessmentView" class="hidden no-print">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4 mb-5">
+            <div>
+              <h3 class="text-base font-extrabold text-emeraldDeep">Monthly Exam Marks Entry</h3>
+              <p class="text-xs text-slate-500">Record monthly test scores and grades for continuous student tracking.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-bold text-slate-700">Select Month:</label>
+              <select id="monthlyExamMonthSelect" onchange="loadStudentMarksForm()"
+                class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-bold bg-white outline-none focus:border-emeraldDeep">
+                <option value="June (Muharram)">June (Muharram)</option>
+                <option value="July (Safar)">July (Safar)</option>
+                <option value="August (Rabi al-Awwal)">August (Rabi al-Awwal)</option>
+                <option value="September (Rabi al-Thani)">September (Rabi al-Thani)</option>
+                <option value="October (Jumada al-Ula)">October (Jumada al-Ula)</option>
+                <option value="November (Jumada al-Thani)">November (Jumada al-Thani)</option>
+                <option value="December (Rajab)">December (Rajab)</option>
+                <option value="January (Sha'ban)">January (Sha'ban)</option>
+                <option value="February (Ramadan)">February (Ramadan)</option>
+                <option value="March (Shawwal)">March (Shawwal)</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="monthlyMarksEntryContainer">
+            <!-- Dynamic Monthly Marks Entry -->
+          </div>
+        </div>
+      </div>
+
+      <!-- CONSOLIDATED 4-TERM & SKILLS REPORT CARD (PRINTABLE) -->
+      <div id="consolidatedReportCard" class="bg-white rounded-2xl p-6 sm:p-8 border-2 border-goldAccent shadow-md print-only-container">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-emeraldDeep pb-4 mb-5">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-widest text-emeraldDeep">Official Academic & Skill Transcript</span>
+            <h3 id="rcMadrasaName" class="text-xl sm:text-2xl font-extrabold text-slate-900">Hidayathul Islam Madrassa</h3>
+            <p id="rcMadrasaDetails" class="text-xs text-slate-600">Reg No: REG-KL-4829 • Malappuram, Kerala</p>
+          </div>
+          <button onclick="printReportCard()" class="no-print self-start sm:self-auto px-5 py-2.5 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-xs shadow flex items-center gap-2 transition">
+            <span>🖨️ Print / Save Report Card</span>
+          </button>
+        </div>
+
+        <!-- Student Bio Summary -->
+        <div id="rcStudentInfo" class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-creamBg p-4 rounded-xl border border-slate-200 mb-5 text-xs">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- 4-Term Consolidated Matrix Table -->
+        <div class="overflow-x-auto mb-6">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-emeraldDeep text-white">
+                <th class="p-2.5 border border-emeraldDark">Subject / Madrasa Skill</th>
+                <th class="p-2.5 border border-emeraldDark text-center">Category</th>
+                <th class="p-2.5 border border-emeraldDark text-center">Max</th>
+                <th class="p-2.5 border border-emeraldDark text-center">Term 1</th>
+                <th class="p-2.5 border border-emeraldDark text-center">Term 2</th>
+                <th class="p-2.5 border border-emeraldDark text-center">Term 3</th>
+                <th class="p-2.5 border border-emeraldDark text-center">Term 4</th>
+                <th class="p-2.5 border border-emeraldDark text-center">Grand Total</th>
+                <th class="p-2.5 border border-emeraldDark text-center">Overall Grade</th>
+              </tr>
+            </thead>
+            <tbody id="rcMatrixBody" class="divide-y divide-slate-200">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Monthly Exam Summary Strip -->
+        <div class="mb-6">
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-emeraldDeep mb-2">Monthly Exam Performance Summary</h4>
+          <div id="rcMonthlySummary" class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Signatures Footer on Report Card -->
+        <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200 text-xs text-center">
+          <div class="flex flex-col items-center">
+            <div id="rcChildSignBox" class="h-12 flex items-center justify-center mb-1"></div>
+            <div class="w-32 border-t border-slate-400 pt-1 font-semibold text-slate-700">Student Signature</div>
+          </div>
+          <div class="flex flex-col items-center">
+            <div id="rcFatherSignBox" class="h-12 flex items-center justify-center mb-1"></div>
+            <div class="w-32 border-t border-slate-400 pt-1 font-semibold text-slate-700">Parent / Father Sign</div>
+          </div>
+          <div class="flex flex-col items-center justify-end">
+            <div class="h-12"></div>
+            <div class="w-36 border-t border-slate-400 pt-1 font-semibold text-slate-700">Sadar Muallim Seal & Sign</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 6: WHATSAPP ANNOUNCEMENT & NOTIFICATION CENTER                   -->
+    <!-- ===================================================================== -->
+    <section id="page6" class="page-section">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 no-print">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 6 • Parent & Class Communication</span>
+          <h2 class="text-2xl font-extrabold text-slate-900">WhatsApp Announcement & Notice Center</h2>
+          <p class="text-xs text-slate-600 mt-0.5">മദ്രസയിലെ മീറ്റിംഗുകൾ, പ്രോഗ്രാമുകൾ, ക്ലാസ് നിർദ്ദേശങ്ങൾ എന്നിവ രക്ഷിതാക്കളുടെ WhatsApp-ലേക്ക് ഒറ്റ ക്ലിക്കിൽ അറിയിക്കുക.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left Column: Message Composer & Quick Templates -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <h3 class="text-base font-extrabold text-emeraldDeep border-b border-slate-100 pb-3 mb-4">
+              1. Compose Notice / Quick Templates
+            </h3>
+
+            <!-- Quick Template Pills -->
+            <div class="mb-4">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">
+                Select Ready-Made Template (ക്ലിക്ക് ചെയ്യുക):
+              </label>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" onclick="applyWhatsAppTemplate('meeting')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emeraldLight text-emeraldDeep hover:bg-emeraldDeep hover:text-white transition">
+                  🤝 Parent Meeting
+                </button>
+                <button type="button" onclick="applyWhatsAppTemplate('program')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-goldLight text-emeraldDark hover:bg-goldAccent transition">
+                  🎉 Madrasa Program
+                </button>
+                <button type="button" onclick="applyWhatsAppTemplate('holiday')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-100 text-amber-900 hover:bg-amber-200 transition">
+                  🌙 Holiday Notice
+                </button>
+                <button type="button" onclick="applyWhatsAppTemplate('exam')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-50 text-blue-800 hover:bg-blue-100 transition">
+                  📝 Exam Schedule
+                </button>
+                <button type="button" onclick="applyWhatsAppTemplate('custom')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                  ✍️ Custom Message
+                </button>
+              </div>
+            </div>
+
+            <!-- Message Textarea -->
+            <div class="mb-3">
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-bold text-slate-700">Message Text (Malayalam / English)</label>
+                <span class="text-[11px] text-slate-400">Editable</span>
+              </div>
+              <textarea id="waMessageInput" rows="7" oninput="updateWhatsAppPreview()"
+                class="w-full px-3.5 py-3 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-xs sm:text-sm leading-relaxed"
+                placeholder="Type your announcement here..."></textarea>
+            </div>
+
+            <!-- Dynamic Placeholder Insert Chips -->
+            <div class="mb-4">
+              <span class="block text-[11px] font-semibold text-slate-500 mb-1.5">Tap to insert dynamic details automatically:</span>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" onclick="insertPlaceholder('{student_name}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emeraldLight text-emeraldDeep font-mono text-xs font-bold border border-slate-200">
+                  + {student_name}
+                </button>
+                <button type="button" onclick="insertPlaceholder('{class}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emeraldLight text-emeraldDeep font-mono text-xs font-bold border border-slate-200">
+                  + {class}
+                </button>
+                <button type="button" onclick="insertPlaceholder('{madrasa_name}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-emeraldLight text-emeraldDeep font-mono text-xs font-bold border border-slate-200">
+                  + {madrasa_name}
+                </button>
+              </div>
+            </div>
+
+            <!-- Live Sample Preview -->
+            <div class="bg-[#e5ddd5] rounded-2xl p-4 border border-slate-200">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600">Live WhatsApp Message Preview</span>
+                <span class="text-[10px] font-semibold text-emeraldDeep">Sample Recipient</span>
+              </div>
+              <div id="waLivePreviewBox" class="bg-white rounded-xl rounded-tl-none p-3 text-xs text-slate-800 whitespace-pre-line shadow-xs leading-relaxed">
+                <!-- Live personalized preview -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Class Filter, One-Click Send Queue & Recipients List -->
+        <div class="lg:col-span-7 space-y-5">
+          <!-- Audience Filter & One-Click Send All Queue Card -->
+          <div class="bg-white rounded-2xl p-6 border-2 border-emeraldDeep/30 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4 mb-4">
+              <div>
+                <h3 class="text-base font-extrabold text-emeraldDeep">
+                  2. Select Audience & Send via WhatsApp
+                </h3>
+                <p class="text-xs text-slate-500">
+                  Choose "All Classes" for general notices, or select a specific class for class-wise notices.
+                </p>
+              </div>
+
+              <!-- Class Audience Selector -->
+              <div class="shrink-0">
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Target Class</label>
+                <select id="waClassFilter" onchange="onWhatsAppClassFilterChange()"
+                  class="px-3.5 py-2 rounded-xl border-2 border-emeraldDeep text-xs sm:text-sm font-bold text-emeraldDeep bg-emeraldLight/40 outline-none">
+                  <option value="ALL">All Classes (എല്ലാ ക്ലാസുകളും)</option>
+                  <option value="Pre-Primary">Pre-Primary (Busthan)</option>
+                  <option value="Class 1">Class 1</option>
+                  <option value="Class 2">Class 2</option>
+                  <option value="Class 3">Class 3</option>
+                  <option value="Class 4">Class 4</option>
+                  <option value="Class 5">Class 5</option>
+                  <option value="Class 6">Class 6</option>
+                  <option value="Class 7">Class 7</option>
+                  <option value="Class 8">Class 8</option>
+                  <option value="Class 9">Class 9</option>
+                  <option value="Class 10">Class 10</option>
+                  <option value="Class 11">Class 11 (+1)</option>
+                  <option value="Class 12">Class 12 (+2)</option>
+                  <option value="Hifz">Hifz Division</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- One-Click Send Queue Controls & Progress Bar -->
+            <div class="bg-creamBg rounded-2xl p-4 border border-slate-200 mb-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div>
+                  <span class="text-xs font-extrabold text-slate-800">
+                    One-Click Sequential Send Queue (<span id="waQueueProgressText">0 / 0 Sent</span>)
+                  </span>
+                  <p class="text-[11px] text-slate-500">
+                    Browsers allow opening one WhatsApp chat per click. Use the button below to step through every parent cleanly without missing anyone!
+                  </p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <button type="button" onclick="resetWhatsAppSentStatus()" class="px-3 py-2 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-700">
+                    Reset Status
+                  </button>
+                  <button type="button" id="waSendNextBtn" onclick="sendNextInWhatsAppQueue()"
+                    class="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1ebe5d] text-white font-extrabold text-xs sm:text-sm shadow-md transition flex items-center gap-1.5">
+                    <span>Send Next / Start All</span>
+                    <span>&rarr;</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                <div id="waQueueProgressBar" class="h-full bg-[#25D366] transition-all duration-300" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <!-- Recipients List Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr class="bg-emeraldDeep text-white">
+                    <th class="p-3 rounded-tl-xl">Sl</th>
+                    <th class="p-3">Student & Class</th>
+                    <th class="p-3">Parent & WhatsApp</th>
+                    <th class="p-3 text-center">Status</th>
+                    <th class="p-3 rounded-tr-xl text-right">Individual Action</th>
+                  </tr>
+                </thead>
+                <tbody id="waRecipientsTableBody" class="divide-y divide-slate-100">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Custom Reset Confirmation Modal -->
+  <div id="resetModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+      <h3 class="text-lg font-extrabold text-slate-900 mb-2">Reset All Madrasa Data?</h3>
+      <p class="text-xs text-slate-600 leading-relaxed mb-5">
+        This will permanently clear all saved Madrasa profile details, registered students, signatures, custom rules, and exam marks from this browser.
+      </p>
+      <div class="flex justify-end gap-2">
+        <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Cancel</button>
+        <button onclick="confirmResetAllData()" class="px-4 py-2 rounded-xl text-xs font-bold bg-red-600 hover:bg-red-700 text-white">Yes, Reset Everything</button>
       </div>
     </div>
   </div>
 
-  <!-- Printable Payslip Area -->
-  <div class="container">
-    <div id="printablePayslip" class="payslip-box" style="display:none;">
-      <div style="text-align:center; border-bottom: 2px solid #1e3c72; padding-bottom: 10px; margin-bottom: 15px;">
-        <h2 style="margin:0; color:#1e3c72;">SMART REGISTER SYSTEM</h2>
-        <p style="margin:3px 0 0; font-size:13px; color:#555;">Staff & Attendance Management System</p>
-        <h3 style="margin:10px 0 0; color:#333; text-decoration: underline;">SALARY PAYSLIP</h3>
-      </div>
-      
-      <div style="display:flex; justify-content: space-between; margin-bottom:15px; font-size:14px;">
-        <div>
-          <p><strong>Teacher Name:</strong> <span id="psName">-</span></p>
-          <p><strong>Admission No:</strong> <span id="psAdmNo">-</span></p>
-        </div>
-        <div>
-          <p><strong>Payment Month:</strong> <span id="psMonth">-</span></p>
-          <p><strong>Printed Date:</strong> <span id="psDate">-</span></p>
-        </div>
-      </div>
-
-      <table>
-        <thead>
-          <tr><th>Description</th><th>Amount (₹)</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Basic Salary</td><td id="psBasic">₹ 0</td></tr>
-          <tr><td>Allowances</td><td id="psAllowance">₹ 0</td></tr>
-          <tr><td>Deductions</td><td id="psDeduction">₹ 0</td></tr>
-          <tr style="font-weight:bold; background-color:#eef2f7;"><td>Net Paid Amount</td><td id="psAmount">₹ 0</td></tr>
-          <tr><td>Status</td><td style="color:green; font-weight:bold;">PAID</td></tr>
-        </tbody>
-      </table>
-
-      <div style="margin-top: 40px; display: flex; justify-content: space-between; font-size: 13px;">
-        <div><p>____________________<br>Staff Signature</p></div>
-        <div><p>____________________<br>Authorized Signature</p></div>
-      </div>
-
-      <button onclick="window.print()" class="btn-submit no-print" style="background:#28a745; margin-top:15px;">Print Payslip</button>
-    </div>
-  </div>
-
+  <!-- ======================================================================= -->
+  <!-- APPLICATION LOGIC (LOCALSTORAGE PERSISTENCE, CANVAS SIGNATURES, MARKS)  -->
+  <!-- ======================================================================= -->
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwR4GZN3Dj1F-JBK8Mo30k_1x_PiGUpVPbAmM4EJUx8BuwQRntqIHMCM0Ui1CytWVaRPw/exec";
-    let teachersData = [];
-    let salaryMasterData = [];
-
-    window.onload = function() {
-      document.getElementById('attDate').valueAsDate = new Date();
-      loadTeachers();
-      loadSalaryMaster();
-      loadPayments();
-      loadAttendanceHistory();
+    // Storage Keys
+    const STORAGE_KEYS = {
+      PROFILE: 'smart_madrasa_profile_v1',
+      STUDENTS: 'smart_madrasa_students_v1',
+      RULES: 'smart_madrasa_rules_v1',
+      ITEMS: 'smart_madrasa_eval_items_v1',
+      MARKS: 'smart_madrasa_marks_v1'
     };
 
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active-tab'));
-      document.getElementById(tabId).classList.add('active');
-      document.getElementById('tab-btn-' + tabId).classList.add('active-tab');
+    // Global State
+    let appState = {
+      profile: null,
+      students: [],
+      rules: [],
+      evalItems: [],
+      marks: {} // { [studentId]: { terms: { term1: { [itemId]: { score, grade } } }, monthly: { [month]: { [itemId]: { score, grade } } } } }
+    };
+
+    let activePage = 'page1';
+    let activeTermTab = 'term1';
+    let activeAssessmentMode = 'term';
+    let waSentStudentIds = new Set(); // Tracks sent status in current WhatsApp campaign session
+    // Canvas Signature Pad Controllers
+    const sigPads = {
+      father: { canvas: null, ctx: null, drawing: false, hasDrawn: false },
+      child: { canvas: null, ctx: null, drawing: false, hasDrawn: false }
+    };
+
+    // Initialize Application on Window Load
+    window.addEventListener('DOMContentLoaded', () => {
+      initSignaturePads();
+      loadStateFromStorage();
+      if (!appState.profile && appState.students.length === 0) {
+        loadDemoData(false);
+      }
+      refreshAllUI();
+    });
+
+    // Resize signature canvases cleanly on window resize
+    window.addEventListener('resize', () => {
+      resizeCanvasPreserve('father');
+      resizeCanvasPreserve('child');
+    });
+
+    // -------------------------------------------------------------------------
+    // 1. NAVIGATION & TOAST FEEDBACK
+    // -------------------------------------------------------------------------
+    function navigateTo(pageId) {
+      activePage = pageId;
+      document.querySelectorAll('.page-section').forEach(sec => {
+        sec.classList.remove('active', 'print-active');
+      });
+      const target = document.getElementById(pageId);
+      if (target) {
+        target.classList.add('active', 'print-active');
+      }
+
+      // Update Nav Buttons
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-goldAccent', 'text-emeraldDark', 'shadow');
+        btn.classList.add('text-white/90', 'hover:bg-white/10');
+      });
+      const activeBtn = document.getElementById('nav-' + pageId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-white/90', 'hover:bg-white/10');
+        activeBtn.classList.add('bg-goldAccent', 'text-emeraldDark', 'shadow');
+      }
+
+      if (pageId === 'page3') {
+        setTimeout(() => {
+          resizeCanvasPreserve('father');
+          resizeCanvasPreserve('child');
+        }, 50);
+      }
+      if (pageId === 'page5') {
+        populateMarksStudentDropdown();
+      }
+      if (pageId === 'page6') {
+        initWhatsAppCenter();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function showAlert(msg, isSuccess = true) {
-      const alertBox = document.getElementById('statusAlert');
-      alertBox.style.display = 'block';
-      alertBox.className = 'status-msg ' + (isSuccess ? 'status-success' : 'status-loading');
-      alertBox.innerText = msg;
-      setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      const bgClass = type === 'error' ? 'bg-red-700 text-white' : 'bg-emeraldDeep text-white border border-goldAccent';
+      toast.className = `${bgClass} px-4 py-3 rounded-xl shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all duration-300 transform translate-x-0`;
+      toast.innerHTML = `<span>${type === 'error' ? '⚠️' : '✅'}</span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
     }
 
-    function format12HourTime(timeStr) {
-      if(!timeStr) return "";
-      let parts = timeStr.split(":");
-      if(parts.length < 2) return timeStr;
-      let hours = parseInt(parts[0]);
-      let minutes = parts[1];
-      let ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-      return hours + ":" + minutes + " " + ampm;
+    // -------------------------------------------------------------------------
+    // 2. DATA PERSISTENCE & DEMO DATA
+    // -------------------------------------------------------------------------
+    function loadStateFromStorage() {
+      try {
+        const p = localStorage.getItem(STORAGE_KEYS.PROFILE);
+        const s = localStorage.getItem(STORAGE_KEYS.STUDENTS);
+        const r = localStorage.getItem(STORAGE_KEYS.RULES);
+        const i = localStorage.getItem(STORAGE_KEYS.ITEMS);
+        const m = localStorage.getItem(STORAGE_KEYS.MARKS);
+
+        if (p) appState.profile = JSON.parse(p);
+        if (s) appState.students = JSON.parse(s);
+        if (r) appState.rules = JSON.parse(r);
+        if (i) appState.evalItems = JSON.parse(i);
+        if (m) appState.marks = JSON.parse(m);
+      } catch (e) {
+        console.error('Error reading localStorage:', e);
+      }
     }
 
-    function calculateDuration(tIn, tOut) {
-      if(!tIn || !tOut) return "-";
-      let start = new Date("01/01/2000 " + tIn);
-      let end = new Date("01/01/2000 " + tOut);
-      let diff = (end - start) / 1000 / 60;
-      if (diff < 0) diff += 24 * 60;
-      let hrs = Math.floor(diff / 60);
-      let mins = diff % 60;
-      return `${hrs} hrs ${mins} mins`;
+    function saveStateToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(appState.profile));
+        localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(appState.students));
+        localStorage.setItem(STORAGE_KEYS.RULES, JSON.stringify(appState.rules));
+        localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify(appState.evalItems));
+        localStorage.setItem(STORAGE_KEYS.MARKS, JSON.stringify(appState.marks));
+        updateDashboardStats();
+      } catch (e) {
+        console.error('Error saving to localStorage:', e);
+      }
     }
 
-    function loadTeachers() {
-      fetch(SCRIPT_URL + "?action=getTeachers")
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data) && data.length > 1) {
-            teachersData = data.slice(1);
-            populateTeacherDropdowns();
-            renderTeacherTable();
-          }
-        });
+    function generateTextSignatureDataURL(text) {
+      const c = document.createElement('canvas');
+      c.width = 260;
+      c.height = 80;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.font = 'italic 26px "Amiri", Georgia, serif';
+      ctx.fillStyle = '#0f5132';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text || 'Signed', c.width / 2, c.height / 2);
+      ctx.strokeStyle = '#d4af37';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(45, 58);
+      ctx.quadraticCurveTo(130, 66, 215, 54);
+      ctx.stroke();
+      return c.toDataURL('image/png');
     }
 
-    function populateTeacherDropdowns() {
-      const selects = [
-        document.getElementById('attTeacherSelect'),
-        document.getElementById('salTeacherSelect'),
-        document.getElementById('payTeacherSelect'),
-        document.getElementById('reportTeacherSelect')
+    function loadDemoData(notify = true) {
+      appState.profile = {
+        name: 'Hidayathul Islam Madrassa',
+        regNo: 'REG-KL-4829',
+        place: 'Kondotty, Malappuram, Kerala',
+        mobile: '+91 98470 54321',
+        email: 'info@hidayathulmadrasa.org',
+        academicYear: '2026 - 2027 (1447 - 1448 AH)'
+      };
+
+      appState.students = [
+        {
+          id: 'stu_101',
+          slNo: 1,
+          admNo: 'ADM-2026-01',
+          name: 'Muhammed Rayyan K',
+          studentClass: 'Class 5',
+          aadhaar: '4589 2310 7845',
+          parentName: 'Abdul Kareem K',
+          mobile: '9847112233',
+          whatsapp: '9847112233',
+          fatherSign: generateTextSignatureDataURL('Abdul Kareem K'),
+          childSign: generateTextSignatureDataURL('M. Rayyan')
+        },
+        {
+          id: 'stu_102',
+          slNo: 2,
+          admNo: 'ADM-2026-02',
+          name: 'Fathima Hanna P',
+          studentClass: 'Class 5',
+          aadhaar: '7812 9043 1129',
+          parentName: 'Noushad Ali P',
+          mobile: '9946556677',
+          whatsapp: '9946556677',
+          fatherSign: generateTextSignatureDataURL('Noushad Ali P'),
+          childSign: generateTextSignatureDataURL('Fathima Hanna')
+        },
+        {
+          id: 'stu_103',
+          slNo: 3,
+          admNo: 'ADM-2026-03',
+          name: 'Ahmed Zayan T',
+          studentClass: 'Class 7',
+          aadhaar: '6390 4412 8830',
+          parentName: 'Shamsudheen T',
+          mobile: '9447889900',
+          whatsapp: '9447889900',
+          fatherSign: generateTextSignatureDataURL('Shamsudheen T'),
+          childSign: generateTextSignatureDataURL('Ahmed Zayan')
+        }
       ];
-      selects.forEach(select => {
-        if(!select) return;
-        select.innerHTML = '<option value="">Select...</option>';
-        teachersData.forEach(row => {
-          select.innerHTML += `<option value="${row[0]}" data-name="${row[1]}" data-basic="${row[7] || row[2] || 0}">${row[0]} - ${row[1]}</option>`;
-        });
-      });
-    }
 
-    // Google Sheet Columns: 0: AdmNo, 1: Name, 2: Aadhaar, 3: Phone, 4: Address, 5: Designation, 6: JoiningDate, 7: BasicSalary
-    function renderTeacherTable() {
-      const tbody = document.querySelector('#teacherTable tbody');
-      tbody.innerHTML = '';
-      teachersData.forEach(row => {
-        let admNo = row[0] || '';
-        let name = row[1] || '';
-        let designation = row[5] || 'Teacher';
-        let basic = row[7] || row[2] || '0'; 
-        let phone = row[3] || '';
+      appState.rules = [
+        {
+          id: 'rule_1',
+          category: 'General & Attendance',
+          title: 'Punctuality & Morning Assembly (കൃത്യനിഷ്ഠ)',
+          desc: 'All students must arrive at the Madrasa 10 minutes before the morning bell for Dua and Assembly. Minimum 85% attendance is mandatory for Term examinations.'
+        },
+        {
+          id: 'rule_2',
+          category: 'Student Discipline & Dress Code',
+          title: 'Islamic Dress Code & Cleanliness (വൃത്തിയും വസ്ത്രധാരണവും)',
+          desc: 'Students must wear clean, modest prescribed uniform with cap/scarf, trimmed nails, and maintain personal hygiene inside the campus.'
+        },
+        {
+          id: 'rule_3',
+          category: 'Student Discipline & Dress Code',
+          title: 'Five Daily Prayers & Akhlaq (നിസ്കാരവും സ്വഭാവരൂപീകരണവും)',
+          desc: 'Students are encouraged to perform the five daily prayers regularly at home and Masjid. Respect towards Ustadhs, parents, and elders is strictly observed.'
+        },
+        {
+          id: 'rule_4',
+          category: 'Parents Guidelines',
+          title: 'Parent-Ustadh Monthly Review (രക്ഷിതാക്കളുടെ ശ്രദ്ധയ്ക്ക്)',
+          desc: 'Parents must sign the monthly progress diary and attend Parent-Teacher meetings to review Quran recitation and academic growth.'
+        },
+        {
+          id: 'rule_5',
+          category: 'Examination Rules',
+          title: '4-Term & Monthly Assessments (പരീക്ഷാ നിയമങ്ങൾ)',
+          desc: 'Students must appear for all 4 Term exams and Monthly tests. Marks are evaluated across both written subjects and practical Islamic skills.'
+        }
+      ];
 
-        tbody.innerHTML += `<tr>
-          <td>${admNo}</td>
-          <td>${name}</td>
-          <td>${designation}</td>
-          <td>₹ ${basic}</td>
-          <td>${phone}</td>
-        </tr>`;
-      });
-    }
+      appState.evalItems = [
+        { id: 'item_quran', name: 'Quran & Tajweed', type: 'Subject', maxMarks: 50 },
+        { id: 'item_fiqh', name: 'Fiqh (Islamic Jurisprudence)', type: 'Subject', maxMarks: 50 },
+        { id: 'item_aqeedah', name: 'Aqeedah & Tareekh', type: 'Subject', maxMarks: 50 },
+        { id: 'item_arabic', name: 'Arabic Language', type: 'Subject', maxMarks: 50 },
+        { id: 'item_akhlaq', name: 'Akhlaq & Discipline', type: 'Skill', maxMarks: 25 },
+        { id: 'item_namaz', name: 'Namaz & Dua Practical', type: 'Skill', maxMarks: 25 },
+        { id: 'item_speech', name: 'Islamic Speech / Elocution', type: 'Skill', maxMarks: 25 }
+      ];
 
-    function handleTeacherSubmit(e) {
-      e.preventDefault();
-      showAlert("Saving Teacher...", false);
-      const payload = {
-        action: "saveTeacher",
-        admNo: document.getElementById('admNo').value,
-        name: document.getElementById('tName').value,
-        basicSalary: document.getElementById('tBasicSalary').value,
-        aadhaar: document.getElementById('aadhaar').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        designation: document.getElementById('designation').value,
-        joiningDate: document.getElementById('joiningDate').value
-      };
-      fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
-        .then(() => { showAlert("Teacher Saved Successfully!"); document.getElementById('teacherForm').reset(); loadTeachers(); loadSalaryMaster(); });
-    }
-
-    function handleAttendanceSubmit(e) {
-      e.preventDefault();
-      showAlert("Marking Attendance...", false);
-      const sel = document.getElementById('attTeacherSelect');
-      const timeInVal = document.getElementById('timeIn').value;
-      const timeOutVal = document.getElementById('timeOut').value;
-      
-      const payload = {
-        action: "markAttendance",
-        date: document.getElementById('attDate').value,
-        admNo: sel.value,
-        name: sel.options[sel.selectedIndex].getAttribute('data-name'),
-        timeIn: format12HourTime(timeInVal),
-        timeOut: format12HourTime(timeOutVal),
-        duration: calculateDuration(timeInVal, timeOutVal),
-        status: document.getElementById('attStatus').value
-      };
-      fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
-        .then(() => { showAlert("Attendance Marked!"); loadAttendanceHistory(); });
-    }
-
-    function loadAttendanceHistory() {
-      fetch(SCRIPT_URL + "?action=getAttendance")
-        .then(res => res.json())
-        .then(data => {
-          const tbody = document.querySelector('#attendanceTable tbody');
-          tbody.innerHTML = '';
-          if (Array.isArray(data) && data.length > 1) {
-            // Google Sheet-ലെ തനതായ റോ സൂചിക സൂക്ഷിച്ചുവെക്കുന്നു
-            let rows = data.slice(1).map((row, index) => ({ rowData: row, originalIndex: index + 2 }));
-            rows.reverse().forEach(item => {
-              let r = item.rowData;
-              tbody.innerHTML += `<tr>
-                <td>${r[0]}</td>
-                <td>${r[1]}</td>
-                <td>${r[2]}</td>
-                <td>${r[3]}</td>
-                <td>${r[4]}</td>
-                <td>${r[5]}</td>
-                <td>${r[6]}</td>
-                <td><button onclick="deleteSingleAttendance(${item.originalIndex})" class="btn-danger-sm">Delete 🗑️</button></td>
-              </tr>`;
-            });
-          } else {
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No attendance records found.</td></tr>';
+      appState.marks = {
+        stu_101: {
+          terms: {
+            term1: {
+              item_quran: { score: 47, grade: 'A+' },
+              item_fiqh: { score: 44, grade: 'A' },
+              item_aqeedah: { score: 46, grade: 'A+' },
+              item_arabic: { score: 42, grade: 'A' },
+              item_akhlaq: { score: 24, grade: 'A+' },
+              item_namaz: { score: 23, grade: 'A+' },
+              item_speech: { score: 21, grade: 'A' }
+            },
+            term2: {
+              item_quran: { score: 48, grade: 'A+' },
+              item_fiqh: { score: 45, grade: 'A+' },
+              item_aqeedah: { score: 44, grade: 'A' },
+              item_arabic: { score: 43, grade: 'A' },
+              item_akhlaq: { score: 25, grade: 'A+' },
+              item_namaz: { score: 24, grade: 'A+' },
+              item_speech: { score: 22, grade: 'A' }
+            },
+            term3: {},
+            term4: {}
+          },
+          monthly: {
+            'June (Muharram)': {
+              item_quran: { score: 46, grade: 'A+' },
+              item_fiqh: { score: 43, grade: 'A' },
+              item_akhlaq: { score: 24, grade: 'A+' }
+            }
           }
-        });
+        }
+      };
+
+      saveStateToStorage();
+      refreshAllUI();
+      if (notify) showToast('Sample Kerala Madrasa data loaded successfully!');
     }
 
-    function deleteSingleAttendance(rowIndex) {
-      if(confirm("ഈ ഹാജർ എന്റ്രി മാത്രം മായ്ക്കണോ?")) {
-        showAlert("Deleting Entry...", false);
-        fetch(SCRIPT_URL, { 
-          method: "POST", 
-          body: JSON.stringify({ action: "deleteAttendanceRow", rowIndex: rowIndex }) 
-        }).then(() => { 
-          showAlert("Entry Deleted Successfully!"); 
-          loadAttendanceHistory(); 
-        });
-      }
+    function openResetModal() {
+      document.getElementById('resetModal').classList.remove('hidden');
     }
 
-    function calcNetSalary() {
-      const b = parseFloat(document.getElementById('basicSal').value) || 0;
-      const a = parseFloat(document.getElementById('allowanceSal').value) || 0;
-      const d = parseFloat(document.getElementById('deductionSal').value) || 0;
-      document.getElementById('netSal').value = b + a - d;
+    function closeResetModal() {
+      document.getElementById('resetModal').classList.add('hidden');
     }
 
-    function loadSalaryMaster() {
-      fetch(SCRIPT_URL + "?action=getSalaryMaster")
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data) && data.length > 1) {
-            salaryMasterData = data.slice(1);
-          }
-        });
+    function confirmResetAllData() {
+      Object.values(STORAGE_KEYS).forEach(k => localStorage.removeItem(k));
+      appState = {
+        profile: { name: '', regNo: '', place: '', mobile: '', email: '' },
+        students: [],
+        rules: [],
+        evalItems: [
+          { id: 'item_quran', name: 'Quran & Tajweed', type: 'Subject', maxMarks: 50 },
+          { id: 'item_fiqh', name: 'Fiqh', type: 'Subject', maxMarks: 50 },
+          { id: 'item_akhlaq', name: 'Akhlaq & Discipline', type: 'Skill', maxMarks: 25 }
+        ],
+        marks: {}
+      };
+      saveStateToStorage();
+      refreshAllUI();
+      closeResetModal();
+      showToast('All data has been reset.', 'error');
     }
 
-    function autoFillSalaryStructure() {
-      const sel = document.getElementById('salTeacherSelect');
-      const admNo = sel.value;
-      const opt = sel.options[sel.selectedIndex];
-      const match = salaryMasterData.find(r => r[0] == admNo);
-
-      if (match) {
-        document.getElementById('basicSal').value = match[2];
-        document.getElementById('allowanceSal').value = match[3];
-        document.getElementById('deductionSal').value = match[4];
-        document.getElementById('netSal').value = match[5];
-      } else if (opt) {
-        document.getElementById('basicSal').value = opt.getAttribute('data-basic') || 0;
-        document.getElementById('allowanceSal').value = '0';
-        document.getElementById('deductionSal').value = '0';
-        calcNetSalary();
-      }
+    function refreshAllUI() {
+      renderMadrasaProfile();
+      renderStudentTable();
+      setNextSerialNumber();
+      renderRulesList();
+      renderConfiguredItems();
+      populateMarksStudentDropdown();
+      initWhatsAppCenter();
+      updateDashboardStats();
     }
 
-    function autoFillPayAmount() {
-      const sel = document.getElementById('payTeacherSelect');
-      const admNo = sel.value;
-      const match = salaryMasterData.find(r => r[0] == admNo);
-      if (match) {
-        document.getElementById('payAmount').value = match[5];
+    function updateDashboardStats() {
+      const p = appState.profile;
+      document.getElementById('statInstitution').textContent = (p && p.name) ? p.name : 'Not Configured';
+      document.getElementById('statRegNo').textContent = (p && p.regNo) ? `Reg No: ${p.regNo}` : 'Click to setup Madrasa Profile';
+      document.getElementById('statStudents').textContent = appState.students.length;
+
+      const uniqueClasses = new Set(appState.students.map(s => s.studentClass));
+      document.getElementById('statClasses').textContent = uniqueClasses.size;
+      document.getElementById('statSkills').textContent = appState.evalItems.length;
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. PAGE 2: MADRASA PROFILE LOGIC
+    // -------------------------------------------------------------------------
+    function renderMadrasaProfile() {
+      const p = appState.profile || {};
+      document.getElementById('instName').value = p.name || '';
+      document.getElementById('instRegNo').value = p.regNo || '';
+      document.getElementById('instPlace').value = p.place || '';
+      document.getElementById('instMobile').value = p.mobile || '';
+      document.getElementById('instEmail').value = p.email || '';
+      document.getElementById('instAcademicYear').value = p.academicYear || '';
+
+      const displayName = p.name || 'Smart Madrasa Register';
+      const displayPlace = p.place || 'Islamic Educational Management Portal';
+      const displayReg = p.regNo || 'Pending Registration';
+      const displayYear = p.academicYear || '2026 - 2027';
+
+      // Header & Welcome Hero updates
+      document.getElementById('headerMadrasaName').textContent = displayName;
+      document.getElementById('headerMadrasaSub').textContent = p.regNo ? `Reg: ${p.regNo} • ${displayPlace}` : displayPlace;
+
+      document.getElementById('welcomeHeroTitle').textContent = p.name ? p.name : 'Smart Madrasa Management System';
+      const heroPlaceEl = document.getElementById('welcomeHeroPlace');
+      if (p.place || p.regNo) {
+        heroPlaceEl.textContent = `${p.place || ''}${p.regNo ? '  |  Angeegara No: ' + p.regNo : ''}`;
+        heroPlaceEl.classList.remove('hidden');
       } else {
-        const opt = sel.options[sel.selectedIndex];
-        document.getElementById('payAmount').value = opt ? opt.getAttribute('data-basic') : '';
+        heroPlaceEl.classList.add('hidden');
+      }
+
+      // Page 2 Certificate Preview Card
+      document.getElementById('previewInstName').textContent = p.name || 'Institution Name Not Set';
+      document.getElementById('previewInstPlace').textContent = p.place || 'Location Not Set';
+      document.getElementById('previewInstRegNo').textContent = displayReg;
+      document.getElementById('previewInstMobile').textContent = p.mobile || '-';
+      document.getElementById('previewInstEmail').textContent = p.email || '-';
+      document.getElementById('previewInstYear').textContent = displayYear;
+
+      // Page 4 & 5 Print Headers
+      document.getElementById('rulesHeaderMadrasaName').textContent = displayName;
+      document.getElementById('rulesHeaderSub').textContent = `${displayPlace} • Reg No: ${displayReg} — Madrasa Rules & Regulations`;
+      document.getElementById('rcMadrasaName').textContent = displayName;
+      document.getElementById('rcMadrasaDetails').textContent = `Angeegara No: ${displayReg} • ${displayPlace} • Year: ${displayYear}`;
+    }
+
+    function saveMadrasaProfile(e) {
+      e.preventDefault();
+      appState.profile = {
+        name: document.getElementById('instName').value.trim(),
+        regNo: document.getElementById('instRegNo').value.trim(),
+        place: document.getElementById('instPlace').value.trim(),
+        mobile: document.getElementById('instMobile').value.trim(),
+        email: document.getElementById('instEmail').value.trim(),
+        academicYear: document.getElementById('instAcademicYear').value.trim()
+      };
+      saveStateToStorage();
+      renderMadrasaProfile();
+      updateWhatsAppPreview();
+      showToast('Madrasa Profile saved and updated across all pages!');
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. PAGE 4: MADRASA RULES & REGULATIONS (ADD, EDIT, REORDER, DELETE)
+    // -------------------------------------------------------------------------
+    function renderRulesList() {
+      const container = document.getElementById('rulesListContainer');
+      if (appState.rules.length === 0) {
+        container.innerHTML = `<p class="text-center text-sm text-slate-500 py-8">No rules added yet. Use the form to add Madrasa rules and regulations.</p>`;
+        return;
+      }
+
+      container.innerHTML = appState.rules.map((r, index) => `
+        <div class="p-4 rounded-xl bg-creamBg border border-slate-200/90 flex items-start justify-between gap-3">
+          <div class="flex items-start gap-3">
+            <div class="w-7 h-7 rounded-lg bg-emeraldDeep text-goldAccent font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
+              ${index + 1}
+            </div>
+            <div>
+              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emeraldLight text-emeraldDeep mb-1">
+                ${escapeHTML(r.category)}
+              </span>
+              <h4 class="font-bold text-slate-900 text-sm">${escapeHTML(r.title)}</h4>
+              <p class="text-xs text-slate-600 mt-1 leading-relaxed">${escapeHTML(r.desc)}</p>
+            </div>
+          </div>
+          <div class="no-print flex items-center gap-1 shrink-0">
+            <button onclick="moveRule(${index}, -1)" ${index === 0 ? 'disabled' : ''} title="Move Up" class="px-1.5 py-1 rounded text-xs font-bold text-slate-600 hover:bg-slate-200 disabled:opacity-30">↑</button>
+            <button onclick="moveRule(${index}, 1)" ${index === appState.rules.length - 1 ? 'disabled' : ''} title="Move Down" class="px-1.5 py-1 rounded text-xs font-bold text-slate-600 hover:bg-slate-200 disabled:opacity-30">↓</button>
+            <button onclick="editMadrasaRule('${r.id}')" title="Edit Rule" class="px-2 py-1 rounded text-xs font-bold text-amber-800 hover:bg-amber-100">Edit</button>
+            <button onclick="deleteRule('${r.id}')" title="Remove Rule" class="px-2 py-1 rounded text-xs font-bold text-red-600 hover:bg-red-100">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function saveMadrasaRule(e) {
+      e.preventDefault();
+      const editId = document.getElementById('editRuleId').value;
+      const category = document.getElementById('ruleCategory').value;
+      const title = document.getElementById('ruleTitle').value.trim();
+      const desc = document.getElementById('ruleDesc').value.trim();
+
+      if (editId) {
+        const idx = appState.rules.findIndex(r => r.id === editId);
+        if (idx !== -1) {
+          appState.rules[idx] = { id: editId, category, title, desc };
+        }
+        showToast('Rule updated!');
+      } else {
+        appState.rules.push({
+          id: 'rule_' + Date.now(),
+          category,
+          title,
+          desc
+        });
+        showToast('Rule added to Madrasa Charter!');
+      }
+
+      saveStateToStorage();
+      renderRulesList();
+      resetRuleForm();
+    }
+
+    function editMadrasaRule(id) {
+      const rule = appState.rules.find(r => r.id === id);
+      if (!rule) return;
+      document.getElementById('editRuleId').value = rule.id;
+      document.getElementById('ruleCategory').value = rule.category;
+      document.getElementById('ruleTitle').value = rule.title;
+      document.getElementById('ruleDesc').value = rule.desc;
+      document.getElementById('ruleFormHeading').textContent = 'Edit Madrasa Rule';
+      document.getElementById('saveRuleBtn').textContent = 'Update Rule';
+      document.getElementById('cancelRuleEditBtn').classList.remove('hidden');
+    }
+
+    function resetRuleForm() {
+      document.getElementById('editRuleId').value = '';
+      document.getElementById('ruleTitle').value = '';
+      document.getElementById('ruleDesc').value = '';
+      document.getElementById('ruleFormHeading').textContent = 'Add New Rule / Guideline';
+      document.getElementById('saveRuleBtn').textContent = '+ Add Rule to Charter';
+      document.getElementById('cancelRuleEditBtn').classList.add('hidden');
+    }
+
+    function moveRule(index, direction) {
+      const newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= appState.rules.length) return;
+      const temp = appState.rules[index];
+      appState.rules[index] = appState.rules[newIndex];
+      appState.rules[newIndex] = temp;
+      saveStateToStorage();
+      renderRulesList();
+    }
+
+    function deleteRule(id) {
+      appState.rules = appState.rules.filter(r => r.id !== id);
+      saveStateToStorage();
+      renderRulesList();
+      showToast('Rule removed.', 'error');
+    }
+
+    function printRulesNotice() {
+      window.print();
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. PAGE 5: CUSTOM SUBJECTS/SKILLS, 4-TERM MARKS, MONTHLY EXAMS & REPORT CARD
+    // -------------------------------------------------------------------------
+    function toggleSkillManager() {
+      const panel = document.getElementById('skillManagerPanel');
+      panel.classList.toggle('hidden');
+    }
+
+    function renderConfiguredItems() {
+      const container = document.getElementById('configuredItemsList');
+      if (appState.evalItems.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 col-span-full">No subjects or skills configured yet.</p>`;
+        return;
+      }
+
+      container.innerHTML = appState.evalItems.map(item => `
+        <div class="flex items-center justify-between p-3 rounded-xl border ${item.type === 'Skill' ? 'bg-goldLight/40 border-goldAccent/50' : 'bg-emeraldLight/40 border-emeraldDeep/20'}">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded ${item.type === 'Skill' ? 'bg-goldAccent text-emeraldDark' : 'bg-emeraldDeep text-white'}">
+              ${item.type}
+            </span>
+            <p class="text-xs font-bold text-slate-900 mt-1">${escapeHTML(item.name)}</p>
+            <p class="text-[11px] text-slate-500">Max Marks: <strong>${item.maxMarks}</strong></p>
+          </div>
+          <button onclick="removeEvaluationItem('${item.id}')" class="px-2 py-1 rounded-lg text-xs font-bold text-red-600 hover:bg-red-100" title="Remove">
+            ✕
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function addEvaluationItem(e) {
+      e.preventDefault();
+      const name = document.getElementById('newItemName').value.trim();
+      const type = document.getElementById('newItemType').value;
+      const maxMarks = parseInt(document.getElementById('newItemMax').value, 10) || 50;
+
+      appState.evalItems.push({
+        id: 'item_' + Date.now(),
+        name,
+        type,
+        maxMarks
+      });
+
+      saveStateToStorage();
+      renderConfiguredItems();
+      loadStudentMarksForm();
+      document.getElementById('newItemName').value = '';
+      showToast(`Added "${name}" (${type}) to Madrasa evaluation list!`);
+    }
+
+    function removeEvaluationItem(id) {
+      appState.evalItems = appState.evalItems.filter(i => i.id !== id);
+      saveStateToStorage();
+      renderConfiguredItems();
+      loadStudentMarksForm();
+      showToast('Subject/Skill removed.', 'error');
+    }
+
+    function populateMarksStudentDropdown() {
+      const classFilter = document.getElementById('marksClassFilter').value;
+      const select = document.getElementById('marksStudentSelect');
+      const currentVal = select.value;
+
+      const filtered = appState.students.filter(s => classFilter === 'ALL' || s.studentClass === classFilter);
+
+      if (filtered.length === 0) {
+        select.innerHTML = `<option value="">-- No Students in Selected Class --</option>`;
+        loadStudentMarksForm();
+        return;
+      }
+
+      select.innerHTML = filtered.map(s => `
+        <option value="${s.id}">${s.slNo}. ${escapeHTML(s.name)} (${escapeHTML(s.admNo)} - ${escapeHTML(s.studentClass)})</option>
+      `).join('');
+
+      if (filtered.some(s => s.id === currentVal)) {
+        select.value = currentVal;
+      }
+      loadStudentMarksForm();
+    }
+
+    function switchAssessmentMode(mode) {
+      activeAssessmentMode = mode;
+      const termBtn = document.getElementById('modeTermBtn');
+      const monthBtn = document.getElementById('modeMonthlyBtn');
+      const termView = document.getElementById('termAssessmentView');
+      const monthView = document.getElementById('monthlyAssessmentView');
+
+      if (mode === 'term') {
+        termBtn.className = 'py-1.5 px-2 rounded-lg text-xs font-bold bg-emeraldDeep text-white shadow-sm transition';
+        monthBtn.className = 'py-1.5 px-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+        termView.classList.remove('hidden');
+        monthView.classList.add('hidden');
+      } else {
+        monthBtn.className = 'py-1.5 px-2 rounded-lg text-xs font-bold bg-emeraldDeep text-white shadow-sm transition';
+        termBtn.className = 'py-1.5 px-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+        monthView.classList.remove('hidden');
+        termView.classList.add('hidden');
+      }
+      loadStudentMarksForm();
+    }
+
+    function selectTermTab(termKey) {
+      activeTermTab = termKey;
+      document.querySelectorAll('.term-pill').forEach(btn => {
+        btn.className = 'term-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
+      });
+      const activeBtn = document.getElementById('tab-' + termKey);
+      if (activeBtn) {
+        activeBtn.className = 'term-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emeraldDeep text-white';
+      }
+      loadStudentMarksForm();
+    }
+
+    function calculateGradeFromPercentage(pct) {
+      if (pct >= 90) return 'A+';
+      if (pct >= 80) return 'A';
+      if (pct >= 70) return 'B+';
+      if (pct >= 60) return 'B';
+      if (pct >= 50) return 'C+';
+      if (pct >= 40) return 'C';
+      return 'D';
+    }
+
+    function ensureStudentMarksRecord(studentId) {
+      if (!appState.marks[studentId]) {
+        appState.marks[studentId] = {
+          terms: { term1: {}, term2: {}, term3: {}, term4: {} },
+          monthly: {}
+        };
+      }
+      if (!appState.marks[studentId].terms) {
+        appState.marks[studentId].terms = { term1: {}, term2: {}, term3: {}, term4: {} };
+      }
+      if (!appState.marks[studentId].monthly) {
+        appState.marks[studentId].monthly = {};
       }
     }
 
-    function handleSalarySubmit(e) {
+    function loadStudentMarksForm() {
+      const studentId = document.getElementById('marksStudentSelect').value;
+      const termContainer = document.getElementById('termMarksEntryContainer');
+      const monthlyContainer = document.getElementById('monthlyMarksEntryContainer');
+
+      if (!studentId) {
+        const emptyMsg = `<p class="text-sm text-slate-500 py-6 text-center">Please register or select a student first.</p>`;
+        termContainer.innerHTML = emptyMsg;
+        monthlyContainer.innerHTML = emptyMsg;
+        renderConsolidatedReportCard(null);
+        return;
+      }
+
+      ensureStudentMarksRecord(studentId);
+
+      // Render Term Entry Table
+      const termData = appState.marks[studentId].terms[activeTermTab] || {};
+      termContainer.innerHTML = buildMarksEntryTableHTML(studentId, 'term', activeTermTab, termData);
+
+      // Render Monthly Entry Table
+      const selectedMonth = document.getElementById('monthlyExamMonthSelect').value;
+      const monthData = appState.marks[studentId].monthly[selectedMonth] || {};
+      monthlyContainer.innerHTML = buildMarksEntryTableHTML(studentId, 'monthly', selectedMonth, monthData);
+
+      // Render Consolidated Printable Report Card
+      renderConsolidatedReportCard(studentId);
+    }
+
+    function buildMarksEntryTableHTML(studentId, scope, bucketKey, existingBucketData) {
+      if (appState.evalItems.length === 0) {
+        return `<p class="text-xs text-slate-500 py-4">Add subjects or skills in the panel above to begin entering marks.</p>`;
+      }
+
+      const grades = ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D'];
+
+      const rowsHTML = appState.evalItems.map(item => {
+        const record = existingBucketData[item.id] || { score: '', grade: '' };
+        const gradeOptions = grades.map(g => `<option value="${g}" ${record.grade === g ? 'selected' : ''}>${g}</option>`).join('');
+
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="p-3 font-bold text-slate-800">${escapeHTML(item.name)}</td>
+            <td class="p-3 text-center">
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold ${item.type === 'Skill' ? 'bg-goldLight text-emeraldDark' : 'bg-emeraldLight text-emeraldDeep'}">
+                ${item.type}
+              </span>
+            </td>
+            <td class="p-3 text-center font-semibold text-slate-600">${item.maxMarks}</td>
+            <td class="p-3 text-center">
+              <input type="number" min="0" max="${item.maxMarks}" step="0.5"
+                value="${record.score !== undefined ? record.score : ''}"
+                data-item-id="${item.id}" data-max="${item.maxMarks}"
+                oninput="handleScoreInputChange(this)"
+                placeholder="0 - ${item.maxMarks}"
+                class="mark-score-input w-24 px-2.5 py-1.5 rounded-lg border border-slate-300 text-center font-bold text-sm focus:border-emeraldDeep outline-none" />
+            </td>
+            <td class="p-3 text-center">
+              <select data-grade-for="${item.id}"
+                class="mark-grade-select px-2.5 py-1.5 rounded-lg border border-slate-300 font-bold text-xs bg-white focus:border-emeraldDeep outline-none">
+                <option value="">Auto</option>
+                ${gradeOptions}
+              </select>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      const labelTitle = scope === 'term'
+        ? activeTermTab.replace('term', 'Term ')
+        : bucketKey;
+
+      return `
+        <form onsubmit="saveMarksBucket(event, '${studentId}', '${scope}', '${bucketKey}')">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+              <thead>
+                <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
+                  <th class="p-3">Subject / Custom Madrasa Skill</th>
+                  <th class="p-3 text-center">Category</th>
+                  <th class="p-3 text-center">Max Marks</th>
+                  <th class="p-3 text-center">Marks Obtained</th>
+                  <th class="p-3 text-center">Grade</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                ${rowsHTML}
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+            <p class="text-xs text-slate-500">Tip: Entering marks automatically selects the Grade, or you can manually override any Grade.</p>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-xs sm:text-sm shadow transition">
+              Save ${labelTitle} Marks & Grades
+            </button>
+          </div>
+        </form>
+      `;
+    }
+
+    function handleScoreInputChange(inputEl) {
+      const itemId = inputEl.getAttribute('data-item-id');
+      const max = parseFloat(inputEl.getAttribute('data-max')) || 50;
+      const val = parseFloat(inputEl.value);
+      const container = inputEl.closest('form');
+      const gradeSelect = container.querySelector(`select[data-grade-for="${itemId}"]`);
+
+      if (!isNaN(val) && gradeSelect) {
+        const pct = (val / max) * 100;
+        gradeSelect.value = calculateGradeFromPercentage(pct);
+      }
+    }
+
+    function saveMarksBucket(e, studentId, scope, bucketKey) {
       e.preventDefault();
-      showAlert("Saving Salary...", false);
-      const sel = document.getElementById('salTeacherSelect');
-      const payload = {
-        action: "saveSalary",
-        admNo: sel.value,
-        name: sel.options[sel.selectedIndex].getAttribute('data-name'),
-        basic: document.getElementById('basicSal').value,
-        allowance: document.getElementById('allowanceSal').value,
-        deduction: document.getElementById('deductionSal').value,
-        netSalary: document.getElementById('netSal').value
-      };
-      fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
-        .then(() => { showAlert("Salary Structure Saved!"); loadSalaryMaster(); });
+      ensureStudentMarksRecord(studentId);
+      const form = e.target;
+      const scoreInputs = form.querySelectorAll('.mark-score-input');
+      const bucketObj = {};
+
+      scoreInputs.forEach(inp => {
+        const itemId = inp.getAttribute('data-item-id');
+        const max = parseFloat(inp.getAttribute('data-max')) || 50;
+        const rawVal = inp.value.trim();
+        const gradeSel = form.querySelector(`select[data-grade-for="${itemId}"]`);
+
+        if (rawVal !== '') {
+          const numScore = parseFloat(rawVal);
+          const autoGrade = calculateGradeFromPercentage((numScore / max) * 100);
+          bucketObj[itemId] = {
+            score: numScore,
+            grade: (gradeSel && gradeSel.value) ? gradeSel.value : autoGrade
+          };
+        }
+      });
+
+      if (scope === 'term') {
+        appState.marks[studentId].terms[bucketKey] = bucketObj;
+      } else {
+        appState.marks[studentId].monthly[bucketKey] = bucketObj;
+      }
+
+      saveStateToStorage();
+      renderConsolidatedReportCard(studentId);
+      showToast(`Saved ${scope === 'term' ? bucketKey.replace('term', 'Term ') : bucketKey} marks & grades!`);
     }
 
-    function handlePaymentSubmit(e) {
-      e.preventDefault();
-      showAlert("Saving Payment...", false);
-      const sel = document.getElementById('payTeacherSelect');
-      const payload = {
-        action: "savePayment",
-        admNo: sel.value,
-        name: sel.options[sel.selectedIndex].getAttribute('data-name'),
-        month: document.getElementById('payMonth').value,
-        amount: document.getElementById('payAmount').value,
-        payMode: document.getElementById('payMode').value,
-        status: "Paid"
-      };
-      fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
-        .then(() => { showAlert("Payment Saved!"); loadPayments(); });
+    function renderConsolidatedReportCard(studentId) {
+      const stu = appState.students.find(s => s.id === studentId);
+      const infoEl = document.getElementById('rcStudentInfo');
+      const matrixBody = document.getElementById('rcMatrixBody');
+      const monthlyEl = document.getElementById('rcMonthlySummary');
+
+      if (!stu) {
+        infoEl.innerHTML = `<p class="col-span-full text-slate-500">Select a student to view Progress Report Card.</p>`;
+        matrixBody.innerHTML = '';
+        monthlyEl.innerHTML = '';
+        return;
+      }
+
+      infoEl.innerHTML = `
+        <div><span class="text-slate-500 block">Student Name</span><strong class="text-slate-900 text-sm">${escapeHTML(stu.name)}</strong></div>
+        <div><span class="text-slate-500 block">Admission No & Sl</span><strong class="text-emeraldDeep text-sm">${escapeHTML(stu.admNo)} (Sl #${stu.slNo})</strong></div>
+        <div><span class="text-slate-500 block">Class</span><strong class="text-slate-900 text-sm">${escapeHTML(stu.studentClass)}</strong></div>
+        <div><span class="text-slate-500 block">Parent / Father</span><strong class="text-slate-900 text-sm">${escapeHTML(stu.parentName)}</strong></div>
+      `;
+
+      // Signatures on Report Card
+      document.getElementById('rcChildSignBox').innerHTML = stu.childSign
+        ? `<img src="${stu.childSign}" alt="Child Sign" class="h-11 object-contain" />` : '';
+      document.getElementById('rcFatherSignBox').innerHTML = stu.fatherSign
+        ? `<img src="${stu.fatherSign}" alt="Father Sign" class="h-11 object-contain" />` : '';
+
+      ensureStudentMarksRecord(studentId);
+      const tData = appState.marks[studentId].terms;
+
+      let totalMaxPossible = 0;
+      let totalObtainedAllTerms = 0;
+
+      matrixBody.innerHTML = appState.evalItems.map(item => {
+        const t1 = tData.term1?.[item.id];
+        const t2 = tData.term2?.[item.id];
+        const t3 = tData.term3?.[item.id];
+        const t4 = tData.term4?.[item.id];
+
+        const entries = [t1, t2, t3, t4].filter(x => x && x.score !== undefined && x.score !== '');
+        const rowSum = entries.reduce((acc, cur) => acc + Number(cur.score), 0);
+        const rowMax = entries.length * Number(item.maxMarks);
+
+        totalObtainedAllTerms += rowSum;
+        totalMaxPossible += rowMax;
+
+        const rowGrade = rowMax > 0 ? calculateGradeFromPercentage((rowSum / rowMax) * 100) : '-';
+
+        const fmtCell = (entry) => entry && entry.score !== ''
+          ? `<span class="font-bold text-slate-900">${entry.score}</span> <span class="text-[10px] font-bold text-emeraldDeep">(${entry.grade})</span>`
+          : `<span class="text-slate-300">-</span>`;
+
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="p-2.5 border border-slate-200 font-bold text-slate-800">${escapeHTML(item.name)}</td>
+            <td class="p-2.5 border border-slate-200 text-center text-[11px] font-semibold text-slate-600">${item.type}</td>
+            <td class="p-2.5 border border-slate-200 text-center text-slate-600">${item.maxMarks}</td>
+            <td class="p-2.5 border border-slate-200 text-center">${fmtCell(t1)}</td>
+            <td class="p-2.5 border border-slate-200 text-center">${fmtCell(t2)}</td>
+            <td class="p-2.5 border border-slate-200 text-center">${fmtCell(t3)}</td>
+            <td class="p-2.5 border border-slate-200 text-center">${fmtCell(t4)}</td>
+            <td class="p-2.5 border border-slate-200 text-center font-extrabold text-slate-900">${entries.length > 0 ? `${rowSum} / ${rowMax}` : '-'}</td>
+            <td class="p-2.5 border border-slate-200 text-center font-extrabold text-emeraldDeep">${rowGrade}</td>
+          </tr>
+        `;
+      }).join('');
+
+      // Overall Summary Row
+      const overallPct = totalMaxPossible > 0 ? ((totalObtainedAllTerms / totalMaxPossible) * 100).toFixed(1) : '0.0';
+      const overallGrade = totalMaxPossible > 0 ? calculateGradeFromPercentage(parseFloat(overallPct)) : '-';
+
+      matrixBody.innerHTML += `
+        <tr class="bg-emeraldLight/70 font-extrabold text-emeraldDark">
+          <td colspan="7" class="p-2.5 border border-slate-200 text-right uppercase tracking-wide">
+            Cumulative 4-Term Total & Overall Percentage (${overallPct}%):
+          </td>
+          <td class="p-2.5 border border-slate-200 text-center">${totalObtainedAllTerms} / ${totalMaxPossible}</td>
+          <td class="p-2.5 border border-slate-200 text-center text-sm">${overallGrade}</td>
+        </tr>
+      `;
+
+      // Monthly Exams Summary Cards
+      const mData = appState.marks[studentId].monthly || {};
+      const recordedMonths = Object.keys(mData).filter(m => Object.keys(mData[m] || {}).length > 0);
+
+      if (recordedMonths.length === 0) {
+        monthlyEl.innerHTML = `<p class="col-span-full text-slate-400 italic">No monthly exam marks recorded yet.</p>`;
+      } else {
+        monthlyEl.innerHTML = recordedMonths.map(monthName => {
+          const itemsMap = mData[monthName];
+          let mObt = 0;
+          let mMax = 0;
+          appState.evalItems.forEach(it => {
+            if (itemsMap[it.id] && itemsMap[it.id].score !== '') {
+              mObt += Number(itemsMap[it.id].score);
+              mMax += Number(it.maxMarks);
+            }
+          });
+          const mGrade = mMax > 0 ? calculateGradeFromPercentage((mObt / mMax) * 100) : '-';
+          return `
+            <div class="p-2.5 rounded-xl bg-creamBg border border-slate-200">
+              <div class="font-bold text-slate-800 truncate">${escapeHTML(monthName)}</div>
+              <div class="text-emeraldDeep font-extrabold mt-0.5">${mObt} / ${mMax} <span class="text-xs">(${mGrade})</span></div>
+            </div>
+          `;
+        }).join('');
+      }
     }
 
-    function loadPayments() {
-      fetch(SCRIPT_URL + "?action=getPayments")
-        .then(res => res.json())
-        .then(data => {
-          const tbody = document.querySelector('#paymentsTable tbody');
-          tbody.innerHTML = '';
-          if (Array.isArray(data) && data.length > 1) {
-            data.slice(1).reverse().forEach(row => {
-              tbody.innerHTML += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td>₹ ${row[4]}</td><td>${row[5]}</td><td><span style="color:green;font-weight:bold;">${row[6]}</span></td></tr>`;
-            });
-          } else {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No payment history found.</td></tr>';
-          }
-        });
+    function printReportCard() {
+      window.print();
     }
 
-    function generatePayslip() {
-      const sel = document.getElementById('reportTeacherSelect');
-      const month = document.getElementById('reportMonth').value;
-      if(!sel.value || !month) { alert("Please select Teacher and Month"); return; }
+    // -------------------------------------------------------------------------
+    // 7. PAGE 6: WHATSAPP ANNOUNCEMENT & NOTIFICATION CENTER
+    // -------------------------------------------------------------------------
+    const WHATSAPP_TEMPLATES = {
+      meeting: `Assalamu Alaikum,\n\n*{{MADRASA_NAME}}* അറിയിപ്പ്:\n\nപ്രിയ രക്ഷിതാവേ, *{{CLASS}}*-ൽ പഠിക്കുന്ന *{{STUDENT_NAME}}*-ന്റെ രക്ഷിതാക്കളുടെ പ്രത്യേക യോഗം (Parent Meeting) നാളെ രാവിലെ 10:00 മണിക്ക് മദ്രസയിൽ വെച്ച് ചേരുന്നതാണ്. എല്ലാ രക്ഷിതാക്കളും കൃത്യസമയത്ത് പങ്കെടുക്കണമെന്ന് അഭ്യർത്ഥിക്കുന്നു.\n\n- സദർ മുഅല്ലിം & കമ്മിറ്റി`,
+      program: `Assalamu Alaikum,\n\n*{{MADRASA_NAME}}* പരിപാടി അറിയിപ്പ്:\n\nപ്രിയ രക്ഷിതാവേ, നമ്മുടെ മദ്രസയിൽ വെച്ച് നടക്കുന്ന പ്രത്യേക പരിപാടിയിൽ *{{CLASS}}* വിദ്യാർത്ഥി *{{STUDENT_NAME}}*-ന്റെ സാന്നിധ്യം ഉറപ്പുവരുത്തണമെന്ന് അറിയിക്കുന്നു.\n\n- മദ്രസ മാനേജ്മെന്റ്`,
+      holiday: `Assalamu Alaikum,\n\n*{{MADRASA_NAME}}* അവധി അറിയിപ്പ്:\n\nപ്രിയ രക്ഷിതാവേ, *{{CLASS}}* വിദ്യാർത്ഥി *{{STUDENT_NAME}}*-നെ അറിയിക്കുന്നത്, നാളെ മദ്രസയ്ക്ക് അവധിയായിരിക്കുന്നതാണ്.\n\n- സദർ മുഅല്ലിം`,
+      exam: `Assalamu Alaikum,\n\n*{{MADRASA_NAME}}* പരീക്ഷാ അറിയിപ്പ്:\n\nപ്രിയ രക്ഷിതാവേ, *{{CLASS}}*-ൽ പഠിക്കുന്ന *{{STUDENT_NAME}}*-ന്റെ അടുത്ത ടേം പരീക്ഷ അടുത്ത ആഴ്ച ആരംഭിക്കുന്നതാണ്. വീട്ടിൽ കൃത്യമായി പഠിക്കാൻ ശ്രദ്ധിക്കുക.\n\n- പരീക്ഷാ ബോർഡ്`,
+      custom: `Assalamu Alaikum,\n\n*{{MADRASA_NAME}}* അറിയിപ്പ്:\n\nപ്രിയ രക്ഷിതാവേ (*{{STUDENT_NAME}}* - *{{CLASS}}*),\n\n[നിങ്ങളുടെ സന്ദേശം ഇവിടെ ടൈപ്പ് ചെയ്യുക]\n\n- സദർ മുഅല്ലിം`
+    };
 
-      const admNo = sel.value;
-      const tName = sel.options[sel.selectedIndex].getAttribute('data-name');
-      const salMatch = salaryMasterData.find(r => r[0] == admNo);
+    function initWhatsAppCenter() {
+      const msgBox = document.getElementById('waMessageInput');
+      if (msgBox && !msgBox.value.trim()) {
+        applyWhatsAppTemplate('meeting', false);
+      } else {
+        updateWhatsAppPreview();
+      }
+      renderWhatsAppRecipientsTable();
+    }
 
-      document.getElementById('psName').innerText = tName;
-      document.getElementById('psAdmNo').innerText = admNo;
-      document.getElementById('psMonth').innerText = month;
-      document.getElementById('psDate').innerText = new Date().toLocaleDateString();
+    function applyWhatsAppTemplate(typeKey, notify = true) {
+      const raw = WHATSAPP_TEMPLATES[typeKey] || WHATSAPP_TEMPLATES.custom;
+      const formatted = raw
+        .replace(/\{\{MADRASA_NAME\}\}/g, '{madrasa_name}')
+        .replace(/\{\{STUDENT_NAME\}\}/g, '{student_name}')
+        .replace(/\{\{CLASS\}\}/g, '{class}');
+      document.getElementById('waMessageInput').value = formatted;
+      updateWhatsAppPreview();
+      if (notify) showToast('Template loaded! You can edit the date/details freely.');
+    }
 
-      fetch(SCRIPT_URL + "?action=getPayments")
-        .then(res => res.json())
-        .then(data => {
-          let paidAmount = "0";
-          if (Array.isArray(data) && data.length > 1) {
-            const match = data.find(r => r[1] == admNo && r[3] === month);
-            if(match) paidAmount = match[4];
-          }
+    function insertPlaceholder(tag) {
+      const textarea = document.getElementById('waMessageInput');
+      const start = textarea.selectionStart || textarea.value.length;
+      const end = textarea.selectionEnd || textarea.value.length;
+      const text = textarea.value;
+      textarea.value = text.substring(0, start) + tag + text.substring(end);
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + tag.length;
+      updateWhatsAppPreview();
+    }
 
-          document.getElementById('psBasic').innerText = "₹ " + (salMatch ? salMatch[2] : 0);
-          document.getElementById('psAllowance').innerText = "₹ " + (salMatch ? salMatch[3] : 0);
-          document.getElementById('psDeduction').innerText = "₹ " + (salMatch ? salMatch[4] : 0);
-          document.getElementById('psAmount').innerText = "₹ " + paidAmount;
+    function personalizeWhatsAppMessage(templateText, student) {
+      const madrasaName = (appState.profile && appState.profile.name) ? appState.profile.name : 'Smart Madrasa';
+      const stuName = student ? student.name : 'Muhammed Rayyan';
+      const stuClass = student ? student.studentClass : 'Class 5';
 
-          document.getElementById('printablePayslip').style.display = 'block';
-        });
+      return templateText
+        .replace(/\{madrasa_name\}/gi, madrasaName)
+        .replace(/\{student_name\}/gi, stuName)
+        .replace(/\{class\}/gi, stuClass);
+    }
+
+    function updateWhatsAppPreview() {
+      const rawTemplate = document.getElementById('waMessageInput').value || '';
+      const filtered = getFilteredWhatsAppRecipients();
+      const sampleStudent = filtered[0] || appState.students[0] || null;
+      const previewText = personalizeWhatsAppMessage(rawTemplate, sampleStudent);
+      document.getElementById('waLivePreviewBox').textContent = previewText || 'Type a message above to preview...';
+    }
+
+    function getFilteredWhatsAppRecipients() {
+      const selectedClass = document.getElementById('waClassFilter').value;
+      return appState.students.filter(s => selectedClass === 'ALL' || s.studentClass === selectedClass);
+    }
+
+    function onWhatsAppClassFilterChange() {
+      updateWhatsAppPreview();
+      renderWhatsAppRecipientsTable();
+    }
+
+    function formatPhoneForWhatsApp(rawNumber) {
+      let digits = String(rawNumber || '').replace(/\D/g, '');
+      if (digits.length === 10) {
+        digits = '91' + digits; // Default India country code if 10 digits provided
+      }
+      return digits;
+    }
+
+    function sendWhatsAppToStudent(studentId) {
+      const stu = appState.students.find(s => s.id === studentId);
+      if (!stu) return;
+
+      const rawTemplate = document.getElementById('waMessageInput').value.trim();
+      if (!rawTemplate) {
+        showToast('Please enter a message before sending!', 'error');
+        return;
+      }
+
+      const phone = formatPhoneForWhatsApp(stu.whatsapp || stu.mobile);
+      if (!phone) {
+        showToast(`No valid WhatsApp number found for ${stu.name}`, 'error');
+        return;
+      }
+
+      const finalMsg = personalizeWhatsAppMessage(rawTemplate, stu);
+      const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(finalMsg)}`;
+
+      waSentStudentIds.add(stu.id);
+      renderWhatsAppRecipientsTable();
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+    }
+
+    function sendNextInWhatsAppQueue() {
+      const recipients = getFilteredWhatsAppRecipients();
+      if (recipients.length === 0) {
+        showToast('No students found in the selected class.', 'error');
+        return;
+      }
+
+      const nextPending = recipients.find(s => !waSentStudentIds.has(s.id));
+      if (!nextPending) {
+        showToast('All recipients in this list have already been sent the notice! Click "Reset Status" to send again.');
+        return;
+      }
+
+      sendWhatsAppToStudent(nextPending.id);
+    }
+
+    function resetWhatsAppSentStatus() {
+      waSentStudentIds.clear();
+      renderWhatsAppRecipientsTable();
+      showToast('Send status reset for all recipients.');
+    }
+
+    function renderWhatsAppRecipientsTable() {
+      const tbody = document.getElementById('waRecipientsTableBody');
+      const recipients = getFilteredWhatsAppRecipients();
+
+      // Update Queue Progress Bar & Button
+      const total = recipients.length;
+      const sentCount = recipients.filter(s => waSentStudentIds.has(s.id)).length;
+      const pct = total > 0 ? Math.round((sentCount / total) * 100) : 0;
+
+      document.getElementById('waQueueProgressText').textContent = `${sentCount} / ${total} Sent`;
+      document.getElementById('waQueueProgressBar').style.width = `${pct}%`;
+
+      const nextBtn = document.getElementById('waSendNextBtn');
+      if (total === 0) {
+        nextBtn.innerHTML = `<span>No Recipients</span>`;
+      } else if (sentCount === total) {
+        nextBtn.innerHTML = `<span>All ${total} Sent ✓</span>`;
+      } else if (sentCount === 0) {
+        nextBtn.innerHTML = `<span>Start Sending (${total}) &rarr;</span>`;
+      } else {
+        const nextStu = recipients.find(s => !waSentStudentIds.has(s.id));
+        nextBtn.innerHTML = `<span>Send Next: ${escapeHTML(nextStu ? nextStu.name.split(' ')[0] : '')} &rarr;</span>`;
+      }
+
+      if (recipients.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500">No students registered in this class yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = recipients.map(s => {
+        const isSent = waSentStudentIds.has(s.id);
+        return `
+          <tr class="${isSent ? 'bg-emeraldLight/35' : 'hover:bg-slate-50'} transition">
+            <td class="p-3 font-bold text-slate-700">${s.slNo}</td>
+            <td class="p-3">
+              <div class="font-bold text-slate-900">${escapeHTML(s.name)}</div>
+              <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-emeraldLight text-emeraldDeep">
+                ${escapeHTML(s.studentClass)}
+              </span>
+            </td>
+            <td class="p-3 text-xs">
+              <div class="font-semibold text-slate-800">${escapeHTML(s.parentName)}</div>
+              <div class="text-emeraldDeep font-mono font-bold">💬 ${escapeHTML(s.whatsapp || s.mobile)}</div>
+            </td>
+            <td class="p-3 text-center">
+              ${isSent
+                ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800">Sent ✓</span>`
+                : `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-500">Pending</span>`
+              }
+            </td>
+            <td class="p-3 text-right whitespace-nowrap">
+              <button type="button" onclick="sendWhatsAppToStudent('${s.id}')"
+                class="px-3.5 py-1.5 rounded-xl ${isSent ? 'bg-emeraldDeep text-white' : 'bg-[#25D366] hover:bg-[#1ebe5d] text-white'} font-bold text-xs shadow-xs transition">
+                ${isSent ? 'Send Again' : 'Send WhatsApp'}
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Security helper for safe text rendering
+    function escapeHTML(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
   </script>
 </body>
