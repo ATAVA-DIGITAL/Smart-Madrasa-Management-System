@@ -810,7 +810,10 @@
         </div>
 
         <div class="card">
-          <div class="card-title">New Student Registration (<span id="formYearTag">2026-2027</span>)</div>
+          <div class="card-title">
+            <span id="studentFormTitle">New Student Registration (<span id="formYearTag">2026-2027</span>)</span>
+            <span id="editingStudentBadge" class="badge badge-blue" style="display:none;">Editing Mode</span>
+          </div>
           <form id="studentForm" onsubmit="saveStudent(event)">
             <div class="form-grid">
               <div class="form-group">
@@ -912,8 +915,8 @@
             </div>
 
             <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
-              <button type="submit" class="btn btn-primary">Save Student & Signatures</button>
-              <button type="button" class="btn btn-outline" onclick="resetStudentForm()">Reset Form</button>
+              <button type="submit" class="btn btn-primary" id="saveStudentBtn">Save Student & Signatures</button>
+              <button type="button" class="btn btn-outline" onclick="resetStudentForm()">Cancel / Reset Form</button>
             </div>
           </form>
         </div>
@@ -1190,6 +1193,38 @@
     </div>
   </div>
 
+  <!-- EDIT SUBJECT / SKILL MODAL -->
+  <div id="editEvalModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width:440px;">
+      <div class="card-title">
+        <span>✏️ Edit Subject / Skill</span>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeEditEvalModal()">✕ Close</button>
+      </div>
+      <form onsubmit="saveEditedEvalItem(event)" style="display:flex; flex-direction:column; gap:12px;">
+        <input type="hidden" id="editEvalId">
+        <div class="form-group">
+          <label>Subject / Skill Name *</label>
+          <input type="text" id="editEvalName" required>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="editEvalType">
+            <option value="Subject">Subject</option>
+            <option value="Skill">Madrasa Skill</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Max Mark</label>
+          <input type="number" id="editEvalMax" min="1" required>
+        </div>
+        <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:6px;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeEditEvalModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- GOOGLE SHEET SYNC MODAL -->
   <div id="syncModal" class="modal-backdrop">
     <div class="modal-box">
@@ -1253,13 +1288,14 @@ function doGet(e) {
 
     let pageHistory = ['page1'];
     let waSentMap = {};
+    let editingStudentId = null;
     let tempPhotoData = '';
     let tempProofData = '';
     let tempProofName = '';
 
     function loadState() {
       try {
-        const saved = localStorage.getItem('smart_madrasa_v8');
+        const saved = localStorage.getItem('smart_madrasa_v9');
         if (saved) {
           const parsed = JSON.parse(saved);
           state = Object.assign({}, state, parsed);
@@ -1270,7 +1306,7 @@ function doGet(e) {
 
     function saveState() {
       try {
-        localStorage.setItem('smart_madrasa_v8', JSON.stringify(state));
+        localStorage.setItem('smart_madrasa_v9', JSON.stringify(state));
       } catch (e) {
         alert('Storage limit reached! Please use smaller photo/document sizes.');
       }
@@ -1554,6 +1590,17 @@ function doGet(e) {
       canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     }
 
+    function drawDataUrlOnCanvas(canvasId, dataUrl) {
+      initCanvas(canvasId);
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (!dataUrl) return;
+      const img = new Image();
+      img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      img.src = dataUrl;
+    }
+
     function autoSign(who) {
       const canvasId = who === 'father' ? 'fatherCanvas' : 'childCanvas';
       initCanvas(canvasId);
@@ -1576,14 +1623,54 @@ function doGet(e) {
       }
     }
 
+    function editStudent(id) {
+      const st = state.students.find(s => s.id === id);
+      if (!st) return;
+
+      editingStudentId = st.id;
+      document.getElementById('editingStudentBadge').style.display = 'inline-block';
+      document.getElementById('saveStudentBtn').textContent = 'Update Student Record';
+
+      document.getElementById('stSlNo').value = st.slNo;
+      document.getElementById('stAdmNo').value = st.admNo;
+      document.getElementById('stName').value = st.name;
+      document.getElementById('stClass').value = st.studentClass;
+      document.getElementById('stAadhaar').value = st.aadhaar;
+      document.getElementById('stParent').value = st.parentName;
+      document.getElementById('stMobile').value = st.mobile;
+      document.getElementById('stWhatsapp').value = st.whatsapp;
+      document.getElementById('sameWaCheck').checked = (st.whatsapp === st.mobile);
+      document.getElementById('stFatherGoogle').value = st.fatherGoogle || '';
+      document.getElementById('rulesAgreeCheck').checked = !!st.rulesAgreed;
+
+      tempPhotoData = st.photo || '';
+      if (tempPhotoData) {
+        document.getElementById('stPhotoPreview').innerHTML = `<img src="${tempPhotoData}" style="width:100%; height:100%; object-fit:cover;">`;
+      } else {
+        document.getElementById('stPhotoPreview').innerHTML = 'Photo';
+      }
+
+      tempProofData = st.proofData || '';
+      tempProofName = st.proofName || '';
+      document.getElementById('stProofStatus').textContent = tempProofData
+        ? ('✓ Attached: ' + (tempProofName || 'ID Proof'))
+        : 'No file selected';
+
+      setTimeout(() => {
+        drawDataUrlOnCanvas('fatherCanvas', st.fatherSign);
+        drawDataUrlOnCanvas('childCanvas', st.childSign);
+      }, 60);
+
+      document.getElementById('studentForm').scrollIntoView({ behavior: 'smooth' });
+      showToast(`Editing ${st.name}`);
+    }
+
     function saveStudent(e) {
       e.preventDefault();
       initCanvas('fatherCanvas');
       initCanvas('childCanvas');
 
-      const student = {
-        id: 'st_' + Date.now(),
-        year: state.activeYear,
+      const recordData = {
         slNo: document.getElementById('stSlNo').value.trim(),
         admNo: document.getElementById('stAdmNo').value.trim(),
         name: document.getElementById('stName').value.trim(),
@@ -1601,13 +1688,29 @@ function doGet(e) {
         childSign: document.getElementById('childCanvas').toDataURL('image/png')
       };
 
-      state.students.push(student);
-      saveState();
-      resetStudentForm();
-      showToast(`${student.name} registered successfully!`);
+      if (editingStudentId) {
+        state.students = state.students.map(s =>
+          s.id === editingStudentId ? Object.assign({}, s, recordData) : s
+        );
+        saveState();
+        resetStudentForm();
+        showToast(`${recordData.name} updated successfully!`);
+      } else {
+        const student = Object.assign({
+          id: 'st_' + Date.now(),
+          year: state.activeYear
+        }, recordData);
+        state.students.push(student);
+        saveState();
+        resetStudentForm();
+        showToast(`${student.name} registered successfully!`);
+      }
     }
 
     function resetStudentForm() {
+      editingStudentId = null;
+      document.getElementById('editingStudentBadge').style.display = 'none';
+      document.getElementById('saveStudentBtn').textContent = 'Save Student & Signatures';
       document.getElementById('studentForm').reset();
       document.getElementById('sameWaCheck').checked = true;
       tempPhotoData = '';
@@ -1621,6 +1724,7 @@ function doGet(e) {
 
     function deleteStudent(id) {
       if (!confirm('Are you sure you want to delete this student record?')) return;
+      if (editingStudentId === id) resetStudentForm();
       state.students = state.students.filter(s => s.id !== id);
       saveState();
       showToast('Student record deleted.');
@@ -1684,12 +1788,17 @@ function doGet(e) {
           </td>
           <td><img src="${s.fatherSign}" class="sig-thumb" alt="Father Sign"></td>
           <td><img src="${s.childSign}" class="sig-thumb" alt="Child Sign"></td>
-          <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}')">Delete</button></td>
+          <td>
+            <div style="display:flex; gap:5px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="editStudent('${s.id}')">✏️ Edit</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}')">Delete</button>
+            </div>
+          </td>
         </tr>
       `).join('');
     }
 
-    // Page 4: Rules
+    // Page 4: Rules (with Edit support)
     function addRule(e) {
       e.preventDefault();
       const inp = document.getElementById('newRuleText');
@@ -1698,6 +1807,17 @@ function doGet(e) {
       inp.value = '';
       saveState();
       showToast('New rule added!');
+    }
+
+    function editRule(idx) {
+      const current = state.rules[idx];
+      const updated = prompt('Edit rule:', current);
+      if (updated === null) return;
+      const clean = updated.trim();
+      if (!clean) return;
+      state.rules[idx] = clean;
+      saveState();
+      showToast('Rule updated!');
     }
 
     function deleteRule(idx) {
@@ -1717,7 +1837,10 @@ function doGet(e) {
             <span class="rule-num">${i + 1}</span>
             <span style="font-size:14.5px; padding-top:2px;">${r}</span>
           </div>
-          <button type="button" class="btn btn-danger btn-sm no-print" onclick="deleteRule(${i})">Remove</button>
+          <div style="display:flex; gap:6px; flex-shrink:0;" class="no-print">
+            <button type="button" class="btn btn-outline btn-sm" onclick="editRule(${i})">✏️ Edit</button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="deleteRule(${i})">Remove</button>
+          </div>
         </div>
       `).join('');
     }
@@ -1728,7 +1851,7 @@ function doGet(e) {
       setTimeout(() => document.body.classList.remove('print-rules-mode'), 500);
     }
 
-    // Page 5: Marks & Progress Card
+    // Page 5: Marks & Progress Card (with Edit Subject/Skill support)
     function toggleMonthField() {
       const term = document.getElementById('markTermSelect').value;
       document.getElementById('monthSelectGroup').style.display = (term === 'Monthly Exam') ? 'flex' : 'none';
@@ -1757,6 +1880,37 @@ function doGet(e) {
       showToast(`${name} added!`);
     }
 
+    function openEditEvalModal(id) {
+      const item = state.evalItems.find(it => it.id === id);
+      if (!item) return;
+      document.getElementById('editEvalId').value = item.id;
+      document.getElementById('editEvalName').value = item.name;
+      document.getElementById('editEvalType').value = item.type;
+      document.getElementById('editEvalMax').value = item.max;
+      document.getElementById('editEvalModal').classList.add('open');
+    }
+
+    function closeEditEvalModal() {
+      document.getElementById('editEvalModal').classList.remove('open');
+    }
+
+    function saveEditedEvalItem(e) {
+      e.preventDefault();
+      const id = document.getElementById('editEvalId').value;
+      const name = document.getElementById('editEvalName').value.trim();
+      const type = document.getElementById('editEvalType').value;
+      const max = parseInt(document.getElementById('editEvalMax').value, 10) || 50;
+      if (!name) return;
+
+      state.evalItems = state.evalItems.map(it =>
+        it.id === id ? Object.assign({}, it, { name, type, max }) : it
+      );
+      closeEditEvalModal();
+      saveState();
+      loadStudentMarksForm();
+      showToast(`${name} updated!`);
+    }
+
     function removeEvalItem(id) {
       state.evalItems = state.evalItems.filter(it => it.id !== id);
       saveState();
@@ -1766,14 +1920,14 @@ function doGet(e) {
     function renderEvalChips() {
       const box = document.getElementById('evalItemsChips');
       box.innerHTML = state.evalItems.map(it => `
-        <span class="badge ${it.type === 'Skill' ? 'badge-green' : 'badge-blue'}" style="padding:6px 12px; font-size:12.5px;">
-          ${it.name} (${it.type} • Max: ${it.max})
-          <button type="button" onclick="removeEvalItem('${it.id}')" style="background:none; border:none; font-weight:800; margin-left:6px; cursor:pointer; color:inherit;">×</button>
+        <span class="badge ${it.type === 'Skill' ? 'badge-green' : 'badge-blue'}" style="padding:6px 12px; font-size:12.5px; display:inline-flex; align-items:center; gap:6px;">
+          <span>${it.name} (${it.type} • Max: ${it.max})</span>
+          <button type="button" onclick="openEditEvalModal('${it.id}')" title="Edit" style="background:none; border:none; font-weight:800; cursor:pointer; color:inherit; font-size:12px;">✏️</button>
+          <button type="button" onclick="removeEvalItem('${it.id}')" title="Delete" style="background:none; border:none; font-weight:800; cursor:pointer; color:inherit; font-size:14px;">×</button>
         </span>
       `).join('');
     }
 
-    // Student Name shown cleanly in Mark Entry dropdown
     function populateMarkStudentDropdown() {
       const sel = document.getElementById('markStudentSelect');
       const clsFilter = document.getElementById('markClassFilter').value || 'ALL';
@@ -2029,7 +2183,7 @@ function doGet(e) {
       window.print();
     }
 
-    // Page 6: WhatsApp Notices (Venue Address + Send All in List)
+    // Page 6: WhatsApp Notices
     function applyWaTemplate(type) {
       const dt = document.getElementById('waDateTime').value.trim() || '[തീയതിയും സമയവും]';
       const venue = document.getElementById('waVenueAddress').value.trim() || (state.institution.place || '[സ്ഥലം / വിലാസം]');
