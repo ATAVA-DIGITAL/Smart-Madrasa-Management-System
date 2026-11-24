@@ -1117,7 +1117,7 @@
               <input type="text" id="waDateTime" placeholder="e.g., Sunday 10:00 AM" oninput="renderWaRecipients()">
             </div>
             <div class="form-group">
-              <label>Venue / Address (സ്ഥലം / വിലാസം)</label>
+              <label>Venue / Address (sadar muallim )</label>
               <input type="text" id="waVenueAddress" placeholder="e.g., Madrasa Auditorium, Vazhakkad" oninput="renderWaRecipients()">
             </div>
           </div>
@@ -1128,7 +1128,7 @@
 {madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:
 പ്രധാന അറിയിപ്പ് ഇവിടെ രേഖപ്പെടുത്തുക.
 
-സ്ഥലം / വിലാസം: {venue}</textarea>
+sadar muallimം: {venue}</textarea>
           </div>
         </div>
 
@@ -2186,12 +2186,12 @@ function doGet(e) {
     // Page 6: WhatsApp Notices
     function applyWaTemplate(type) {
       const dt = document.getElementById('waDateTime').value.trim() || '[തീയതിയും സമയവും]';
-      const venue = document.getElementById('waVenueAddress').value.trim() || (state.institution.place || '[സ്ഥലം / വിലാസം]');
+      const venue = document.getElementById('waVenueAddress').value.trim() || (state.institution.place || '[sadar muallim]');
       const templates = {
-        meeting: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:\n${dt} മദ്രസയിൽ വെച്ച് രക്ഷാകർതൃ യോഗം (PTA Meeting) ചേരുന്നതാണ്. എല്ലാവരും കൃത്യസമയത്ത് പങ്കെടുക്കണമെന്ന് അറിയിക്കുന്നു.\n\nസ്ഥലം / വിലാസം: ${venue}`,
-        program: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിൽ വെച്ച് ${dt} നടക്കുന്ന പ്രത്യേക മദ്രസ പ്രോഗ്രാമിലേക്ക് {class} വിദ്യാർത്ഥി {student}-നെയും രക്ഷിതാക്കളെയും സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു.\n\nസ്ഥലം / വിലാസം: ${venue}`,
-        holiday: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:\n${dt} മദ്രസയ്ക്ക് അവധിയായിരിക്കുമെന്ന് അറിയിക്കുന്നു.\n\nസ്ഥലം / വിലാസം: ${venue}`,
-        exam: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} പരീക്ഷകൾ ${dt} ആരംഭിക്കുന്നതാണ്. വിദ്യാർത്ഥി {student}-നെ പരീക്ഷയ്ക്ക് കൃത്യമായി തയ്യാറാക്കി അയക്കണമെന്ന് അറിയിക്കുന്നു.\n\nസ്ഥലം / വിലാസം: ${venue}`
+        meeting: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:\n${dt} മദ്രസയിൽ വെച്ച് രക്ഷാകർതൃ യോഗം (PTA Meeting) ചേരുന്നതാണ്. എല്ലാവരും കൃത്യസമയത്ത് പങ്കെടുക്കണമെന്ന് അറിയിക്കുന്നു.\n\nsadar muallim: ${venue}`,
+        program: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിൽ വെച്ച് ${dt} നടക്കുന്ന പ്രത്യേക മദ്രസ പ്രോഗ്രാമിലേക്ക് {class} വിദ്യാർത്ഥി {student}-നെയും രക്ഷിതാക്കളെയും സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു.\n\nsadar muallim: ${venue}`,
+        holiday: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:\n${dt} മദ്രസയ്ക്ക് അവധിയായിരിക്കുമെന്ന് അറിയിക്കുന്നു.\n\nsadar muallim: ${venue}`,
+        exam: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} പരീക്ഷകൾ ${dt} ആരംഭിക്കുന്നതാണ്. വിദ്യാർത്ഥി {student}-നെ പരീക്ഷയ്ക്ക് കൃത്യമായി തയ്യാറാക്കി അയക്കണമെന്ന് അറിയിക്കുന്നു.\n\nsadar muallim: ${venue}`
       };
       document.getElementById('waMessageText').value = templates[type] || '';
       renderWaRecipients();
@@ -2224,7 +2224,7 @@ function doGet(e) {
       if (msg.includes('{venue}')) {
         msg = msg.replace(/\{venue\}/g, venue);
       } else if (venue) {
-        msg = msg + `\n\nസ്ഥലം / വിലാസം: ${venue}`;
+        msg = msg + `\n\nsadar muallim: ${venue}`;
       }
 
       return msg
