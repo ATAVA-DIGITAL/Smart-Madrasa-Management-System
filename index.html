@@ -1086,7 +1086,7 @@
         <div class="page-head">
           <div>
             <h1>WhatsApp Notification Center</h1>
-            <p>Send general announcements, meetings, or programs to all parents, a specific class, or a single student.</p>
+            <p>Works smoothly on both Mobile & Computer (WhatsApp Web / App / Copy Message).</p>
           </div>
           <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
         </div>
@@ -1126,6 +1126,13 @@
               <select id="waDefaultCc" onchange="renderWaRecipients()">
                 <option value="91">+91 (India)</option>
                 <option value="971">+971 (UAE)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Computer / Browser WhatsApp Mode</label>
+              <select id="waPlatformMode" onchange="renderWaRecipients()">
+                <option value="auto">Auto (wa.me - Best for Mobile & App)</option>
+                <option value="web">WhatsApp Web (web.whatsapp.com - Best for PC)</option>
               </select>
             </div>
           </div>
@@ -1304,7 +1311,7 @@ function doGet(e) {
 
     function loadState() {
       try {
-        const saved = localStorage.getItem('smart_madrasa_v10');
+        const saved = localStorage.getItem('smart_madrasa_v11');
         if (saved) {
           const parsed = JSON.parse(saved);
           state = Object.assign({}, state, parsed);
@@ -1315,7 +1322,7 @@ function doGet(e) {
 
     function saveState() {
       try {
-        localStorage.setItem('smart_madrasa_v10', JSON.stringify(state));
+        localStorage.setItem('smart_madrasa_v11', JSON.stringify(state));
       } catch (e) {
         alert('Storage limit reached! Please use smaller photo/document sizes.');
       }
@@ -2193,7 +2200,7 @@ function doGet(e) {
       window.print();
     }
 
-    // Page 6: WhatsApp Notices (Sadar Muallim + Madrasa Name + Direct WhatsApp Link)
+    // Page 6: WhatsApp Notices (Mobile + PC Web + Copy Fallback)
     function applyWaTemplate(type) {
       const dt = document.getElementById('waDateTime').value.trim() || '[തീയതിയും സമയവും]';
       const sadar = document.getElementById('waSadarMuallim').value.trim() || '[Sadar Muallim Name]';
@@ -2263,7 +2270,28 @@ function doGet(e) {
     function getWaUrlForStudent(st) {
       const phone = formatPhoneForWa(st.whatsapp || st.mobile);
       const text = encodeURIComponent(buildPersonalMessage(st));
-      return `https://api.whatsapp.com/send?phone=${phone}&text=${text}`;
+      const mode = document.getElementById('waPlatformMode') ? document.getElementById('waPlatformMode').value : 'auto';
+      if (mode === 'web') {
+        return `https://web.whatsapp.com/send?phone=${phone}&text=${text}`;
+      }
+      return `https://wa.me/${phone}?text=${text}`;
+    }
+
+    function copyMessageForStudent(stId) {
+      const st = state.students.find(s => s.id === stId);
+      if (!st) return;
+      const msg = buildPersonalMessage(st);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(msg).then(() => showToast('Message copied!'));
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = msg;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('Message copied!');
+      }
     }
 
     function getFilteredWaStudents() {
@@ -2304,9 +2332,14 @@ function doGet(e) {
             <td>${s.whatsapp || s.mobile}</td>
             <td>${sent ? '<span class="badge badge-green">Sent ✓</span>' : '<span style="color:var(--text-muted); font-size:12px;">Pending</span>'}</td>
             <td>
-              <a href="${waLink}" target="_blank" rel="noopener" onclick="markWaSent('${s.id}')" class="btn btn-success btn-sm">
-                📲 Send WhatsApp
-              </a>
+              <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                <a href="${waLink}" target="_blank" rel="noopener" onclick="markWaSent('${s.id}')" class="btn btn-success btn-sm">
+                  📲 Send WhatsApp
+                </a>
+                <button type="button" class="btn btn-outline btn-sm" onclick="copyMessageForStudent('${s.id}')" title="Copy message text">
+                  📋 Copy
+                </button>
+              </div>
             </td>
           </tr>
         `;
