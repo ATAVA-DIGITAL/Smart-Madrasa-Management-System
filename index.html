@@ -34,30 +34,15 @@
       color: var(--text);
       line-height: 1.5;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Animations */
-    @keyframes fadeZoom {
-      from { opacity: 0; transform: scale(0.96); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideRight {
-      from { opacity: 0; transform: translateX(24px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes unfold {
-      from { opacity: 0; transform: perspective(900px) rotateX(-8deg) translateY(12px); }
-      to { opacity: 1; transform: perspective(900px) rotateX(0deg) translateY(0); }
-    }
-    @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.92); }
-      70% { opacity: 1; transform: scale(1.01); }
-      100% { opacity: 1; transform: scale(1); }
-    }
+    @keyframes fadeZoom { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideRight { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes unfold { from { opacity: 0; transform: perspective(900px) rotateX(-8deg) translateY(12px); } to { opacity: 1; transform: perspective(900px) rotateX(0deg) translateY(0); } }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.92); } 70% { opacity: 1; transform: scale(1.01); } 100% { opacity: 1; transform: scale(1); } }
 
     .anim-welcome { animation: fadeZoom 0.6s ease both; }
     .anim-up { animation: slideUp 0.45s ease both; }
@@ -65,24 +50,32 @@
     .anim-unfold { animation: unfold 0.5s ease both; }
     .anim-pop { animation: popIn 0.45s ease both; }
 
-    /* Page 1: Pure Clean White Welcome Screen */
+    /* Page 1: Clean White Welcome Screen */
     #page1 {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       text-align: center;
-      padding: 24px;
+      padding: 32px 20px 24px;
       background: #ffffff;
     }
     #page1.hidden { display: none; }
 
+    .welcome-center {
+      margin: auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 600px;
+    }
+
     .bismillah {
       font-family: 'Amiri', serif;
-      font-size: 32px;
+      font-size: 34px;
       color: var(--primary);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .welcome-badge {
       display: inline-block;
@@ -92,33 +85,32 @@
       color: var(--primary);
       font-size: 13px;
       font-weight: 700;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       border: 1px solid #dbeafe;
     }
+    .welcome-madrasa-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
     .welcome-title {
-      font-size: clamp(28px, 5vw, 44px);
+      font-size: clamp(28px, 5vw, 42px);
       font-weight: 800;
       color: var(--text);
       letter-spacing: -0.02em;
-      margin-bottom: 10px;
-    }
-    .welcome-madrasa-name {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .welcome-sub {
-      max-width: 520px;
       color: var(--text-muted);
       font-size: 15px;
-      margin-bottom: 30px;
+      margin-bottom: 28px;
     }
     .btn-enter {
       background: var(--primary);
       color: #ffffff;
       border: none;
-      padding: 15px 34px;
+      padding: 15px 36px;
       border-radius: 12px;
       font-size: 16px;
       font-weight: 700;
@@ -126,14 +118,42 @@
       box-shadow: 0 10px 24px rgba(29, 78, 216, 0.22);
       transition: 0.2s;
     }
-    .btn-enter:hover {
-      background: var(--primary-hover);
-      transform: translateY(-2px);
+    .btn-enter:hover { background: var(--primary-hover); transform: translateY(-2px); }
+
+    .powered-box {
+      margin-top: 32px;
+      padding: 14px 22px;
+      border-radius: 12px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      max-width: 540px;
+      width: 100%;
+    }
+    .powered-box .p-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.02em;
+    }
+    .powered-box .p-services {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+    .powered-box .p-owner {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 4px;
     }
 
-    /* Inner Portal Header */
-    #portalWrapper { display: none; padding-bottom: 80px; }
-    #portalWrapper.active { display: block; }
+    /* Inner Portal */
+    #portalWrapper {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    #portalWrapper.active { display: flex; }
 
     .topbar {
       position: sticky;
@@ -152,6 +172,28 @@
     .brand-area p { font-size: 12px; color: var(--text-muted); }
 
     .top-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    .year-pill-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-soft);
+      border: 1px solid #bfdbfe;
+      padding: 4px 10px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .year-pill-wrap select {
+      border: none;
+      background: transparent;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 12.5px;
+      cursor: pointer;
+      outline: none;
+    }
 
     .nav-strip {
       background: var(--surface-soft);
@@ -174,13 +216,9 @@
       transition: 0.15s;
     }
     .nav-pill:hover { border-color: var(--primary); color: var(--primary); }
-    .nav-pill.active {
-      background: var(--primary);
-      color: #ffffff;
-      border-color: var(--primary);
-    }
+    .nav-pill.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
 
-    .container { max-width: 1080px; margin: 22px auto; padding: 0 16px; }
+    .container { max-width: 1100px; width: 100%; margin: 22px auto; padding: 0 16px; flex: 1; }
 
     .page-section { display: none; }
     .page-section.active { display: block; }
@@ -240,6 +278,28 @@
       box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
     }
 
+    /* Photo & Proof Preview */
+    .photo-preview-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .student-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1.5px solid var(--border-strong);
+      background: var(--surface-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
     /* Buttons */
     .btn {
       padding: 10px 16px;
@@ -261,7 +321,7 @@
     .btn-danger { background: var(--danger-soft); color: var(--danger); border-color: #fecaca; }
     .btn-sm { padding: 6px 11px; font-size: 12px; border-radius: 8px; }
 
-    /* Boards shown on Page 2 */
+    /* Boards on Page 2 */
     .boards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -282,15 +342,34 @@
       box-shadow: 0 8px 20px rgba(29, 78, 216, 0.08);
       transform: translateY(-2px);
     }
-    .nav-board .tag {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--primary);
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
+    .nav-board .tag { font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 6px; }
     .nav-board h3 { font-size: 16px; font-weight: 800; margin-bottom: 5px; }
     .nav-board p { font-size: 12.5px; color: var(--text-muted); }
+
+    /* Rules Undertaking Box */
+    .undertaking-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .undertaking-box input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .undertaking-box label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #78350f;
+      cursor: pointer;
+    }
 
     /* Signature Pads */
     .sig-grid {
@@ -329,24 +408,13 @@
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
     th, td {
-      padding: 11px 12px;
+      padding: 10px 12px;
       border-bottom: 1px solid var(--border);
       text-align: left;
       vertical-align: middle;
     }
-    th {
-      background: var(--surface-soft);
-      font-weight: 700;
-      color: #334155;
-      white-space: nowrap;
-    }
-    .sig-thumb {
-      max-height: 36px;
-      max-width: 110px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: #fff;
-    }
+    th { background: var(--surface-soft); font-weight: 700; color: #334155; white-space: nowrap; }
+    .sig-thumb { max-height: 36px; max-width: 105px; border: 1px solid var(--border); border-radius: 6px; background: #fff; }
 
     /* Rules List */
     .rule-item {
@@ -374,16 +442,39 @@
       font-size: 13px;
     }
 
-    /* Badges */
-    .badge {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 700;
-    }
+    .badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
     .badge-blue { background: var(--primary-soft); color: var(--primary); }
     .badge-green { background: var(--success-soft); color: var(--success); }
+
+    /* Bottom Portal Summary Footer (Fills empty bottom space nicely) */
+    .portal-footer {
+      background: var(--surface-soft);
+      border-top: 1px solid var(--border);
+      padding: 18px 20px 70px;
+      margin-top: 24px;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .footer-stats {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .f-stat {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+    }
+    .f-stat strong { color: var(--primary); font-size: 14px; }
 
     /* Floating Back Button */
     .floating-back {
@@ -433,7 +524,7 @@
     .modal-box {
       background: #fff;
       border-radius: 16px;
-      max-width: 600px;
+      max-width: 620px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
@@ -441,10 +532,43 @@
       border: 1px solid var(--border);
     }
 
+    /* PRINT STYLES: ONLY PRINT PROGRESS REPORT CARD WITHOUT BROWSER HEADERS/FOOTERS */
+    @page {
+      size: A4 portrait;
+      margin: 10mm;
+    }
     @media print {
-      .no-print, .topbar, .nav-strip, .floating-back { display: none !important; }
-      body { background: #fff; }
-      .card { box-shadow: none; border: 1px solid #000; }
+      body * {
+        visibility: hidden !important;
+      }
+      body.print-rules-mode #page4,
+      body.print-rules-mode #page4 * {
+        visibility: visible !important;
+      }
+      body.print-rules-mode #page4 {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      body.print-rules-mode .no-print {
+        display: none !important;
+      }
+
+      body:not(.print-rules-mode) #reportCardPrintArea,
+      body:not(.print-rules-mode) #reportCardPrintArea * {
+        visibility: visible !important;
+      }
+      body:not(.print-rules-mode) #reportCardPrintArea {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #ffffff;
+        padding: 10px;
+        border: 2px solid #0f172a;
+        border-radius: 8px;
+      }
     }
   </style>
 </head>
@@ -452,18 +576,26 @@
 
   <div id="toast"></div>
 
-  <!-- PAGE 1: CLEAN WHITE WELCOME PAGE ONLY -->
+  <!-- PAGE 1: CLEAN WHITE WELCOME PAGE -->
   <section id="page1" class="anim-welcome">
-    <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
-    <div class="welcome-badge">Smart Madrasa Digital Register</div>
-    <div id="welcomeMadrasaDisplay" class="welcome-madrasa-name"></div>
-    <h1 class="welcome-title">Welcome to Smart Madrasa Portal</h1>
-    <p class="welcome-sub">
-      സ്ഥാപനത്തിന്റെ വിവരങ്ങൾ, കുട്ടികളുടെ അഡ്മിഷനും ഒപ്പുകളും, മദ്രസ നിയമങ്ങൾ, 4-Term മാർക്ക് ലിസ്റ്റ്, WhatsApp അറിയിപ്പുകൾ എന്നിവ എളുപ്പത്തിൽ കൈകാര്യം ചെയ്യാം.
-    </p>
-    <button type="button" class="btn-enter" onclick="enterPortal()">
-      Enter Madrasa Portal →
-    </button>
+    <div class="welcome-center">
+      <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+      <div class="welcome-badge">Smart Madrasa Digital Register</div>
+      <div id="welcomeMadrasaDisplay" class="welcome-madrasa-name"></div>
+      <h1 class="welcome-title">Welcome to Smart Madrasa Portal</h1>
+      <p class="welcome-sub">
+        സ്ഥാപനത്തിന്റെ വിവരങ്ങൾ, കുട്ടികളുടെ അഡ്മിഷനും ഒപ്പുകളും, മദ്രസ നിയമങ്ങൾ, 4-Term & Monthly മാർക്ക് ലിസ്റ്റ്, WhatsApp അറിയിപ്പുകൾ എന്നിവ ഒരൊറ്റ പോർട്ടലിൽ.
+      </p>
+      <button type="button" class="btn-enter" onclick="enterPortal()">
+        Enter Madrasa Portal →
+      </button>
+    </div>
+
+    <div class="powered-box">
+      <div class="p-title">Powered by : ATAVA DIGITAL SERVICES & TRADING</div>
+      <div class="p-services">Data Entry, Typing Works, Poster & Badge Design And Digital Services</div>
+      <div class="p-owner">Abdul salam ahasani vazhakkad</div>
+    </div>
   </section>
 
   <!-- INNER PORTAL (PAGES 2 TO 6) -->
@@ -474,9 +606,14 @@
         <p id="topMadrasaSub">Institution & Academic Management</p>
       </div>
       <div class="top-actions">
-        <button type="button" class="btn btn-outline btn-sm" onclick="goWelcome()">🏠 Welcome Page</button>
-        <button type="button" class="btn btn-outline btn-sm" onclick="openSyncModal()">☁️ Google Sheet Sync</button>
-        <button type="button" class="btn btn-outline btn-sm" onclick="downloadBackup()">💾 Backup JSON</button>
+        <div class="year-pill-wrap" title="അധ്യയന വർഷം തിരഞ്ഞെടുക്കുക">
+          <span>📅 Year:</span>
+          <select id="activeYearSelect" onchange="changeActiveYear()"></select>
+          <button type="button" onclick="addNewAcademicYear()" style="border:none; background:var(--primary); color:#fff; border-radius:5px; padding:1px 6px; font-weight:800; cursor:pointer;" title="പുതിയ വർഷം ചേർക്കുക">+</button>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="goWelcome()">🏠 Welcome</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="openSyncModal()">☁️ Google Sheet</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="downloadBackup()">💾 Backup</button>
       </div>
     </header>
 
@@ -490,7 +627,7 @@
 
     <main class="container">
 
-      <!-- PAGE 2: INSTITUTION DETAILS + NAVIGATION BOARDS -->
+      <!-- PAGE 2: INSTITUTION DETAILS + BOARDS -->
       <section id="page2" class="page-section active anim-up">
         <div class="page-head">
           <div>
@@ -525,7 +662,7 @@
                 <input type="email" id="instEmail" placeholder="madrasa@example.com">
               </div>
               <div class="form-group">
-                <label>അധ്യയന വർഷം (Academic Year)</label>
+                <label>നിലവിലെ അധ്യയന വർഷം (Academic Year)</label>
                 <input type="text" id="instYear" value="2026-2027">
               </div>
             </div>
@@ -536,14 +673,13 @@
           </form>
         </div>
 
-        <!-- NAVIGATION BOARDS MOVED TO PAGE 2 AS REQUESTED -->
         <div class="card">
           <div class="card-title">Quick Access Boards (മറ്റു പേജുകളിലേക്ക്)</div>
           <div class="boards-grid">
             <div class="nav-board" onclick="showPage('page3')">
               <div class="tag">Page 3 →</div>
               <h3>കുട്ടികളുടെ വിവരങ്ങൾ & ഒപ്പ്</h3>
-              <p>Sl No, Adm No, Class, Aadhaar, Mobile, WhatsApp, Father & Child Sign.</p>
+              <p>Photo, Proof, Sl No, Adm No, Class, Aadhaar, Mobile, WhatsApp, Father & Child Sign.</p>
             </div>
             <div class="nav-board" onclick="showPage('page4')">
               <div class="tag">Page 4 →</div>
@@ -553,7 +689,7 @@
             <div class="nav-board" onclick="showPage('page5')">
               <div class="tag">Page 5 →</div>
               <h3>4-Term മാർക്ക് & സ്കിൽ</h3>
-              <p>4 ടേം പരീക്ഷകൾ, മാസപ്പരീക്ഷ, ഗ്രേഡ്, കസ്റ്റം സ്കിൽ മാർക്കുകൾ.</p>
+              <p>4 ടേം പരീക്ഷകൾ, മാസപ്പരീക്ഷ, ഗ്രേഡ്, കസ്റ്റം സ്കിൽ മാർക്കുകൾ & പ്രോഗ്രസ് കാർഡ്.</p>
             </div>
             <div class="nav-board" onclick="showPage('page6')">
               <div class="tag">Page 6 →</div>
@@ -564,18 +700,18 @@
         </div>
       </section>
 
-      <!-- PAGE 3: STUDENTS & DIGITAL SIGNATURES -->
+      <!-- PAGE 3: STUDENTS, PHOTO, PROOF & DIGITAL SIGNATURES -->
       <section id="page3" class="page-section anim-right">
         <div class="page-head">
           <div>
             <h1>കുട്ടികളുടെ വിവരങ്ങളും ഒപ്പും (Student Admission & Sign)</h1>
-            <p>കുട്ടിയുടെ പൂർണ്ണ വിവരങ്ങളും രക്ഷിതാവിന്റെയും കുട്ടിയുടെയും ഒപ്പും രേഖപ്പെടുത്തുക.</p>
+            <p>കുട്ടിയുടെ ഫോട്ടോ, പ്രൂഫ്, വിവരങ്ങൾ, നിയമങ്ങൾ പാലിക്കാമെന്ന സമ്മതത്തോടെയുള്ള ഒപ്പ് എന്നിവ രേഖപ്പെടുത്തുക.</p>
           </div>
           <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
         </div>
 
         <div class="card">
-          <div class="card-title">New Student Admission Form</div>
+          <div class="card-title">New Student Admission Form (<span id="formYearTag">2026-2027</span>)</div>
           <form id="studentForm" onsubmit="saveStudent(event)">
             <div class="form-grid">
               <div class="form-group">
@@ -626,16 +762,36 @@
                 <label>Father Google Account / Email</label>
                 <input type="email" id="stFatherGoogle" placeholder="father@gmail.com">
               </div>
+
+              <!-- Student Photo Upload -->
               <div class="form-group">
-                <label>Child Google Account / Email</label>
-                <input type="email" id="stChildGoogle" placeholder="child@gmail.com">
+                <label>കുട്ടിയുടെ ഫോട്ടോ (Student Photo)</label>
+                <div class="photo-preview-box">
+                  <div id="stPhotoPreview" class="student-avatar">Photo</div>
+                  <input type="file" id="stPhotoInput" accept="image/*" onchange="handlePhotoUpload(event)">
+                </div>
               </div>
+
+              <!-- Birth Certificate / Aadhaar Proof Upload -->
+              <div class="form-group">
+                <label>Proof (Birth Certificate / Aadhaar Copy)</label>
+                <input type="file" id="stProofInput" accept="image/*,.pdf" onchange="handleProofUpload(event)">
+                <span id="stProofStatus" style="font-size:11.5px; color:var(--text-muted);">No file selected</span>
+              </div>
+            </div>
+
+            <!-- Rules Acceptance Undertaking -->
+            <div class="undertaking-box">
+              <input type="checkbox" id="rulesAgreeCheck" required>
+              <label for="rulesAgreeCheck">
+                മദ്രസയുടെ എല്ലാ നിയമങ്ങളും ചട്ടങ്ങളും (Madrasa Rules & Regulations) ഞങ്ങൾ വായിച്ചു മനസ്സിലാക്കുകയും, അവ പൂർണ്ണമായി പാലിച്ചുകൊള്ളാമെന്ന് സമ്മതിച്ച് താഴെ ഒപ്പുവെക്കുകയും ചെയ്യുന്നു.
+              </label>
             </div>
 
             <div class="sig-grid">
               <div class="sig-box">
                 <div class="sig-header">
-                  <span>FATHER'S SIGN (വിരൽ / മൗസ് ഉപയോഗിച്ച് ഒപ്പിടുക)</span>
+                  <span>FATHER'S SIGN (രക്ഷിതാവിന്റെ ഒപ്പ്)</span>
                   <div>
                     <button type="button" class="btn btn-outline btn-sm" onclick="autoSign('father')">Auto-Sign Name</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="clearCanvas('fatherCanvas')">Clear</button>
@@ -677,11 +833,11 @@
             <table>
               <thead>
                 <tr>
-                  <th>Sl</th>
-                  <th>Adm No</th>
+                  <th>Photo</th>
+                  <th>Sl / Adm</th>
                   <th>Student Name</th>
                   <th>Class</th>
-                  <th>Aadhaar</th>
+                  <th>Aadhaar & Proof</th>
                   <th>Parent & Contact</th>
                   <th>Father Sign</th>
                   <th>Child Sign</th>
@@ -696,14 +852,14 @@
 
       <!-- PAGE 4: MADRASA RULES & REGULATIONS -->
       <section id="page4" class="page-section anim-unfold">
-        <div class="page-head">
+        <div class="page-head no-print">
           <div>
             <h1>മദ്രസ നിയമങ്ങളും ചട്ടങ്ങളും (Rules & Regulations)</h1>
             <p>മദ്രസയിലെ നിബന്ധനകളും ചട്ടങ്ങളും ഇവിടെ ചേർക്കാനും പ്രിന്റ് ചെയ്യാനും സാധിക്കും.</p>
           </div>
           <div style="display:flex; gap:8px;">
             <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
-            <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">🖨️ Print Rules</button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="printRulesPage()">🖨️ Print Rules</button>
           </div>
         </div>
 
@@ -725,7 +881,7 @@
 
       <!-- PAGE 5: 4-TERM MARK LIST, MONTHLY EXAMS & CUSTOM SKILLS -->
       <section id="page5" class="page-section anim-up">
-        <div class="page-head">
+        <div class="page-head no-print">
           <div>
             <h1>4-Term മാർക്ക് ലിസ്റ്റ്, Monthly Exam & Custom Skills</h1>
             <p>ഓരോ മദ്രസയ്ക്കും സ്വന്തമായി വിഷയങ്ങളും സ്കില്ലുകളും ചേർത്ത് മാർക്കും ഗ്രേഡും നൽകാം.</p>
@@ -734,7 +890,7 @@
         </div>
 
         <!-- Custom Subjects & Skills Configurator -->
-        <div class="card">
+        <div class="card no-print">
           <div class="card-title">1. വിഷയങ്ങളും (Subjects) മദ്രസ സ്കില്ലുകളും (Custom Skills) ചേർക്കുക</div>
           <form onsubmit="addEvaluationItem(event)" class="form-grid">
             <div class="form-group">
@@ -761,7 +917,7 @@
         </div>
 
         <!-- Marks Entry Card -->
-        <div class="card">
+        <div class="card no-print">
           <div class="card-title">2. കുട്ടിയുടെ മാർക്ക് രേഖപ്പെടുത്തുക</div>
           <div class="form-grid" style="margin-bottom:16px;">
             <div class="form-group">
@@ -772,7 +928,7 @@
             </div>
             <div class="form-group">
               <label>പരീക്ഷ / ടേം തിരഞ്ഞെടുക്കുക (Term / Exam)</label>
-              <select id="markTermSelect" onchange="loadStudentMarksForm()">
+              <select id="markTermSelect" onchange="toggleMonthField(); loadStudentMarksForm()">
                 <option value="Term 1">Term 1 (ഒന്നാം ടേം)</option>
                 <option value="Term 2">Term 2 (രണ്ടാം ടേം)</option>
                 <option value="Term 3">Term 3 (മൂന്നാം ടേം)</option>
@@ -780,9 +936,22 @@
                 <option value="Monthly Exam">Monthly Exam (മാസപ്പരീക്ഷ)</option>
               </select>
             </div>
-            <div class="form-group">
-              <label>മാസം (Monthly Exam ആണെങ്കിൽ)</label>
-              <input type="text" id="markMonthLabel" placeholder="ഉദാ: November 2026">
+            <div class="form-group" id="monthSelectGroup" style="display:none;">
+              <label>മാസം തിരഞ്ഞെടുക്കുക (Select Month)</label>
+              <select id="markMonthSelect" onchange="loadStudentMarksForm()">
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
             </div>
           </div>
 
@@ -791,13 +960,15 @@
           </div>
         </div>
 
-        <!-- Saved Progress Card / Mark Sheet View -->
+        <!-- Saved Progress Card (ONLY THIS PRINTS!) -->
         <div class="card" id="reportCardContainer" style="display:none;">
-          <div class="card-title">
-            <span>Student Progress Report Card</span>
-            <button type="button" class="btn btn-primary btn-sm no-print" onclick="window.print()">🖨️ Print Mark List</button>
+          <div class="card-title no-print">
+            <span>3. Student Progress Report Card (പ്രിന്റ് എടുക്കാൻ താഴെയുള്ള ബട്ടൺ അമർത്തുക)</span>
+            <button type="button" class="btn btn-primary btn-sm" onclick="printReportCardOnly()">🖨️ Print Progress Report Only</button>
           </div>
-          <div id="reportCardContent"></div>
+          <div id="reportCardPrintArea">
+            <div id="reportCardContent"></div>
+          </div>
         </div>
       </section>
 
@@ -829,12 +1000,12 @@
             </div>
             <div class="form-group">
               <label>തീയതി / സമയം (Optional)</label>
-              <input type="text" id="waDateTime" placeholder="ഉദാ: ഞായറാഴ്ച രാവിലെ 10:00 മണിക്ക്" oninput="updateWaPlaceholders()">
+              <input type="text" id="waDateTime" placeholder="ഉദാ: ഞായറാഴ്ച രാവിലെ 10:00 മണിക്ക്" oninput="renderWaRecipients()">
             </div>
           </div>
 
           <div class="form-group">
-            <label>മെസ്സേജ് (Message Content - {student}, {class}, {madrasa} എന്നിവ ഓട്ടോമാറ്റിക്കായി മാറും)</label>
+            <label>മെസ്സേജ് ({student}, {class}, {madrasa} എന്നിവ ഓട്ടോമാറ്റിക്കായി മാറും)</label>
             <textarea id="waMessageText" rows="4" oninput="renderWaRecipients()">അസ്സലാമു അലൈക്കും,
 {madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:
 പ്രധാന അറിയിപ്പ് ഇവിടെ രേഖപ്പെടുത്തുക.</textarea>
@@ -845,7 +1016,7 @@
           <div class="card-title">
             <span>2. രക്ഷിതാക്കൾക്ക് അയക്കുക (<span id="waRecipientCount">0</span> പേർ)</span>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <button type="button" class="btn btn-success btn-sm" onclick="sendNextInQueue()">⚡ Send Next in Queue (ഒറ്റ ക്ലിക്കിൽ തുടർച്ചയായി അയക്കാൻ)</button>
+              <button type="button" class="btn btn-success btn-sm" onclick="sendNextInQueue()">⚡ Send Next in Queue</button>
               <button type="button" class="btn btn-outline btn-sm" onclick="resetWaSentStatus()">Reset Sent Status</button>
             </div>
           </div>
@@ -868,12 +1039,37 @@
       </section>
 
     </main>
+
+    <!-- BOTTOM SUMMARY FOOTER (FILLS BOTTOM SPACE WITH USEFUL LIVE STATUS) -->
+    <footer class="portal-footer no-print">
+      <div class="footer-inner">
+        <div class="footer-stats">
+          <div class="f-stat">അധ്യയന വർഷം: <strong id="footerYear">2026-2027</strong></div>
+          <div class="f-stat">ആകെ കുട്ടികൾ: <strong id="footerStudents">0</strong></div>
+          <div class="f-stat">വിഷയങ്ങൾ & സ്കിൽ: <strong id="footerSubjects">0</strong></div>
+        </div>
+        <div style="font-size:12px; color:var(--text-muted); text-align:right;">
+          <strong style="color:var(--text);">ATAVA DIGITAL SERVICES & TRADING</strong> • Vazhakkad, Malappuram
+        </div>
+      </div>
+    </footer>
   </div>
 
   <!-- FLOATING BACK BUTTON -->
   <button type="button" id="floatingBackBtn" class="floating-back no-print" style="display:none;" onclick="goBack()">
     ← Back
   </button>
+
+  <!-- PROOF VIEWER MODAL -->
+  <div id="proofModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="card-title">
+        <span id="proofModalTitle">Student Proof Document</span>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeProofModal()">✕ Close</button>
+      </div>
+      <div id="proofModalBody" style="text-align:center;"></div>
+    </div>
+  </div>
 
   <!-- GOOGLE SHEET SYNC MODAL -->
   <div id="syncModal" class="modal-backdrop">
@@ -914,9 +1110,10 @@ function doGet(e) {
   </div>
 
   <script>
-    // Central State
     let state = {
       institution: { name: '', regNo: '', place: '', mobile: '', email: '', year: '2026-2027' },
+      academicYears: ['2026-2027', '2027-2028'],
+      activeYear: '2026-2027',
       students: [],
       rules: [
         'എല്ലാ വിദ്യാർത്ഥികളും കൃത്യസമയത്ത് മദ്രസയിൽ ഹാജരാകേണ്ടതാണ്.',
@@ -929,32 +1126,32 @@ function doGet(e) {
         { id: 'skl1', name: 'Akhlaq & Discipline', type: 'Skill', max: 25 },
         { id: 'skl2', name: 'Namaz Practice', type: 'Skill', max: 25 }
       ],
-      marks: {}, // key: studentId + '__' + term -> { scores: { itemId: val }, grade: '', month: '' }
+      marks: {},
       scriptUrl: ''
     };
 
     let pageHistory = ['page1'];
     let waSentMap = {};
+    let tempPhotoData = '';
+    let tempProofData = '';
+    let tempProofName = '';
 
-    // Load saved data from localStorage
     function loadState() {
       try {
-        const saved = localStorage.getItem('smart_madrasa_v4');
+        const saved = localStorage.getItem('smart_madrasa_v5');
         if (saved) {
           const parsed = JSON.parse(saved);
           state = Object.assign({}, state, parsed);
         }
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) { console.error(e); }
       applyStateToUI();
     }
 
     function saveState() {
       try {
-        localStorage.setItem('smart_madrasa_v4', JSON.stringify(state));
+        localStorage.setItem('smart_madrasa_v5', JSON.stringify(state));
       } catch (e) {
-        console.error(e);
+        alert('Storage limit reached! വലിയ ഫയലുകൾക്ക് പകരം ചെറിയ സൈസ് ഫോട്ടോ ഉപയോഗിക്കുക.');
       }
       applyStateToUI();
     }
@@ -967,7 +1164,7 @@ function doGet(e) {
       window._toastTimer = setTimeout(() => { t.style.display = 'none'; }, 2800);
     }
 
-    // Navigation Functions
+    // Navigation
     function enterPortal() {
       document.getElementById('page1').classList.add('hidden');
       document.getElementById('portalWrapper').classList.add('active');
@@ -978,16 +1175,12 @@ function doGet(e) {
     function goWelcome() {
       document.getElementById('portalWrapper').classList.remove('active');
       document.getElementById('floatingBackBtn').style.display = 'none';
-      const p1 = document.getElementById('page1');
-      p1.classList.remove('hidden');
+      document.getElementById('page1').classList.remove('hidden');
       pageHistory = ['page1'];
     }
 
     function showPage(pageId) {
-      if (pageId === 'page1') {
-        goWelcome();
-        return;
-      }
+      if (pageId === 'page1') { goWelcome(); return; }
       document.getElementById('page1').classList.add('hidden');
       document.getElementById('portalWrapper').classList.add('active');
       document.getElementById('floatingBackBtn').style.display = 'inline-flex';
@@ -995,14 +1188,11 @@ function doGet(e) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
 
-      const target = document.getElementById(pageId);
-      if (target) target.classList.add('active');
+      document.getElementById(pageId).classList.add('active');
       const pill = document.getElementById('nav-' + pageId);
       if (pill) pill.classList.add('active');
 
-      if (pageHistory[pageHistory.length - 1] !== pageId) {
-        pageHistory.push(pageId);
-      }
+      if (pageHistory[pageHistory.length - 1] !== pageId) pageHistory.push(pageId);
 
       if (pageId === 'page3') {
         setTimeout(() => {
@@ -1025,9 +1215,8 @@ function doGet(e) {
       if (pageHistory.length > 1) {
         pageHistory.pop();
         const prev = pageHistory[pageHistory.length - 1];
-        if (prev === 'page1') {
-          goWelcome();
-        } else {
+        if (prev === 'page1') goWelcome();
+        else {
           document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
           document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
           document.getElementById(prev).classList.add('active');
@@ -1039,7 +1228,36 @@ function doGet(e) {
       }
     }
 
-    // Apply State to UI
+    // Academic Year Management
+    function renderYearDropdown() {
+      const sel = document.getElementById('activeYearSelect');
+      if (!state.academicYears.includes(state.activeYear)) {
+        state.academicYears.push(state.activeYear);
+      }
+      sel.innerHTML = state.academicYears.map(y => `<option value="${y}">${y}</option>`).join('');
+      sel.value = state.activeYear;
+      document.getElementById('formYearTag').textContent = state.activeYear;
+      document.getElementById('footerYear').textContent = state.activeYear;
+    }
+
+    function changeActiveYear() {
+      state.activeYear = document.getElementById('activeYearSelect').value;
+      state.institution.year = state.activeYear;
+      saveState();
+      showToast(`അധ്യയന വർഷം ${state.activeYear} ലേക്ക് മാറ്റി!`);
+    }
+
+    function addNewAcademicYear() {
+      const yr = prompt('പുതിയ അധ്യയന വർഷം നൽകുക (ഉദാ: 2027-2028):');
+      if (!yr || !yr.trim()) return;
+      const clean = yr.trim();
+      if (!state.academicYears.includes(clean)) state.academicYears.push(clean);
+      state.activeYear = clean;
+      state.institution.year = clean;
+      saveState();
+      showToast(`പുതിയ വർഷം ${clean} ചേർത്തു!`);
+    }
+
     function applyStateToUI() {
       const inst = state.institution || {};
       const mName = inst.name ? inst.name : 'Smart Madrasa Register';
@@ -1057,33 +1275,104 @@ function doGet(e) {
       document.getElementById('instPlace').value = inst.place || '';
       document.getElementById('instMobile').value = inst.mobile || '';
       document.getElementById('instEmail').value = inst.email || '';
-      document.getElementById('instYear').value = inst.year || '2026-2027';
+      document.getElementById('instYear').value = state.activeYear || '2026-2027';
       document.getElementById('scriptUrlInput').value = state.scriptUrl || '';
 
+      renderYearDropdown();
       populateClassDropdowns();
       populateStudentDropdowns();
       renderStudentsTable();
       renderRules();
       renderEvalChips();
       renderWaRecipients();
+
+      const yearStudents = state.students.filter(s => (s.year || state.activeYear) === state.activeYear);
+      document.getElementById('footerStudents').textContent = yearStudents.length;
+      document.getElementById('footerSubjects').textContent = state.evalItems.length;
     }
 
-    // Page 2: Save Institution
+    // Page 2: Institution
     function saveInstitution(e) {
       e.preventDefault();
+      const yr = document.getElementById('instYear').value.trim() || '2026-2027';
+      state.activeYear = yr;
+      if (!state.academicYears.includes(yr)) state.academicYears.push(yr);
       state.institution = {
         name: document.getElementById('instName').value.trim(),
         regNo: document.getElementById('instReg').value.trim(),
         place: document.getElementById('instPlace').value.trim(),
         mobile: document.getElementById('instMobile').value.trim(),
         email: document.getElementById('instEmail').value.trim(),
-        year: document.getElementById('instYear').value.trim()
+        year: yr
       };
       saveState();
       showToast('സ്ഥാപനത്തിന്റെ വിവരങ്ങൾ സേവ് ചെയ്തു!');
     }
 
-    // Page 3: Signature Canvas Logic
+    // Photo & Proof Compress/Upload
+    function handlePhotoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxSide = 180;
+          const scale = Math.min(maxSide / img.width, maxSide / img.height, 1);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          tempPhotoData = canvas.toDataURL('image/jpeg', 0.8);
+          document.getElementById('stPhotoPreview').innerHTML = `<img src="${tempPhotoData}" style="width:100%; height:100%; border-radius:10px; object-fit:cover;">`;
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleProofUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      tempProofName = file.name;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        if (file.type.startsWith('image/')) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const maxW = 750;
+            const scale = Math.min(maxW / img.width, 1);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            tempProofData = canvas.toDataURL('image/jpeg', 0.75);
+            document.getElementById('stProofStatus').textContent = '✓ Attached: ' + tempProofName;
+          };
+          img.src = evt.target.result;
+        } else {
+          tempProofData = evt.target.result;
+          document.getElementById('stProofStatus').textContent = '✓ Attached: ' + tempProofName;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function viewStudentProof(stId) {
+      const st = state.students.find(s => s.id === stId);
+      if (!st || !st.proofData) return;
+      document.getElementById('proofModalTitle').textContent = `${st.name} - Proof (${st.proofName || 'Document'})`;
+      const body = document.getElementById('proofModalBody');
+      if (st.proofData.startsWith('data:application/pdf')) {
+        body.innerHTML = `<iframe src="${st.proofData}" style="width:100%; height:450px; border:none;"></iframe>`;
+      } else {
+        body.innerHTML = `<img src="${st.proofData}" style="max-width:100%; border-radius:10px; border:1px solid var(--border);">`;
+      }
+      document.getElementById('proofModal').classList.add('open');
+    }
+    function closeProofModal() { document.getElementById('proofModal').classList.remove('open'); }
+
+    // Page 3: Signature Canvas
     const canvasInitialized = {};
     function initCanvas(canvasId) {
       const canvas = document.getElementById(canvasId);
@@ -1097,7 +1386,6 @@ function doGet(e) {
         img.onload = () => canvas.getContext('2d').drawImage(img, 0, 0);
         img.src = prevData;
       }
-
       if (canvasInitialized[canvasId]) return;
       canvasInitialized[canvasId] = true;
 
@@ -1114,28 +1402,13 @@ function doGet(e) {
         const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
         return { x: clientX - r.left, y: clientY - r.top };
       }
-
-      function start(e) {
-        drawing = true;
-        const p = getPos(e);
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-      }
-      function move(e) {
-        if (!drawing) return;
-        e.preventDefault();
-        const p = getPos(e);
-        ctx.lineTo(p.x, p.y);
-        ctx.stroke();
-      }
-      function end() {
-        drawing = false;
-      }
+      function start(e) { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+      function move(e) { if (!drawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+      function end() { drawing = false; }
 
       canvas.addEventListener('mousedown', start);
       canvas.addEventListener('mousemove', move);
       window.addEventListener('mouseup', end);
-
       canvas.addEventListener('touchstart', start, { passive: false });
       canvas.addEventListener('touchmove', move, { passive: false });
       canvas.addEventListener('touchend', end);
@@ -1143,8 +1416,7 @@ function doGet(e) {
 
     function clearCanvas(canvasId) {
       const canvas = document.getElementById(canvasId);
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     }
 
     function autoSign(who) {
@@ -1176,6 +1448,7 @@ function doGet(e) {
 
       const student = {
         id: 'st_' + Date.now(),
+        year: state.activeYear,
         slNo: document.getElementById('stSlNo').value.trim(),
         admNo: document.getElementById('stAdmNo').value.trim(),
         name: document.getElementById('stName').value.trim(),
@@ -1185,7 +1458,10 @@ function doGet(e) {
         mobile: document.getElementById('stMobile').value.trim(),
         whatsapp: document.getElementById('stWhatsapp').value.trim(),
         fatherGoogle: document.getElementById('stFatherGoogle').value.trim(),
-        childGoogle: document.getElementById('stChildGoogle').value.trim(),
+        photo: tempPhotoData,
+        proofData: tempProofData,
+        proofName: tempProofName,
+        rulesAgreed: document.getElementById('rulesAgreeCheck').checked,
         fatherSign: document.getElementById('fatherCanvas').toDataURL('image/png'),
         childSign: document.getElementById('childCanvas').toDataURL('image/png')
       };
@@ -1199,6 +1475,11 @@ function doGet(e) {
     function resetStudentForm() {
       document.getElementById('studentForm').reset();
       document.getElementById('sameWaCheck').checked = true;
+      tempPhotoData = '';
+      tempProofData = '';
+      tempProofName = '';
+      document.getElementById('stPhotoPreview').innerHTML = 'Photo';
+      document.getElementById('stProofStatus').textContent = 'No file selected';
       clearCanvas('fatherCanvas');
       clearCanvas('childCanvas');
     }
@@ -1229,26 +1510,45 @@ function doGet(e) {
       const cls = document.getElementById('filterClassSelect').value || 'ALL';
 
       const filtered = state.students.filter(s => {
+        const matchYear = (s.year || state.activeYear) === state.activeYear;
         const matchQ = s.name.toLowerCase().includes(q) || s.admNo.toLowerCase().includes(q) || s.parentName.toLowerCase().includes(q);
         const matchC = cls === 'ALL' || s.studentClass === cls;
-        return matchQ && matchC;
+        return matchYear && matchQ && matchC;
       });
 
       document.getElementById('studentCountBadge').textContent = filtered.length;
 
       if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:20px;">കുട്ടികളെ ചേർത്തിട്ടില്ല. മുകളിലെ ഫോം വഴി ചേർക്കുക.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:20px;">ഈ വർഷത്തിൽ കുട്ടികളെ ചേർത്തിട്ടില്ല. മുകളിലെ ഫോം വഴി ചേർക്കുക.</td></tr>';
         return;
       }
 
       tbody.innerHTML = filtered.map(s => `
         <tr>
-          <td>${s.slNo}</td>
-          <td><strong>${s.admNo}</strong></td>
-          <td><strong>${s.name}</strong><br><span style="font-size:11px; color:var(--text-muted);">${s.childGoogle || ''}</span></td>
+          <td>
+            ${s.photo
+              ? `<img src="${s.photo}" style="width:44px; height:44px; border-radius:10px; object-fit:cover; border:1px solid var(--border);">`
+              : `<div style="width:44px; height:44px; border-radius:10px; background:var(--surface-soft); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--text-muted);">No Photo</div>`
+            }
+          </td>
+          <td>Sl: ${s.slNo}<br><strong>${s.admNo}</strong></td>
+          <td>
+            <strong>${s.name}</strong><br>
+            <span class="badge badge-green" style="font-size:10.5px;">Rules Agreed ✓</span>
+          </td>
           <td><span class="badge badge-blue">${s.studentClass}</span></td>
-          <td>${s.aadhaar}</td>
-          <td>${s.parentName}<br><span style="font-size:12px; color:var(--text-muted);">Mob: ${s.mobile} | WA: ${s.whatsapp}</span></td>
+          <td>
+            ${s.aadhaar}<br>
+            ${s.proofData
+              ? `<button type="button" class="btn btn-outline btn-sm" style="margin-top:4px; padding:3px 8px; font-size:11px;" onclick="viewStudentProof('${s.id}')">📄 View Proof</button>`
+              : `<span style="font-size:11px; color:var(--text-muted);">No Proof</span>`
+            }
+          </td>
+          <td>
+            ${s.parentName}<br>
+            <span style="font-size:12px; color:var(--text-muted);">Mob: ${s.mobile} | WA: ${s.whatsapp}</span>
+            ${s.fatherGoogle ? `<br><span style="font-size:11px; color:var(--primary);">${s.fatherGoogle}</span>` : ''}
+          </td>
           <td><img src="${s.fatherSign}" class="sig-thumb" alt="Father Sign"></td>
           <td><img src="${s.childSign}" class="sig-thumb" alt="Child Sign"></td>
           <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}')">Delete</button></td>
@@ -1289,7 +1589,27 @@ function doGet(e) {
       `).join('');
     }
 
-    // Page 5: Marks & Custom Skills
+    function printRulesPage() {
+      document.body.classList.add('print-rules-mode');
+      window.print();
+      setTimeout(() => document.body.classList.remove('print-rules-mode'), 500);
+    }
+
+    // Page 5: Marks & Progress Card
+    function toggleMonthField() {
+      const term = document.getElementById('markTermSelect').value;
+      document.getElementById('monthSelectGroup').style.display = (term === 'Monthly Exam') ? 'flex' : 'none';
+    }
+
+    function getCurrentExamKey(stId) {
+      const term = document.getElementById('markTermSelect').value;
+      if (term === 'Monthly Exam') {
+        const m = document.getElementById('markMonthSelect').value;
+        return `${stId}__${state.activeYear}__Monthly_${m}`;
+      }
+      return `${stId}__${state.activeYear}__${term}`;
+    }
+
     function addEvaluationItem(e) {
       e.preventDefault();
       const name = document.getElementById('evalItemName').value.trim();
@@ -1297,12 +1617,7 @@ function doGet(e) {
       const max = parseInt(document.getElementById('evalItemMax').value, 10) || 50;
       if (!name) return;
 
-      state.evalItems.push({
-        id: 'ev_' + Date.now(),
-        name,
-        type,
-        max
-      });
+      state.evalItems.push({ id: 'ev_' + Date.now(), name, type, max });
       document.getElementById('evalItemName').value = '';
       saveState();
       loadStudentMarksForm();
@@ -1328,8 +1643,9 @@ function doGet(e) {
     function populateStudentDropdowns() {
       const sel = document.getElementById('markStudentSelect');
       const cur = sel.value;
+      const yearStudents = state.students.filter(s => (s.year || state.activeYear) === state.activeYear);
       sel.innerHTML = '<option value="">-- Select Student --</option>' +
-        state.students.map(s => `<option value="${s.id}">${s.admNo} - ${s.name} (${s.studentClass})</option>`).join('');
+        yearStudents.map(s => `<option value="${s.id}">${s.admNo} - ${s.name} (${s.studentClass})</option>`).join('');
       sel.value = cur;
     }
 
@@ -1345,7 +1661,6 @@ function doGet(e) {
 
     function loadStudentMarksForm() {
       const stId = document.getElementById('markStudentSelect').value;
-      const term = document.getElementById('markTermSelect').value;
       const area = document.getElementById('marksEntryArea');
 
       if (!stId) {
@@ -1354,9 +1669,8 @@ function doGet(e) {
         return;
       }
 
-      const key = stId + '__' + term;
-      const existing = state.marks[key] || { scores: {}, grade: '', month: '' };
-      if (existing.month) document.getElementById('markMonthLabel').value = existing.month;
+      const key = getCurrentExamKey(stId);
+      const existing = state.marks[key] || { scores: {}, grade: '' };
 
       area.innerHTML = `
         <div class="table-wrap">
@@ -1399,7 +1713,7 @@ function doGet(e) {
               <option value="D">D</option>
             </select>
           </div>
-          <button type="button" class="btn btn-primary" onclick="saveStudentMarks()">Save Marks & Generate Report</button>
+          <button type="button" class="btn btn-primary" onclick="saveStudentMarks()">Save Marks & Update Report</button>
         </div>
       `;
 
@@ -1434,10 +1748,10 @@ function doGet(e) {
         if (inp.value !== '') scores[id] = parseFloat(inp.value);
       });
 
-      state.marks[stId + '__' + term] = {
+      const key = getCurrentExamKey(stId);
+      state.marks[key] = {
         scores,
-        grade: document.getElementById('liveGradeSelect').value,
-        month: document.getElementById('markMonthLabel').value.trim()
+        grade: document.getElementById('liveGradeSelect').value
       };
       saveState();
       renderReportCard(stId);
@@ -1450,63 +1764,111 @@ function doGet(e) {
       const box = document.getElementById('reportCardContainer');
       box.style.display = 'block';
 
-      const terms = ['Term 1', 'Term 2', 'Term 3', 'Term 4', 'Monthly Exam'];
+      const selectedMonth = document.getElementById('markMonthSelect').value || 'November';
+      const columns = [
+        { label: 'Term 1', key: `${stId}__${state.activeYear}__Term 1` },
+        { label: 'Term 2', key: `${stId}__${state.activeYear}__Term 2` },
+        { label: 'Term 3', key: `${stId}__${state.activeYear}__Term 3` },
+        { label: 'Term 4', key: `${stId}__${state.activeYear}__Term 4` },
+        { label: `Monthly (${selectedMonth})`, key: `${stId}__${state.activeYear}__Monthly_${selectedMonth}` }
+      ];
+
+      const maxTotal = state.evalItems.reduce((acc, it) => acc + (parseFloat(it.max) || 0), 0);
+
+      // Calculate Term-wise Totals
+      const colTotals = columns.map(col => {
+        const rec = state.marks[col.key];
+        if (!rec || !rec.scores) return null;
+        let sum = 0;
+        let hasAny = false;
+        state.evalItems.forEach(it => {
+          if (rec.scores[it.id] !== undefined) {
+            sum += parseFloat(rec.scores[it.id]) || 0;
+            hasAny = true;
+          }
+        });
+        return hasAny ? sum : null;
+      });
+
       document.getElementById('reportCardContent').innerHTML = `
-        <div style="text-align:center; border-bottom:2px solid var(--primary); padding-bottom:10px; margin-bottom:14px;">
-          <h2 style="color:var(--primary);">${state.institution.name || 'SMART MADRASA'}</h2>
-          <p style="font-size:12.5px; color:var(--text-muted);">${state.institution.place || ''} ${state.institution.regNo ? '• Reg: ' + state.institution.regNo : ''}</p>
-          <h3 style="margin-top:6px;">PROGRESS REPORT CARD (${state.institution.year || ''})</h3>
+        <div style="text-align:center; border-bottom:2px solid #0f172a; padding-bottom:10px; margin-bottom:14px;">
+          <h2 style="color:#0f172a; font-size:21px;">${state.institution.name || 'SMART MADRASA'}</h2>
+          <p style="font-size:12.5px; color:#334155;">${state.institution.place || ''} ${state.institution.regNo ? '• Reg No: ' + state.institution.regNo : ''} ${state.institution.mobile ? '• Ph: ' + state.institution.mobile : ''}</p>
+          <div style="display:inline-block; margin-top:6px; padding:3px 14px; border:1px solid #0f172a; border-radius:999px; font-size:12px; font-weight:800;">
+            PROGRESS REPORT CARD (${state.activeYear})
+          </div>
         </div>
-        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px; font-size:13.5px;">
-          <div><strong>Name:</strong> ${st.name} | <strong>Adm No:</strong> ${st.admNo}</div>
-          <div><strong>Class:</strong> ${st.studentClass} | <strong>Parent:</strong> ${st.parentName}</div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; font-size:13.5px; background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #cbd5e1;">
+          <div style="line-height:1.7;">
+            <div><strong>Student Name:</strong> ${st.name}</div>
+            <div><strong>Admission No:</strong> ${st.admNo} &nbsp;|&nbsp; <strong>Class:</strong> ${st.studentClass}</div>
+            <div><strong>Parent Name:</strong> ${st.parentName} &nbsp;|&nbsp; <strong>Contact:</strong> ${st.mobile}</div>
+          </div>
+          ${st.photo ? `<img src="${st.photo}" style="width:68px; height:68px; border-radius:10px; object-fit:cover; border:1px solid #94a3b8;">` : ''}
         </div>
+
         <div class="table-wrap">
-          <table>
+          <table style="border:1px solid #cbd5e1;">
             <thead>
-              <tr>
-                <th>Subject / Skill</th>
-                <th>Max</th>
-                ${terms.map(t => `<th>${t}</th>`).join('')}
+              <tr style="background:#f1f5f9;">
+                <th style="border:1px solid #cbd5e1;">Subject / Madrasa Skill</th>
+                <th style="border:1px solid #cbd5e1; text-align:center;">Max</th>
+                ${columns.map(c => `<th style="border:1px solid #cbd5e1; text-align:center;">${c.label}</th>`).join('')}
               </tr>
             </thead>
             <tbody>
               ${state.evalItems.map(it => `
                 <tr>
-                  <td><strong>${it.name}</strong> <span style="font-size:11px; color:var(--text-muted);">(${it.type})</span></td>
-                  <td>${it.max}</td>
-                  ${terms.map(t => {
-                    const rec = state.marks[stId + '__' + t];
+                  <td style="border:1px solid #cbd5e1;"><strong>${it.name}</strong> <span style="font-size:11px; color:#64748b;">(${it.type})</span></td>
+                  <td style="border:1px solid #cbd5e1; text-align:center;">${it.max}</td>
+                  ${columns.map(c => {
+                    const rec = state.marks[c.key];
                     const val = rec && rec.scores[it.id] !== undefined ? rec.scores[it.id] : '-';
-                    return `<td>${val}</td>`;
+                    return `<td style="border:1px solid #cbd5e1; text-align:center;">${val}</td>`;
                   }).join('')}
                 </tr>
               `).join('')}
-              <tr style="background:var(--surface-soft); font-weight:800;">
-                <td colspan="2">Grade</td>
-                ${terms.map(t => {
-                  const rec = state.marks[stId + '__' + t];
-                  return `<td>${rec ? rec.grade : '-'}</td>`;
+              <tr style="background:#f8fafc; font-weight:800;">
+                <td style="border:1px solid #cbd5e1;">TOTAL MARKS</td>
+                <td style="border:1px solid #cbd5e1; text-align:center;">${maxTotal}</td>
+                ${colTotals.map(tot => `<td style="border:1px solid #cbd5e1; text-align:center; color:#1d4ed8;">${tot !== null ? tot + ' / ' + maxTotal : '-'}</td>`).join('')}
+              </tr>
+              <tr style="background:#f1f5f9; font-weight:800;">
+                <td colspan="2" style="border:1px solid #cbd5e1;">GRADE</td>
+                ${columns.map(c => {
+                  const rec = state.marks[c.key];
+                  return `<td style="border:1px solid #cbd5e1; text-align:center;">${rec ? rec.grade : '-'}</td>`;
                 }).join('')}
               </tr>
             </tbody>
           </table>
         </div>
-        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:24px; padding-top:10px;">
-          <div style="text-align:center;">
-            <img src="${st.fatherSign}" class="sig-thumb" alt="Father Sign"><br>
-            <span style="font-size:12px;">Parent Signature</span>
+
+        <!-- BLANK SIGNATURE BOXES FOR SIGNING WHEN HANDING OVER / SHOWING REPORT -->
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:34px; padding-top:10px; text-align:center; font-size:12.5px;">
+          <div>
+            <div style="height:46px; border-bottom:1.5px dashed #64748b; margin:0 12px 6px;"></div>
+            <strong>Parent Signature</strong><br>
+            <span style="font-size:11px; color:#64748b;">(രക്ഷിതാവിന്റെ ഒപ്പ്)</span>
           </div>
-          <div style="text-align:center;">
-            <img src="${st.childSign}" class="sig-thumb" alt="Child Sign"><br>
-            <span style="font-size:12px;">Student Signature</span>
+          <div>
+            <div style="height:46px; border-bottom:1.5px dashed #64748b; margin:0 12px 6px;"></div>
+            <strong>Class Teacher Signature</strong><br>
+            <span style="font-size:11px; color:#64748b;">(ക്ലാസ് ഉസ്താദിന്റെ ഒപ്പ്)</span>
           </div>
-          <div style="text-align:center;">
-            <div style="height:36px;"></div>
-            <span style="font-size:12px;">Sadar Ustad / Principal</span>
+          <div>
+            <div style="height:46px; border-bottom:1.5px dashed #64748b; margin:0 12px 6px;"></div>
+            <strong>Sadar Ustad / Principal</strong><br>
+            <span style="font-size:11px; color:#64748b;">(സദർ ഉസ്താദിന്റെ ഒപ്പും സീലും)</span>
           </div>
         </div>
       `;
+    }
+
+    function printReportCardOnly() {
+      document.body.classList.remove('print-rules-mode');
+      window.print();
     }
 
     // Page 6: WhatsApp Notices
@@ -1519,10 +1881,6 @@ function doGet(e) {
         exam: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} പരീക്ഷകൾ ${dt} ആരംഭിക്കുന്നതാണ്. വിദ്യാർത്ഥി {student}-നെ പരീക്ഷയ്ക്ക് കൃത്യമായി തയ്യാറാക്കി അയക്കണമെന്ന് അറിയിക്കുന്നു.`
       };
       document.getElementById('waMessageText').value = templates[type] || '';
-      renderWaRecipients();
-    }
-
-    function updateWaPlaceholders() {
       renderWaRecipients();
     }
 
@@ -1543,7 +1901,11 @@ function doGet(e) {
 
     function getFilteredWaStudents() {
       const target = document.getElementById('waTargetClass').value || 'ALL';
-      return state.students.filter(s => target === 'ALL' || s.studentClass === target);
+      return state.students.filter(s => {
+        const matchYear = (s.year || state.activeYear) === state.activeYear;
+        const matchCls = target === 'ALL' || s.studentClass === target;
+        return matchYear && matchCls;
+      });
     }
 
     function renderWaRecipients() {
@@ -1611,12 +1973,8 @@ function doGet(e) {
       showToast('Backup ഫയൽ ഡൗൺലോഡ് ചെയ്തു!');
     }
 
-    function openSyncModal() {
-      document.getElementById('syncModal').classList.add('open');
-    }
-    function closeSyncModal() {
-      document.getElementById('syncModal').classList.remove('open');
-    }
+    function openSyncModal() { document.getElementById('syncModal').classList.add('open'); }
+    function closeSyncModal() { document.getElementById('syncModal').classList.remove('open'); }
     function saveScriptUrl() {
       state.scriptUrl = document.getElementById('scriptUrlInput').value.trim();
       saveState();
