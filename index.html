@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,19 +12,22 @@
       --bg: #ffffff;
       --surface: #ffffff;
       --surface-soft: #f8fafc;
+      --surface-tint: #f1f5f9;
       --border: #e2e8f0;
       --border-strong: #cbd5e1;
       --primary: #1d4ed8;
       --primary-hover: #1e40af;
       --primary-soft: #eff6ff;
+      --accent: #0284c7;
       --text: #0f172a;
       --text-muted: #64748b;
       --danger: #dc2626;
       --danger-soft: #fef2f2;
-      --success: #16a34a;
+      --success: #15803d;
       --success-soft: #f0fdf4;
-      --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
-      --radius: 14px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
+      --radius: 16px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,19 +39,20 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
     }
 
-    @keyframes fadeZoom { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes slideRight { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes unfold { from { opacity: 0; transform: perspective(900px) rotateX(-8deg) translateY(12px); } to { opacity: 1; transform: perspective(900px) rotateX(0deg) translateY(0); } }
-    @keyframes popIn { 0% { opacity: 0; transform: scale(0.92); } 70% { opacity: 1; transform: scale(1.01); } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes fadeZoom { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideRight { from { opacity: 0; transform: translateX(22px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes unfold { from { opacity: 0; transform: perspective(900px) rotateX(-6deg) translateY(10px); } to { opacity: 1; transform: perspective(900px) rotateX(0deg) translateY(0); } }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.94); } 70% { opacity: 1; transform: scale(1.01); } 100% { opacity: 1; transform: scale(1); } }
 
-    .anim-welcome { animation: fadeZoom 0.6s ease both; }
-    .anim-up { animation: slideUp 0.45s ease both; }
-    .anim-right { animation: slideRight 0.45s ease both; }
-    .anim-unfold { animation: unfold 0.5s ease both; }
-    .anim-pop { animation: popIn 0.45s ease both; }
+    .anim-welcome { animation: fadeZoom 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .anim-up { animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .anim-right { animation: slideRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .anim-unfold { animation: unfold 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .anim-pop { animation: popIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
     /* Page 1: Clean White Welcome Screen */
     #page1 {
@@ -58,8 +62,8 @@
       justify-content: space-between;
       align-items: center;
       text-align: center;
-      padding: 32px 20px 24px;
-      background: #ffffff;
+      padding: 36px 20px 26px;
+      background: radial-gradient(circle at top center, #f8fafc 0%, #ffffff 65%);
     }
     #page1.hidden { display: none; }
 
@@ -68,23 +72,27 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      max-width: 600px;
+      max-width: 620px;
     }
 
     .bismillah {
       font-family: 'Amiri', serif;
-      font-size: 34px;
+      font-size: 36px;
       color: var(--primary);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
     .welcome-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       padding: 6px 16px;
       border-radius: 999px;
       background: var(--primary-soft);
       color: var(--primary);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
       margin-bottom: 16px;
       border: 1px solid #dbeafe;
     }
@@ -92,48 +100,54 @@
       font-size: 22px;
       font-weight: 800;
       color: var(--primary);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .welcome-title {
-      font-size: clamp(28px, 5vw, 42px);
+      font-size: clamp(30px, 5vw, 46px);
       font-weight: 800;
       color: var(--text);
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 14px;
     }
     .welcome-sub {
       color: var(--text-muted);
-      font-size: 15px;
-      margin-bottom: 28px;
+      font-size: 15.5px;
+      margin-bottom: 30px;
+      max-width: 520px;
     }
     .btn-enter {
-      background: var(--primary);
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
       color: #ffffff;
       border: none;
-      padding: 15px 36px;
-      border-radius: 12px;
+      padding: 16px 38px;
+      border-radius: 14px;
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(29, 78, 216, 0.22);
-      transition: 0.2s;
+      box-shadow: 0 12px 28px -6px rgba(29, 78, 216, 0.35);
+      transition: all 0.2s ease;
     }
-    .btn-enter:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .btn-enter:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px -6px rgba(29, 78, 216, 0.45);
+    }
 
     .powered-box {
       margin-top: 32px;
-      padding: 14px 22px;
-      border-radius: 12px;
-      background: var(--surface-soft);
+      padding: 16px 24px;
+      border-radius: 14px;
+      background: #ffffff;
       border: 1px solid var(--border);
-      max-width: 540px;
+      box-shadow: var(--shadow-sm);
+      max-width: 560px;
       width: 100%;
     }
     .powered-box .p-title {
       font-size: 13px;
       font-weight: 800;
       color: var(--primary);
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
     }
     .powered-box .p-services {
       font-size: 12px;
@@ -152,6 +166,7 @@
       display: none;
       min-height: 100vh;
       flex-direction: column;
+      background: #fcfcfd;
     }
     #portalWrapper.active { display: flex; }
 
@@ -159,16 +174,35 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 20px;
+      padding: 12px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
     }
-    .brand-area h2 { font-size: 17px; font-weight: 800; color: var(--text); }
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+    }
+    .brand-area h2 { font-size: 17px; font-weight: 800; color: var(--text); letter-spacing: -0.01em; }
     .brand-area p { font-size: 12px; color: var(--text-muted); }
 
     .top-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
@@ -179,8 +213,8 @@
       gap: 6px;
       background: var(--primary-soft);
       border: 1px solid #bfdbfe;
-      padding: 4px 10px;
-      border-radius: 9px;
+      padding: 5px 11px;
+      border-radius: 10px;
       font-size: 12.5px;
       font-weight: 700;
       color: var(--primary);
@@ -196,29 +230,34 @@
     }
 
     .nav-strip {
-      background: var(--surface-soft);
+      background: #ffffff;
       border-bottom: 1px solid var(--border);
-      padding: 10px 20px;
+      padding: 10px 24px;
       display: flex;
       gap: 8px;
       overflow-x: auto;
     }
     .nav-pill {
-      background: #ffffff;
+      background: var(--surface-soft);
       border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 14px;
-      border-radius: 10px;
+      color: #334155;
+      padding: 9px 16px;
+      border-radius: 11px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      transition: 0.15s;
+      transition: all 0.15s ease;
     }
-    .nav-pill:hover { border-color: var(--primary); color: var(--primary); }
-    .nav-pill.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+    .nav-pill:hover { border-color: var(--primary); color: var(--primary); background: #fff; }
+    .nav-pill.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.22);
+    }
 
-    .container { max-width: 1100px; width: 100%; margin: 22px auto; padding: 0 16px; flex: 1; }
+    .container { max-width: 1140px; width: 100%; margin: 24px auto; padding: 0 18px; flex: 1; }
 
     .page-section { display: none; }
     .page-section.active { display: block; }
@@ -229,48 +268,49 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
-    .page-head h1 { font-size: 22px; font-weight: 800; }
-    .page-head p { font-size: 13px; color: var(--text-muted); }
+    .page-head h1 { font-size: 23px; font-weight: 800; letter-spacing: -0.02em; }
+    .page-head p { font-size: 13.5px; color: var(--text-muted); }
 
     .card {
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 22px;
       box-shadow: var(--shadow);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
     .card-title {
       font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
     }
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 15px;
     }
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 12.5px; font-weight: 700; color: #334155; }
     .form-group input, .form-group select, .form-group textarea {
       width: 100%;
-      padding: 10px 12px;
+      padding: 10px 13px;
       border: 1px solid var(--border-strong);
       border-radius: 10px;
       font-size: 14px;
       font-family: inherit;
       background: #ffffff;
       color: var(--text);
+      transition: 0.15s;
     }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
       outline: none;
@@ -283,11 +323,10 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-top: 4px;
     }
     .student-avatar {
-      width: 54px;
-      height: 54px;
+      width: 56px;
+      height: 56px;
       border-radius: 12px;
       object-fit: cover;
       border: 1.5px solid var(--border-strong);
@@ -296,13 +335,23 @@
       align-items: center;
       justify-content: center;
       font-size: 11px;
+      font-weight: 700;
       color: var(--text-muted);
       flex-shrink: 0;
+      overflow: hidden;
+    }
+    .clickable-photo {
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .clickable-photo:hover {
+      transform: scale(1.06);
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
     }
 
     /* Buttons */
     .btn {
-      padding: 10px 16px;
+      padding: 10px 17px;
       border-radius: 10px;
       font-size: 13.5px;
       font-weight: 700;
@@ -310,45 +359,59 @@
       border: 1px solid transparent;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      transition: 0.15s;
+      transition: all 0.15s ease;
     }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-hover); }
     .btn-outline { background: #fff; color: var(--text); border-color: var(--border-strong); }
     .btn-outline:hover { background: var(--surface-soft); border-color: var(--primary); color: var(--primary); }
     .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover { background: #166534; }
     .btn-danger { background: var(--danger-soft); color: var(--danger); border-color: #fecaca; }
-    .btn-sm { padding: 6px 11px; font-size: 12px; border-radius: 8px; }
+    .btn-danger:hover { background: #fee2e2; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 8px; }
 
     /* Boards on Page 2 */
     .boards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-top: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 15px;
+      margin-top: 8px;
     }
     .nav-board {
-      background: #ffffff;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 18px;
+      padding: 20px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: all 0.2s ease;
       text-align: left;
+      position: relative;
     }
     .nav-board:hover {
       border-color: var(--primary);
-      box-shadow: 0 8px 20px rgba(29, 78, 216, 0.08);
-      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -6px rgba(29, 78, 216, 0.12);
+      transform: translateY(-3px);
     }
-    .nav-board .tag { font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 6px; }
-    .nav-board h3 { font-size: 16px; font-weight: 800; margin-bottom: 5px; }
-    .nav-board p { font-size: 12.5px; color: var(--text-muted); }
+    .nav-board .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary);
+      background: var(--primary-soft);
+      padding: 3px 9px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .nav-board h3 { font-size: 16.5px; font-weight: 800; margin-bottom: 6px; color: var(--text); }
+    .nav-board p { font-size: 12.5px; color: var(--text-muted); line-height: 1.45; }
 
     /* Rules Undertaking Box */
     .undertaking-box {
-      margin-top: 16px;
+      margin-top: 18px;
       padding: 14px 16px;
       border-radius: 12px;
       background: #fffbeb;
@@ -392,7 +455,7 @@
       gap: 6px;
       flex-wrap: wrap;
     }
-    .sig-header span { font-size: 12px; font-weight: 800; color: var(--text); }
+    .sig-header span { font-size: 12px; font-weight: 800; color: var(--text); letter-spacing: 0.02em; }
     .sig-canvas {
       width: 100%;
       height: 120px;
@@ -405,15 +468,16 @@
     }
 
     /* Tables */
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; background: #fff; }
     th, td {
-      padding: 10px 12px;
+      padding: 11px 13px;
       border-bottom: 1px solid var(--border);
       text-align: left;
       vertical-align: middle;
     }
-    th { background: var(--surface-soft); font-weight: 700; color: #334155; white-space: nowrap; }
+    th { background: var(--surface-soft); font-weight: 800; color: #334155; white-space: nowrap; font-size: 12.5px; }
+    tr:last-child td { border-bottom: none; }
     .sig-thumb { max-height: 36px; max-width: 105px; border: 1px solid var(--border); border-radius: 6px; background: #fff; }
 
     /* Rules List */
@@ -422,9 +486,9 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 12px;
-      padding: 12px 14px;
+      padding: 13px 15px;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 11px;
       margin-bottom: 10px;
       background: #fff;
     }
@@ -446,15 +510,15 @@
     .badge-blue { background: var(--primary-soft); color: var(--primary); }
     .badge-green { background: var(--success-soft); color: var(--success); }
 
-    /* Bottom Portal Summary Footer (Fills empty bottom space nicely) */
+    /* Bottom Portal Summary Footer */
     .portal-footer {
-      background: var(--surface-soft);
+      background: #ffffff;
       border-top: 1px solid var(--border);
-      padding: 18px 20px 70px;
-      margin-top: 24px;
+      padding: 18px 24px 72px;
+      margin-top: 28px;
     }
     .footer-inner {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -464,17 +528,18 @@
     }
     .footer-stats {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
     }
     .f-stat {
-      background: #ffffff;
+      background: var(--surface-soft);
       border: 1px solid var(--border);
       padding: 8px 14px;
       border-radius: 10px;
       font-size: 12.5px;
+      font-weight: 600;
     }
-    .f-stat strong { color: var(--primary); font-size: 14px; }
+    .f-stat strong { color: var(--primary); font-size: 14px; margin-left: 4px; }
 
     /* Floating Back Button */
     .floating-back {
@@ -485,12 +550,12 @@
       background: #0f172a;
       color: #ffffff;
       border: none;
-      padding: 11px 18px;
+      padding: 11px 19px;
       border-radius: 999px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.22);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
     }
 
     /* Toast */
@@ -502,18 +567,19 @@
       background: #0f172a;
       color: #fff;
       padding: 12px 18px;
-      border-radius: 10px;
+      border-radius: 11px;
       font-size: 13.5px;
       font-weight: 600;
       display: none;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
     /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.45);
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(3px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -524,50 +590,80 @@
     .modal-box {
       background: #fff;
       border-radius: 16px;
-      max-width: 620px;
+      max-width: 600px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
       padding: 22px;
       border: 1px solid var(--border);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
     }
 
-    /* PRINT STYLES: ONLY PRINT PROGRESS REPORT CARD WITHOUT BROWSER HEADERS/FOOTERS */
+    /* SINGLE PAGE CLEAN PRINT STYLES (NO EXTRA BLANK PAGE) */
     @page {
       size: A4 portrait;
-      margin: 10mm;
+      margin: 8mm;
     }
     @media print {
-      body * {
-        visibility: hidden !important;
+      html, body {
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
-      body.print-rules-mode #page4,
-      body.print-rules-mode #page4 * {
-        visibility: visible !important;
-      }
-      body.print-rules-mode #page4 {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
-      body.print-rules-mode .no-print {
+      #page1, .topbar, .nav-strip, .portal-footer, .floating-back, #toast, .modal-backdrop, .no-print {
         display: none !important;
       }
+      #portalWrapper {
+        display: block !important;
+        min-height: 0 !important;
+        background: #ffffff !important;
+      }
+      .container {
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      .card {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
 
-      body:not(.print-rules-mode) #reportCardPrintArea,
-      body:not(.print-rules-mode) #reportCardPrintArea * {
-        visibility: visible !important;
+      /* Print Rules Mode */
+      body.print-rules-mode #page2,
+      body.print-rules-mode #page3,
+      body.print-rules-mode #page5,
+      body.print-rules-mode #page6 {
+        display: none !important;
+      }
+      body.print-rules-mode #page4 {
+        display: block !important;
+      }
+
+      /* Print Progress Report Only Mode */
+      body:not(.print-rules-mode) #page2,
+      body:not(.print-rules-mode) #page3,
+      body:not(.print-rules-mode) #page4,
+      body:not(.print-rules-mode) #page6 {
+        display: none !important;
+      }
+      body:not(.print-rules-mode) #page5 {
+        display: block !important;
+      }
+      body:not(.print-rules-mode) #reportCardContainer {
+        display: block !important;
       }
       body:not(.print-rules-mode) #reportCardPrintArea {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        background: #ffffff;
-        padding: 10px;
-        border: 2px solid #0f172a;
-        border-radius: 8px;
+        width: 100% !important;
+        border: 2px solid #0f172a !important;
+        border-radius: 10px !important;
+        padding: 16px !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
     }
   </style>
@@ -584,7 +680,7 @@
       <div id="welcomeMadrasaDisplay" class="welcome-madrasa-name"></div>
       <h1 class="welcome-title">Welcome to Smart Madrasa Portal</h1>
       <p class="welcome-sub">
-        സ്ഥാപനത്തിന്റെ വിവരങ്ങൾ, കുട്ടികളുടെ അഡ്മിഷനും ഒപ്പുകളും, മദ്രസ നിയമങ്ങൾ, 4-Term & Monthly മാർക്ക് ലിസ്റ്റ്, WhatsApp അറിയിപ്പുകൾ എന്നിവ ഒരൊറ്റ പോർട്ടലിൽ.
+        Complete digital administration for Madrasa Profile, Student Admissions, Digital Signatures, Rules & Regulations, 4-Term & Monthly Mark Lists, and WhatsApp Parent Notices.
       </p>
       <button type="button" class="btn-enter" onclick="enterPortal()">
         Enter Madrasa Portal →
@@ -602,14 +698,17 @@
   <div id="portalWrapper">
     <header class="topbar no-print">
       <div class="brand-area">
-        <h2 id="topMadrasaName">Smart Madrasa Register</h2>
-        <p id="topMadrasaSub">Institution & Academic Management</p>
+        <div class="brand-icon">🕌</div>
+        <div>
+          <h2 id="topMadrasaName">Smart Madrasa Register</h2>
+          <p id="topMadrasaSub">Academic & Student Administration System</p>
+        </div>
       </div>
       <div class="top-actions">
-        <div class="year-pill-wrap" title="അധ്യയന വർഷം തിരഞ്ഞെടുക്കുക">
+        <div class="year-pill-wrap" title="Select Academic Year">
           <span>📅 Year:</span>
           <select id="activeYearSelect" onchange="changeActiveYear()"></select>
-          <button type="button" onclick="addNewAcademicYear()" style="border:none; background:var(--primary); color:#fff; border-radius:5px; padding:1px 6px; font-weight:800; cursor:pointer;" title="പുതിയ വർഷം ചേർക്കുക">+</button>
+          <button type="button" onclick="addNewAcademicYear()" style="border:none; background:var(--primary); color:#fff; border-radius:6px; padding:2px 7px; font-weight:800; cursor:pointer;" title="Add New Academic Year">+</button>
         </div>
         <button type="button" class="btn btn-outline btn-sm" onclick="goWelcome()">🏠 Welcome</button>
         <button type="button" class="btn btn-outline btn-sm" onclick="openSyncModal()">☁️ Google Sheet</button>
@@ -618,83 +717,83 @@
     </header>
 
     <nav class="nav-strip no-print">
-      <button type="button" class="nav-pill active" id="nav-page2" onclick="showPage('page2')">2. സ്ഥാപനത്തിന്റെ വിവരങ്ങൾ</button>
-      <button type="button" class="nav-pill" id="nav-page3" onclick="showPage('page3')">3. കുട്ടികളുടെ വിവരങ്ങൾ & ഒപ്പ്</button>
-      <button type="button" class="nav-pill" id="nav-page4" onclick="showPage('page4')">4. നിയമങ്ങളും ചട്ടങ്ങളും</button>
-      <button type="button" class="nav-pill" id="nav-page5" onclick="showPage('page5')">5. 4-Term മാർക്ക് & സ്കിൽ</button>
-      <button type="button" class="nav-pill" id="nav-page6" onclick="showPage('page6')">6. WhatsApp അറിയിപ്പുകൾ</button>
+      <button type="button" class="nav-pill active" id="nav-page2" onclick="showPage('page2')">2. Madrasa Profile</button>
+      <button type="button" class="nav-pill" id="nav-page3" onclick="showPage('page3')">3. Students & Signatures</button>
+      <button type="button" class="nav-pill" id="nav-page4" onclick="showPage('page4')">4. Rules & Regulations</button>
+      <button type="button" class="nav-pill" id="nav-page5" onclick="showPage('page5')">5. 4-Term Marks & Skills</button>
+      <button type="button" class="nav-pill" id="nav-page6" onclick="showPage('page6')">6. WhatsApp Notices</button>
     </nav>
 
     <main class="container">
 
-      <!-- PAGE 2: INSTITUTION DETAILS + BOARDS -->
+      <!-- PAGE 2: INSTITUTION DETAILS + NAVIGATION BOARDS -->
       <section id="page2" class="page-section active anim-up">
         <div class="page-head">
           <div>
-            <h1>സ്ഥാപനത്തിന്റെ വിവരങ്ങൾ (Madrasa Profile)</h1>
-            <p>മദ്രസയുടെ പേര്, അംഗീകാര നമ്പർ, സ്ഥലം, ഫോൺ, ഇമെയിൽ എന്നിവ ഇവിടെ നൽകുക.</p>
+            <h1>Madrasa Profile & Institution Details</h1>
+            <p>Configure your institution name, recognition number, place, and contact details.</p>
           </div>
           <button type="button" class="btn btn-outline btn-sm" onclick="goWelcome()">← Back to Welcome</button>
         </div>
 
         <div class="card">
-          <div class="card-title">Institution Registration Details</div>
+          <div class="card-title">Institution Registration Information</div>
           <form onsubmit="saveInstitution(event)">
             <div class="form-grid">
               <div class="form-group">
-                <label>സ്ഥാപനത്തിന്റെ പേര് (Madrasa Name) *</label>
-                <input type="text" id="instName" required placeholder="ഉദാ: ഹിദായത്തുൽ ഇസ്ലാം മദ്രസ">
+                <label>Madrasa / Institution Name *</label>
+                <input type="text" id="instName" required placeholder="e.g., Hidayathul Islam Madrasa">
               </div>
               <div class="form-group">
-                <label>അംഗീകാര നമ്പർ (Angeegara / Reg No) *</label>
-                <input type="text" id="instReg" required placeholder="ഉദാ: REG-2026-104">
+                <label>Recognition / Angeegara Number *</label>
+                <input type="text" id="instReg" required placeholder="e.g., REG-2026-104">
               </div>
               <div class="form-group">
-                <label>സ്ഥലം (Place) *</label>
-                <input type="text" id="instPlace" required placeholder="ഉദാ: വാഴക്കാട്, മലപ്പുറം">
+                <label>Place / Locality *</label>
+                <input type="text" id="instPlace" required placeholder="e.g., Vazhakkad, Malappuram">
               </div>
               <div class="form-group">
-                <label>മൊബൈൽ നമ്പർ (Mobile Number) *</label>
+                <label>Mobile Number *</label>
                 <input type="tel" id="instMobile" required placeholder="9847000000">
               </div>
               <div class="form-group">
-                <label>ഇമെയിൽ (Email Address)</label>
+                <label>Email Address</label>
                 <input type="email" id="instEmail" placeholder="madrasa@example.com">
               </div>
               <div class="form-group">
-                <label>നിലവിലെ അധ്യയന വർഷം (Academic Year)</label>
+                <label>Academic Year</label>
                 <input type="text" id="instYear" value="2026-2027">
               </div>
             </div>
-            <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
               <button type="submit" class="btn btn-primary">Save Institution Details</button>
-              <button type="button" class="btn btn-outline" onclick="showPage('page3')">Next: കുട്ടികളുടെ വിവരങ്ങൾ →</button>
+              <button type="button" class="btn btn-outline" onclick="showPage('page3')">Next: Student Admission →</button>
             </div>
           </form>
         </div>
 
         <div class="card">
-          <div class="card-title">Quick Access Boards (മറ്റു പേജുകളിലേക്ക്)</div>
+          <div class="card-title">Quick Navigation Modules</div>
           <div class="boards-grid">
             <div class="nav-board" onclick="showPage('page3')">
-              <div class="tag">Page 3 →</div>
-              <h3>കുട്ടികളുടെ വിവരങ്ങൾ & ഒപ്പ്</h3>
-              <p>Photo, Proof, Sl No, Adm No, Class, Aadhaar, Mobile, WhatsApp, Father & Child Sign.</p>
+              <div class="tag">Module 03</div>
+              <h3>Student Admission & Sign</h3>
+              <p>Register students with Photo, ID Proof, Aadhaar, Mobile, WhatsApp & Father/Child Digital Signatures.</p>
             </div>
             <div class="nav-board" onclick="showPage('page4')">
-              <div class="tag">Page 4 →</div>
-              <h3>നിയമങ്ങളും ചട്ടങ്ങളും</h3>
-              <p>മദ്രസ നിയമങ്ങൾ ചേർക്കാനും എഡിറ്റ് ചെയ്യാനും പ്രിന്റ് എടുക്കാനും.</p>
+              <div class="tag">Module 04</div>
+              <h3>Rules & Regulations</h3>
+              <p>Manage official Madrasa rules, discipline guidelines, and print formal notice sheets.</p>
             </div>
             <div class="nav-board" onclick="showPage('page5')">
-              <div class="tag">Page 5 →</div>
-              <h3>4-Term മാർക്ക് & സ്കിൽ</h3>
-              <p>4 ടേം പരീക്ഷകൾ, മാസപ്പരീക്ഷ, ഗ്രേഡ്, കസ്റ്റം സ്കിൽ മാർക്കുകൾ & പ്രോഗ്രസ് കാർഡ്.</p>
+              <div class="tag">Module 05</div>
+              <h3>4-Term Marks & Skills</h3>
+              <p>Customize subjects & skills, record 4-Term & Monthly marks, auto-calculate grades & print report cards.</p>
             </div>
             <div class="nav-board" onclick="showPage('page6')">
-              <div class="tag">Page 6 →</div>
-              <h3>WhatsApp അറിയിപ്പുകൾ</h3>
-              <p>മീറ്റിംഗ്, പ്രോഗ്രാം അറിയിപ്പുകൾ ക്ലാസ് തിരിച്ച് WhatsApp-ൽ അയക്കാം.</p>
+              <div class="tag">Module 06</div>
+              <h3>WhatsApp Notices</h3>
+              <p>Send meeting, program, or holiday notices to all classes, a specific class, or individual parents.</p>
             </div>
           </div>
         </div>
@@ -704,18 +803,18 @@
       <section id="page3" class="page-section anim-right">
         <div class="page-head">
           <div>
-            <h1>കുട്ടികളുടെ വിവരങ്ങളും ഒപ്പും (Student Admission & Sign)</h1>
-            <p>കുട്ടിയുടെ ഫോട്ടോ, പ്രൂഫ്, വിവരങ്ങൾ, നിയമങ്ങൾ പാലിക്കാമെന്ന സമ്മതത്തോടെയുള്ള ഒപ്പ് എന്നിവ രേഖപ്പെടുത്തുക.</p>
+            <h1>Student Admission & Digital Signatures</h1>
+            <p>Register student records with photo, proof document, rules agreement, and signatures.</p>
           </div>
           <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
         </div>
 
         <div class="card">
-          <div class="card-title">New Student Admission Form (<span id="formYearTag">2026-2027</span>)</div>
+          <div class="card-title">New Student Registration (<span id="formYearTag">2026-2027</span>)</div>
           <form id="studentForm" onsubmit="saveStudent(event)">
             <div class="form-grid">
               <div class="form-group">
-                <label>Sl No (ക്ര.നമ്പർ) *</label>
+                <label>Serial No (Sl No) *</label>
                 <input type="text" id="stSlNo" required placeholder="01">
               </div>
               <div class="form-group">
@@ -723,11 +822,11 @@
                 <input type="text" id="stAdmNo" required placeholder="ADM-101">
               </div>
               <div class="form-group">
-                <label>കുട്ടിയുടെ പേര് (Student Name) *</label>
-                <input type="text" id="stName" required placeholder="കുട്ടിയുടെ പേര്">
+                <label>Student Full Name *</label>
+                <input type="text" id="stName" required placeholder="Enter student name">
               </div>
               <div class="form-group">
-                <label>ക്ലാസ് (Class) *</label>
+                <label>Class *</label>
                 <select id="stClass" required>
                   <option value="Class 1">Class 1</option>
                   <option value="Class 2">Class 2</option>
@@ -744,18 +843,18 @@
               </div>
               <div class="form-group">
                 <label>Aadhaar Number *</label>
-                <input type="text" id="stAadhaar" required placeholder="12 അക്ക ആധാർ നമ്പർ">
+                <input type="text" id="stAadhaar" required placeholder="12-digit Aadhaar number">
               </div>
               <div class="form-group">
-                <label>രക്ഷിതാവിന്റെ പേര് (Parent Name) *</label>
-                <input type="text" id="stParent" required placeholder="പിതാവിന്റെ / രക്ഷിതാവിന്റെ പേര്">
+                <label>Parent / Guardian Name *</label>
+                <input type="text" id="stParent" required placeholder="Father / Guardian name">
               </div>
               <div class="form-group">
                 <label>Mobile Number *</label>
                 <input type="tel" id="stMobile" required placeholder="9847000000" oninput="syncWhatsappNumber()">
               </div>
               <div class="form-group">
-                <label>WhatsApp Number * <label style="font-weight:400; display:inline;"><input type="checkbox" id="sameWaCheck" checked onchange="syncWhatsappNumber()"> Same as Mobile</label></label>
+                <label>WhatsApp Number * <label style="font-weight:500; display:inline; margin-left:4px;"><input type="checkbox" id="sameWaCheck" checked onchange="syncWhatsappNumber()"> Same as Mobile</label></label>
                 <input type="tel" id="stWhatsapp" required placeholder="9847000000">
               </div>
               <div class="form-group">
@@ -765,7 +864,7 @@
 
               <!-- Student Photo Upload -->
               <div class="form-group">
-                <label>കുട്ടിയുടെ ഫോട്ടോ (Student Photo)</label>
+                <label>Student Photo</label>
                 <div class="photo-preview-box">
                   <div id="stPhotoPreview" class="student-avatar">Photo</div>
                   <input type="file" id="stPhotoInput" accept="image/*" onchange="handlePhotoUpload(event)">
@@ -774,7 +873,7 @@
 
               <!-- Birth Certificate / Aadhaar Proof Upload -->
               <div class="form-group">
-                <label>Proof (Birth Certificate / Aadhaar Copy)</label>
+                <label>ID Proof (Birth Certificate / Aadhaar)</label>
                 <input type="file" id="stProofInput" accept="image/*,.pdf" onchange="handleProofUpload(event)">
                 <span id="stProofStatus" style="font-size:11.5px; color:var(--text-muted);">No file selected</span>
               </div>
@@ -791,7 +890,7 @@
             <div class="sig-grid">
               <div class="sig-box">
                 <div class="sig-header">
-                  <span>FATHER'S SIGN (രക്ഷിതാവിന്റെ ഒപ്പ്)</span>
+                  <span>FATHER'S DIGITAL SIGNATURE</span>
                   <div>
                     <button type="button" class="btn btn-outline btn-sm" onclick="autoSign('father')">Auto-Sign Name</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="clearCanvas('fatherCanvas')">Clear</button>
@@ -802,7 +901,7 @@
 
               <div class="sig-box">
                 <div class="sig-header">
-                  <span>CHILD'S SIGN (കുട്ടിയുടെ ഒപ്പ്)</span>
+                  <span>CHILD'S DIGITAL SIGNATURE</span>
                   <div>
                     <button type="button" class="btn btn-outline btn-sm" onclick="autoSign('child')">Auto-Sign Name</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="clearCanvas('childCanvas')">Clear</button>
@@ -812,7 +911,7 @@
               </div>
             </div>
 
-            <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
               <button type="submit" class="btn btn-primary">Save Student & Signatures</button>
               <button type="button" class="btn btn-outline" onclick="resetStudentForm()">Reset Form</button>
             </div>
@@ -821,10 +920,10 @@
 
         <div class="card">
           <div class="card-title">
-            <span>Registered Students List (<span id="studentCountBadge">0</span>)</span>
+            <span>Registered Students Directory (<span id="studentCountBadge">0</span>)</span>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <input type="text" id="searchStudentInput" placeholder="Search name or Adm No..." oninput="renderStudentsTable()" style="padding:6px 10px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
-              <select id="filterClassSelect" onchange="renderStudentsTable()" style="padding:6px 10px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
+              <input type="text" id="searchStudentInput" placeholder="Search name or Adm No..." oninput="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
+              <select id="filterClassSelect" onchange="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
                 <option value="ALL">All Classes</option>
               </select>
             </div>
@@ -854,8 +953,8 @@
       <section id="page4" class="page-section anim-unfold">
         <div class="page-head no-print">
           <div>
-            <h1>മദ്രസ നിയമങ്ങളും ചട്ടങ്ങളും (Rules & Regulations)</h1>
-            <p>മദ്രസയിലെ നിബന്ധനകളും ചട്ടങ്ങളും ഇവിടെ ചേർക്കാനും പ്രിന്റ് ചെയ്യാനും സാധിക്കും.</p>
+            <h1>Madrasa Rules & Regulations (നിയമാവലി)</h1>
+            <p>Manage and print official rules and discipline guidelines for students and parents.</p>
           </div>
           <div style="display:flex; gap:8px;">
             <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
@@ -864,16 +963,16 @@
         </div>
 
         <div class="card no-print">
-          <div class="card-title">പുതിയ നിയമം / ചട്ടം ചേർക്കുക</div>
+          <div class="card-title">Add New Rule / Regulation</div>
           <form onsubmit="addRule(event)" style="display:flex; gap:10px; flex-wrap:wrap;">
-            <input type="text" id="newRuleText" required placeholder="ഉദാ: എല്ലാ ദിവസവും കൃത്യം 7:00 മണിക്ക് മുമ്പ് മദ്രസയിൽ ഹാജരാകേണ്ടതാണ്." style="flex:1; min-width:250px; padding:10px 12px; border:1px solid var(--border-strong); border-radius:10px; font-size:14px;">
+            <input type="text" id="newRuleText" required placeholder="Enter new Madrasa rule..." style="flex:1; min-width:250px; padding:10px 13px; border:1px solid var(--border-strong); border-radius:10px; font-size:14px;">
             <button type="submit" class="btn btn-primary">+ Add Rule</button>
           </form>
         </div>
 
         <div class="card">
           <div class="card-title">
-            <span id="rulesPrintHeader">മദ്രസ നിയമാവലി</span>
+            <span id="rulesPrintHeader">Madrasa Rules & Regulations</span>
           </div>
           <div id="rulesListContainer"></div>
         </div>
@@ -883,29 +982,29 @@
       <section id="page5" class="page-section anim-up">
         <div class="page-head no-print">
           <div>
-            <h1>4-Term മാർക്ക് ലിസ്റ്റ്, Monthly Exam & Custom Skills</h1>
-            <p>ഓരോ മദ്രസയ്ക്കും സ്വന്തമായി വിഷയങ്ങളും സ്കില്ലുകളും ചേർത്ത് മാർക്കും ഗ്രേഡും നൽകാം.</p>
+            <h1>4-Term Marks, Monthly Exams & Custom Skills</h1>
+            <p>Configure subjects & skills, select a class & student to enter marks, and print the Progress Report Card.</p>
           </div>
           <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
         </div>
 
         <!-- Custom Subjects & Skills Configurator -->
         <div class="card no-print">
-          <div class="card-title">1. വിഷയങ്ങളും (Subjects) മദ്രസ സ്കില്ലുകളും (Custom Skills) ചേർക്കുക</div>
+          <div class="card-title">1. Configure Subjects & Madrasa Skills</div>
           <form onsubmit="addEvaluationItem(event)" class="form-grid">
             <div class="form-group">
-              <label>വിഷയം / സ്കിൽ പേര് *</label>
-              <input type="text" id="evalItemName" required placeholder="ഉദാ: Quran / Tajweed / Akhlaq / Namaz">
+              <label>Subject / Skill Name *</label>
+              <input type="text" id="evalItemName" required placeholder="e.g., Quran / Tajweed / Akhlaq / Namaz">
             </div>
             <div class="form-group">
-              <label>വിഭാഗം (Category)</label>
+              <label>Category</label>
               <select id="evalItemType">
-                <option value="Subject">Subject (വിഷയം)</option>
-                <option value="Skill">Madrasa Skill (കഴിവ് / സ്വഭാവം)</option>
+                <option value="Subject">Subject</option>
+                <option value="Skill">Madrasa Skill</option>
               </select>
             </div>
             <div class="form-group">
-              <label>പരമാവധി മാർക്ക് (Max Mark)</label>
+              <label>Max Mark</label>
               <input type="number" id="evalItemMax" value="50" min="1" required>
             </div>
             <div class="form-group" style="justify-content:flex-end;">
@@ -916,28 +1015,34 @@
           <div id="evalItemsChips" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;"></div>
         </div>
 
-        <!-- Marks Entry Card -->
+        <!-- Marks Entry Card with Class Filter -->
         <div class="card no-print">
-          <div class="card-title">2. കുട്ടിയുടെ മാർക്ക് രേഖപ്പെടുത്തുക</div>
+          <div class="card-title">2. Enter Student Marks (Class-wise Selection)</div>
           <div class="form-grid" style="margin-bottom:16px;">
             <div class="form-group">
-              <label>കുട്ടിയെ തിരഞ്ഞെടുക്കുക (Select Student)</label>
+              <label>Select Class (ക്ലാസ് തിരഞ്ഞെടുക്കുക)</label>
+              <select id="markClassFilter" onchange="populateMarkStudentDropdown()">
+                <option value="ALL">All Classes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Select Student *</label>
               <select id="markStudentSelect" onchange="loadStudentMarksForm()">
                 <option value="">-- Select Student --</option>
               </select>
             </div>
             <div class="form-group">
-              <label>പരീക്ഷ / ടേം തിരഞ്ഞെടുക്കുക (Term / Exam)</label>
+              <label>Select Term / Exam *</label>
               <select id="markTermSelect" onchange="toggleMonthField(); loadStudentMarksForm()">
-                <option value="Term 1">Term 1 (ഒന്നാം ടേം)</option>
-                <option value="Term 2">Term 2 (രണ്ടാം ടേം)</option>
-                <option value="Term 3">Term 3 (മൂന്നാം ടേം)</option>
-                <option value="Term 4">Term 4 (നാലാം ടേം)</option>
-                <option value="Monthly Exam">Monthly Exam (മാസപ്പരീക്ഷ)</option>
+                <option value="Term 1">Term 1</option>
+                <option value="Term 2">Term 2</option>
+                <option value="Term 3">Term 3</option>
+                <option value="Term 4">Term 4</option>
+                <option value="Monthly Exam">Monthly Exam</option>
               </select>
             </div>
             <div class="form-group" id="monthSelectGroup" style="display:none;">
-              <label>മാസം തിരഞ്ഞെടുക്കുക (Select Month)</label>
+              <label>Select Month</label>
               <select id="markMonthSelect" onchange="loadStudentMarksForm()">
                 <option value="January">January</option>
                 <option value="February">February</option>
@@ -956,15 +1061,15 @@
           </div>
 
           <div id="marksEntryArea">
-            <p style="color:var(--text-muted); font-size:13.5px;">മാർക്ക് നൽകാൻ മുകളിൽ നിന്ന് ഒരു കുട്ടിയെ തിരഞ്ഞെടുക്കുക.</p>
+            <p style="color:var(--text-muted); font-size:13.5px;">Select a Class and Student above to enter marks.</p>
           </div>
         </div>
 
-        <!-- Saved Progress Card (ONLY THIS PRINTS!) -->
+        <!-- Saved Progress Card (ONLY THIS PRINTS ON SINGLE PAGE!) -->
         <div class="card" id="reportCardContainer" style="display:none;">
           <div class="card-title no-print">
-            <span>3. Student Progress Report Card (പ്രിന്റ് എടുക്കാൻ താഴെയുള്ള ബട്ടൺ അമർത്തുക)</span>
-            <button type="button" class="btn btn-primary btn-sm" onclick="printReportCardOnly()">🖨️ Print Progress Report Only</button>
+            <span>3. Student Progress Report Card</span>
+            <button type="button" class="btn btn-primary btn-sm" onclick="printReportCardOnly()">🖨️ Print Progress Report</button>
           </div>
           <div id="reportCardPrintArea">
             <div id="reportCardContent"></div>
@@ -976,36 +1081,42 @@
       <section id="page6" class="page-section anim-pop">
         <div class="page-head">
           <div>
-            <h1>WhatsApp അറിയിപ്പുകൾ (General & Class-wise Notices)</h1>
-            <p>മീറ്റിംഗ്, പ്രോഗ്രാം, പൊതുവായ അറിയിപ്പുകൾ എല്ലാവർക്കും ഒറ്റ ക്ലിക്കിലോ ഓരോരുത്തർക്കും വെവ്വേറെയോ അയക്കാം.</p>
+            <h1>WhatsApp Notification Center</h1>
+            <p>Send general announcements, meetings, or programs to all parents, a specific class, or a single student.</p>
           </div>
           <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
         </div>
 
         <div class="card">
-          <div class="card-title">1. അറിയിപ്പ് തയ്യാറാക്കുക (Select Template & Class)</div>
+          <div class="card-title">1. Compose Announcement & Select Recipients</div>
           <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
-            <button type="button" class="btn btn-outline btn-sm" onclick="applyWaTemplate('meeting')">📅 രക്ഷാകർതൃ യോഗം (Meeting)</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="applyWaTemplate('program')">🕌 മദ്രസ പ്രോഗ്രാം (Program)</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="applyWaTemplate('holiday')">📢 അവധി അറിയിപ്പ് (Holiday)</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="applyWaTemplate('exam')">📝 പരീക്ഷാ അറിയിപ്പ് (Exam)</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyWaTemplate('meeting')">📅 PTA Meeting</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyWaTemplate('program')">🕌 Madrasa Program</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyWaTemplate('holiday')">📢 Holiday Notice</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="applyWaTemplate('exam')">📝 Exam Notice</button>
           </div>
 
           <div class="form-grid" style="margin-bottom:12px;">
             <div class="form-group">
-              <label>ഏത് ക്ലാസ്സിലേക്ക്? (Target Class)</label>
-              <select id="waTargetClass" onchange="renderWaRecipients()">
-                <option value="ALL">എല്ലാ ക്ലാസ്സുകളിലേക്കും (All Classes)</option>
+              <label>Filter by Class</label>
+              <select id="waTargetClass" onchange="populateWaStudentDropdown(); renderWaRecipients()">
+                <option value="ALL">All Classes</option>
               </select>
             </div>
             <div class="form-group">
-              <label>തീയതി / സമയം (Optional)</label>
-              <input type="text" id="waDateTime" placeholder="ഉദാ: ഞായറാഴ്ച രാവിലെ 10:00 മണിക്ക്" oninput="renderWaRecipients()">
+              <label>Select Individual Student (Optional)</label>
+              <select id="waTargetStudent" onchange="renderWaRecipients()">
+                <option value="ALL">All Students in Selected Class</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Date / Time (Optional)</label>
+              <input type="text" id="waDateTime" placeholder="e.g., Sunday 10:00 AM" oninput="renderWaRecipients()">
             </div>
           </div>
 
           <div class="form-group">
-            <label>മെസ്സേജ് ({student}, {class}, {madrasa} എന്നിവ ഓട്ടോമാറ്റിക്കായി മാറും)</label>
+            <label>Message Content ({student}, {class}, {madrasa} auto-fill per parent)</label>
             <textarea id="waMessageText" rows="4" oninput="renderWaRecipients()">അസ്സലാമു അലൈക്കും,
 {madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:
 പ്രധാന അറിയിപ്പ് ഇവിടെ രേഖപ്പെടുത്തുക.</textarea>
@@ -1014,7 +1125,7 @@
 
         <div class="card">
           <div class="card-title">
-            <span>2. രക്ഷിതാക്കൾക്ക് അയക്കുക (<span id="waRecipientCount">0</span> പേർ)</span>
+            <span>2. Recipients List (<span id="waRecipientCount">0</span>)</span>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
               <button type="button" class="btn btn-success btn-sm" onclick="sendNextInQueue()">⚡ Send Next in Queue</button>
               <button type="button" class="btn btn-outline btn-sm" onclick="resetWaSentStatus()">Reset Sent Status</button>
@@ -1024,6 +1135,7 @@
             <table>
               <thead>
                 <tr>
+                  <th>Photo</th>
                   <th>Student</th>
                   <th>Class</th>
                   <th>Parent</th>
@@ -1040,13 +1152,13 @@
 
     </main>
 
-    <!-- BOTTOM SUMMARY FOOTER (FILLS BOTTOM SPACE WITH USEFUL LIVE STATUS) -->
+    <!-- BOTTOM SUMMARY FOOTER -->
     <footer class="portal-footer no-print">
       <div class="footer-inner">
         <div class="footer-stats">
-          <div class="f-stat">അധ്യയന വർഷം: <strong id="footerYear">2026-2027</strong></div>
-          <div class="f-stat">ആകെ കുട്ടികൾ: <strong id="footerStudents">0</strong></div>
-          <div class="f-stat">വിഷയങ്ങൾ & സ്കിൽ: <strong id="footerSubjects">0</strong></div>
+          <div class="f-stat">Academic Year: <strong id="footerYear">2026-2027</strong></div>
+          <div class="f-stat">Total Students: <strong id="footerStudents">0</strong></div>
+          <div class="f-stat">Subjects & Skills: <strong id="footerSubjects">0</strong></div>
         </div>
         <div style="font-size:12px; color:var(--text-muted); text-align:right;">
           <strong style="color:var(--text);">ATAVA DIGITAL SERVICES & TRADING</strong> • Vazhakkad, Malappuram
@@ -1060,14 +1172,14 @@
     ← Back
   </button>
 
-  <!-- PROOF VIEWER MODAL -->
-  <div id="proofModal" class="modal-backdrop">
-    <div class="modal-box">
+  <!-- PHOTO & PROOF VIEWER MODAL -->
+  <div id="mediaModal" class="modal-backdrop">
+    <div class="modal-box" style="max-width:480px;">
       <div class="card-title">
-        <span id="proofModalTitle">Student Proof Document</span>
-        <button type="button" class="btn btn-outline btn-sm" onclick="closeProofModal()">✕ Close</button>
+        <span id="mediaModalTitle">Student Photo / Proof</span>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeMediaModal()">✕ Close</button>
       </div>
-      <div id="proofModalBody" style="text-align:center;"></div>
+      <div id="mediaModalBody" style="text-align:center;"></div>
     </div>
   </div>
 
@@ -1079,7 +1191,7 @@
         <button type="button" class="btn btn-outline btn-sm" onclick="closeSyncModal()">✕ Close</button>
       </div>
       <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
-        സിസ്റ്റം ഓഫ് ചെയ്താലും ഡാറ്റ നഷ്ടപ്പെടാതിരിക്കാൻ നിങ്ങളുടെ Google Apps Script Web App URL ഇവിടെ നൽകി സേവ് ചെയ്യുക.
+        Connect your Google Apps Script Web App URL to save and restore all Madrasa records safely in Google Sheets.
       </p>
       <div class="form-group" style="margin-bottom:12px;">
         <label>Google Apps Script Web App URL</label>
@@ -1091,7 +1203,7 @@
         <button type="button" class="btn btn-outline btn-sm" onclick="pullFromGoogleSheet()">⬇️ Load from Sheet</button>
       </div>
       <details style="font-size:12.5px; background:var(--surface-soft); padding:10px; border-radius:10px; border:1px solid var(--border);">
-        <summary style="font-weight:700; cursor:pointer;">Google Apps Script കോഡ് കാണാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക</summary>
+        <summary style="font-weight:700; cursor:pointer;">View Google Apps Script Code</summary>
         <pre style="margin-top:8px; overflow-x:auto; font-size:11px; background:#fff; padding:8px; border-radius:8px; border:1px solid var(--border);">function doPost(e) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName("MadrasaBackup") || ss.insertSheet("MadrasaBackup");
@@ -1110,6 +1222,8 @@ function doGet(e) {
   </div>
 
   <script>
+    const ALL_CLASSES = ['Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Hifz'];
+
     let state = {
       institution: { name: '', regNo: '', place: '', mobile: '', email: '', year: '2026-2027' },
       academicYears: ['2026-2027', '2027-2028'],
@@ -1138,7 +1252,7 @@ function doGet(e) {
 
     function loadState() {
       try {
-        const saved = localStorage.getItem('smart_madrasa_v5');
+        const saved = localStorage.getItem('smart_madrasa_v6');
         if (saved) {
           const parsed = JSON.parse(saved);
           state = Object.assign({}, state, parsed);
@@ -1149,9 +1263,9 @@ function doGet(e) {
 
     function saveState() {
       try {
-        localStorage.setItem('smart_madrasa_v5', JSON.stringify(state));
+        localStorage.setItem('smart_madrasa_v6', JSON.stringify(state));
       } catch (e) {
-        alert('Storage limit reached! വലിയ ഫയലുകൾക്ക് പകരം ചെറിയ സൈസ് ഫോട്ടോ ഉപയോഗിക്കുക.');
+        alert('Storage limit reached! Please use smaller photo/document sizes.');
       }
       applyStateToUI();
     }
@@ -1201,11 +1315,13 @@ function doGet(e) {
         }, 60);
       }
       if (pageId === 'page5') {
-        populateStudentDropdowns();
+        populateAllClassDropdowns();
+        populateMarkStudentDropdown();
         renderEvalChips();
       }
       if (pageId === 'page6') {
-        populateClassDropdowns();
+        populateAllClassDropdowns();
+        populateWaStudentDropdown();
         renderWaRecipients();
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1244,18 +1360,18 @@ function doGet(e) {
       state.activeYear = document.getElementById('activeYearSelect').value;
       state.institution.year = state.activeYear;
       saveState();
-      showToast(`അധ്യയന വർഷം ${state.activeYear} ലേക്ക് മാറ്റി!`);
+      showToast(`Academic Year changed to ${state.activeYear}`);
     }
 
     function addNewAcademicYear() {
-      const yr = prompt('പുതിയ അധ്യയന വർഷം നൽകുക (ഉദാ: 2027-2028):');
+      const yr = prompt('Enter New Academic Year (e.g., 2027-2028):');
       if (!yr || !yr.trim()) return;
       const clean = yr.trim();
       if (!state.academicYears.includes(clean)) state.academicYears.push(clean);
       state.activeYear = clean;
       state.institution.year = clean;
       saveState();
-      showToast(`പുതിയ വർഷം ${clean} ചേർത്തു!`);
+      showToast(`Added Academic Year ${clean}`);
     }
 
     function applyStateToUI() {
@@ -1265,10 +1381,10 @@ function doGet(e) {
       document.getElementById('topMadrasaName').textContent = mName;
       document.getElementById('topMadrasaSub').textContent = inst.regNo
         ? `Reg: ${inst.regNo} • ${inst.place || ''} • ${inst.mobile || ''}`
-        : 'Institution & Academic Management';
+        : 'Academic & Student Administration System';
       document.getElementById('rulesPrintHeader').textContent = inst.name
-        ? `${inst.name} - നിയമങ്ങളും ചട്ടങ്ങളും`
-        : 'മദ്രസ നിയമാവലി';
+        ? `${inst.name} - Rules & Regulations`
+        : 'Madrasa Rules & Regulations';
 
       document.getElementById('instName').value = inst.name || '';
       document.getElementById('instReg').value = inst.regNo || '';
@@ -1279,8 +1395,9 @@ function doGet(e) {
       document.getElementById('scriptUrlInput').value = state.scriptUrl || '';
 
       renderYearDropdown();
-      populateClassDropdowns();
-      populateStudentDropdowns();
+      populateAllClassDropdowns();
+      populateMarkStudentDropdown();
+      populateWaStudentDropdown();
       renderStudentsTable();
       renderRules();
       renderEvalChips();
@@ -1306,10 +1423,10 @@ function doGet(e) {
         year: yr
       };
       saveState();
-      showToast('സ്ഥാപനത്തിന്റെ വിവരങ്ങൾ സേവ് ചെയ്തു!');
+      showToast('Institution details saved!');
     }
 
-    // Photo & Proof Compress/Upload
+    // Photo & Proof Upload
     function handlePhotoUpload(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -1318,13 +1435,13 @@ function doGet(e) {
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          const maxSide = 180;
+          const maxSide = 280;
           const scale = Math.min(maxSide / img.width, maxSide / img.height, 1);
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
           canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-          tempPhotoData = canvas.toDataURL('image/jpeg', 0.8);
-          document.getElementById('stPhotoPreview').innerHTML = `<img src="${tempPhotoData}" style="width:100%; height:100%; border-radius:10px; object-fit:cover;">`;
+          tempPhotoData = canvas.toDataURL('image/jpeg', 0.85);
+          document.getElementById('stPhotoPreview').innerHTML = `<img src="${tempPhotoData}" style="width:100%; height:100%; object-fit:cover;">`;
         };
         img.src = evt.target.result;
       };
@@ -1341,12 +1458,12 @@ function doGet(e) {
           const img = new Image();
           img.onload = function() {
             const canvas = document.createElement('canvas');
-            const maxW = 750;
+            const maxW = 800;
             const scale = Math.min(maxW / img.width, 1);
             canvas.width = img.width * scale;
             canvas.height = img.height * scale;
             canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-            tempProofData = canvas.toDataURL('image/jpeg', 0.75);
+            tempProofData = canvas.toDataURL('image/jpeg', 0.78);
             document.getElementById('stProofStatus').textContent = '✓ Attached: ' + tempProofName;
           };
           img.src = evt.target.result;
@@ -1358,19 +1475,30 @@ function doGet(e) {
       reader.readAsDataURL(file);
     }
 
+    function viewStudentPhoto(stId) {
+      const st = state.students.find(s => s.id === stId);
+      if (!st || !st.photo) return;
+      document.getElementById('mediaModalTitle').textContent = `${st.name} (${st.admNo} • ${st.studentClass})`;
+      document.getElementById('mediaModalBody').innerHTML = `
+        <img src="${st.photo}" style="width:240px; height:240px; object-fit:cover; border-radius:16px; border:2px solid var(--border); margin-bottom:12px;">
+        <div style="font-size:13px; color:var(--text-muted);">Parent: <strong>${st.parentName}</strong> • Mobile: ${st.mobile}</div>
+      `;
+      document.getElementById('mediaModal').classList.add('open');
+    }
+
     function viewStudentProof(stId) {
       const st = state.students.find(s => s.id === stId);
       if (!st || !st.proofData) return;
-      document.getElementById('proofModalTitle').textContent = `${st.name} - Proof (${st.proofName || 'Document'})`;
-      const body = document.getElementById('proofModalBody');
+      document.getElementById('mediaModalTitle').textContent = `${st.name} - ID Proof (${st.proofName || 'Document'})`;
+      const body = document.getElementById('mediaModalBody');
       if (st.proofData.startsWith('data:application/pdf')) {
-        body.innerHTML = `<iframe src="${st.proofData}" style="width:100%; height:450px; border:none;"></iframe>`;
+        body.innerHTML = `<iframe src="${st.proofData}" style="width:100%; height:440px; border:none;"></iframe>`;
       } else {
         body.innerHTML = `<img src="${st.proofData}" style="max-width:100%; border-radius:10px; border:1px solid var(--border);">`;
       }
-      document.getElementById('proofModal').classList.add('open');
+      document.getElementById('mediaModal').classList.add('open');
     }
-    function closeProofModal() { document.getElementById('proofModal').classList.remove('open'); }
+    function closeMediaModal() { document.getElementById('mediaModal').classList.remove('open'); }
 
     // Page 3: Signature Canvas
     const canvasInitialized = {};
@@ -1469,7 +1597,7 @@ function doGet(e) {
       state.students.push(student);
       saveState();
       resetStudentForm();
-      showToast(`${student.name}-ന്റെ വിവരങ്ങൾ സേവ് ചെയ്തു!`);
+      showToast(`${student.name} registered successfully!`);
     }
 
     function resetStudentForm() {
@@ -1485,23 +1613,21 @@ function doGet(e) {
     }
 
     function deleteStudent(id) {
-      if (!confirm('ഈ കുട്ടിയുടെ വിവരങ്ങൾ നീക്കം ചെയ്യണോ?')) return;
+      if (!confirm('Are you sure you want to delete this student record?')) return;
       state.students = state.students.filter(s => s.id !== id);
       saveState();
-      showToast('വിവരങ്ങൾ നീക്കം ചെയ്തു.');
+      showToast('Student record deleted.');
     }
 
-    function populateClassDropdowns() {
-      const classes = ['Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Hifz'];
-      const fSel = document.getElementById('filterClassSelect');
-      const wSel = document.getElementById('waTargetClass');
-      const curF = fSel.value || 'ALL';
-      const curW = wSel.value || 'ALL';
-
-      fSel.innerHTML = '<option value="ALL">All Classes</option>' + classes.map(c => `<option value="${c}">${c}</option>`).join('');
-      wSel.innerHTML = '<option value="ALL">എല്ലാ ക്ലാസ്സുകളിലേക്കും (All Classes)</option>' + classes.map(c => `<option value="${c}">${c}</option>`).join('');
-      fSel.value = curF;
-      wSel.value = curW;
+    function populateAllClassDropdowns() {
+      const ids = ['filterClassSelect', 'markClassFilter', 'waTargetClass'];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const cur = el.value || 'ALL';
+        el.innerHTML = '<option value="ALL">All Classes</option>' + ALL_CLASSES.map(c => `<option value="${c}">${c}</option>`).join('');
+        el.value = cur;
+      });
     }
 
     function renderStudentsTable() {
@@ -1519,7 +1645,7 @@ function doGet(e) {
       document.getElementById('studentCountBadge').textContent = filtered.length;
 
       if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:20px;">ഈ വർഷത്തിൽ കുട്ടികളെ ചേർത്തിട്ടില്ല. മുകളിലെ ഫോം വഴി ചേർക്കുക.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:20px;">No students found for this academic year. Use the form above to register.</td></tr>';
         return;
       }
 
@@ -1527,8 +1653,8 @@ function doGet(e) {
         <tr>
           <td>
             ${s.photo
-              ? `<img src="${s.photo}" style="width:44px; height:44px; border-radius:10px; object-fit:cover; border:1px solid var(--border);">`
-              : `<div style="width:44px; height:44px; border-radius:10px; background:var(--surface-soft); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--text-muted);">No Photo</div>`
+              ? `<img src="${s.photo}" onclick="viewStudentPhoto('${s.id}')" title="Click to enlarge photo" class="clickable-photo" style="width:48px; height:48px; border-radius:10px; object-fit:cover; border:1.5px solid var(--border-strong);">`
+              : `<div style="width:48px; height:48px; border-radius:10px; background:var(--surface-soft); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:10.5px; color:var(--text-muted);">No Photo</div>`
             }
           </td>
           <td>Sl: ${s.slNo}<br><strong>${s.admNo}</strong></td>
@@ -1564,7 +1690,7 @@ function doGet(e) {
       state.rules.push(inp.value.trim());
       inp.value = '';
       saveState();
-      showToast('പുതിയ നിയമം ചേർത്തു!');
+      showToast('New rule added!');
     }
 
     function deleteRule(idx) {
@@ -1575,7 +1701,7 @@ function doGet(e) {
     function renderRules() {
       const box = document.getElementById('rulesListContainer');
       if (!state.rules.length) {
-        box.innerHTML = '<p style="color:var(--text-muted);">നിയമങ്ങൾ ഒന്നും ചേർത്തിട്ടില്ല.</p>';
+        box.innerHTML = '<p style="color:var(--text-muted);">No rules configured yet.</p>';
         return;
       }
       box.innerHTML = state.rules.map((r, i) => `
@@ -1621,7 +1747,7 @@ function doGet(e) {
       document.getElementById('evalItemName').value = '';
       saveState();
       loadStudentMarksForm();
-      showToast(`${name} ചേർത്തു!`);
+      showToast(`${name} added!`);
     }
 
     function removeEvalItem(id) {
@@ -1640,13 +1766,26 @@ function doGet(e) {
       `).join('');
     }
 
-    function populateStudentDropdowns() {
+    function populateMarkStudentDropdown() {
       const sel = document.getElementById('markStudentSelect');
+      const clsFilter = document.getElementById('markClassFilter').value || 'ALL';
       const cur = sel.value;
-      const yearStudents = state.students.filter(s => (s.year || state.activeYear) === state.activeYear);
+
+      const filteredStudents = state.students.filter(s => {
+        const matchYear = (s.year || state.activeYear) === state.activeYear;
+        const matchCls = clsFilter === 'ALL' || s.studentClass === clsFilter;
+        return matchYear && matchCls;
+      });
+
       sel.innerHTML = '<option value="">-- Select Student --</option>' +
-        yearStudents.map(s => `<option value="${s.id}">${s.admNo} - ${s.name} (${s.studentClass})</option>`).join('');
-      sel.value = cur;
+        filteredStudents.map(s => `<option value="${s.id}">${s.admNo} - ${s.name} (${s.studentClass})</option>`).join('');
+
+      if (filteredStudents.some(s => s.id === cur)) {
+        sel.value = cur;
+      } else {
+        sel.value = '';
+        loadStudentMarksForm();
+      }
     }
 
     function calculateGrade(pct) {
@@ -1664,7 +1803,7 @@ function doGet(e) {
       const area = document.getElementById('marksEntryArea');
 
       if (!stId) {
-        area.innerHTML = '<p style="color:var(--text-muted); font-size:13.5px;">മാർക്ക് നൽകാൻ മുകളിൽ നിന്ന് ഒരു കുട്ടിയെ തിരഞ്ഞെടുക്കുക.</p>';
+        area.innerHTML = '<p style="color:var(--text-muted); font-size:13.5px;">Select a Class and Student above to enter marks.</p>';
         document.getElementById('reportCardContainer').style.display = 'none';
         return;
       }
@@ -1699,11 +1838,11 @@ function doGet(e) {
             </tbody>
           </table>
         </div>
-        <div style="margin-top:14px; display:flex; gap:14px; align-items:center; flex-wrap:wrap; background:var(--surface-soft); padding:12px; border-radius:10px;">
-          <div><strong>Total:</strong> <span id="liveTotalMark">0 / 0</span></div>
+        <div style="margin-top:14px; display:flex; gap:14px; align-items:center; flex-wrap:wrap; background:var(--surface-soft); padding:12px 14px; border-radius:10px; border:1px solid var(--border);">
+          <div><strong>Total Obtained:</strong> <span id="liveTotalMark" style="color:var(--primary); font-weight:800;">0</span></div>
           <div>
             <strong>Grade:</strong>
-            <select id="liveGradeSelect" style="padding:6px 10px; border:1px solid var(--border-strong); border-radius:8px;">
+            <select id="liveGradeSelect" style="padding:6px 10px; border:1px solid var(--border-strong); border-radius:8px; font-weight:700;">
               <option value="A+">A+</option>
               <option value="A">A</option>
               <option value="B+">B+</option>
@@ -1732,7 +1871,7 @@ function doGet(e) {
       });
       const pct = max > 0 ? (got / max) * 100 : 0;
       const el = document.getElementById('liveTotalMark');
-      if (el) el.textContent = `${got} / ${max} (${pct.toFixed(1)}%)`;
+      if (el) el.textContent = `${got} (${pct.toFixed(1)}%)`;
       const gSel = document.getElementById('liveGradeSelect');
       if (gSel) gSel.value = calculateGrade(pct);
     }
@@ -1755,7 +1894,7 @@ function doGet(e) {
       };
       saveState();
       renderReportCard(stId);
-      showToast(`${term} മാർക്ക് സേവ് ചെയ്തു!`);
+      showToast(`${term} marks saved!`);
     }
 
     function renderReportCard(stId) {
@@ -1775,7 +1914,7 @@ function doGet(e) {
 
       const maxTotal = state.evalItems.reduce((acc, it) => acc + (parseFloat(it.max) || 0), 0);
 
-      // Calculate Term-wise Totals
+      // Clean Term Totals (Obtained mark only, since Max Mark column is already at the start)
       const colTotals = columns.map(col => {
         const rec = state.marks[col.key];
         if (!rec || !rec.scores) return null;
@@ -1791,76 +1930,71 @@ function doGet(e) {
       });
 
       document.getElementById('reportCardContent').innerHTML = `
-        <div style="text-align:center; border-bottom:2px solid #0f172a; padding-bottom:10px; margin-bottom:14px;">
-          <h2 style="color:#0f172a; font-size:21px;">${state.institution.name || 'SMART MADRASA'}</h2>
+        <div style="text-align:center; border-bottom:2px solid #0f172a; padding-bottom:10px; margin-bottom:12px;">
+          <h2 style="color:#0f172a; font-size:21px; font-weight:800;">${state.institution.name || 'SMART MADRASA'}</h2>
           <p style="font-size:12.5px; color:#334155;">${state.institution.place || ''} ${state.institution.regNo ? '• Reg No: ' + state.institution.regNo : ''} ${state.institution.mobile ? '• Ph: ' + state.institution.mobile : ''}</p>
-          <div style="display:inline-block; margin-top:6px; padding:3px 14px; border:1px solid #0f172a; border-radius:999px; font-size:12px; font-weight:800;">
-            PROGRESS REPORT CARD (${state.activeYear})
+          <div style="display:inline-block; margin-top:6px; padding:3px 16px; border:1.5px solid #0f172a; border-radius:999px; font-size:11.5px; font-weight:800; letter-spacing:0.04em;">
+            PROGRESS REPORT CARD • ${state.activeYear}
           </div>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; font-size:13.5px; background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #cbd5e1;">
-          <div style="line-height:1.7;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px; font-size:13px; background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #cbd5e1;">
+          <div style="line-height:1.75;">
             <div><strong>Student Name:</strong> ${st.name}</div>
             <div><strong>Admission No:</strong> ${st.admNo} &nbsp;|&nbsp; <strong>Class:</strong> ${st.studentClass}</div>
             <div><strong>Parent Name:</strong> ${st.parentName} &nbsp;|&nbsp; <strong>Contact:</strong> ${st.mobile}</div>
           </div>
-          ${st.photo ? `<img src="${st.photo}" style="width:68px; height:68px; border-radius:10px; object-fit:cover; border:1px solid #94a3b8;">` : ''}
+          ${st.photo ? `<img src="${st.photo}" style="width:66px; height:66px; border-radius:10px; object-fit:cover; border:1px solid #94a3b8;">` : ''}
         </div>
 
-        <div class="table-wrap">
-          <table style="border:1px solid #cbd5e1;">
-            <thead>
-              <tr style="background:#f1f5f9;">
-                <th style="border:1px solid #cbd5e1;">Subject / Madrasa Skill</th>
-                <th style="border:1px solid #cbd5e1; text-align:center;">Max</th>
-                ${columns.map(c => `<th style="border:1px solid #cbd5e1; text-align:center;">${c.label}</th>`).join('')}
-              </tr>
-            </thead>
-            <tbody>
-              ${state.evalItems.map(it => `
-                <tr>
-                  <td style="border:1px solid #cbd5e1;"><strong>${it.name}</strong> <span style="font-size:11px; color:#64748b;">(${it.type})</span></td>
-                  <td style="border:1px solid #cbd5e1; text-align:center;">${it.max}</td>
-                  ${columns.map(c => {
-                    const rec = state.marks[c.key];
-                    const val = rec && rec.scores[it.id] !== undefined ? rec.scores[it.id] : '-';
-                    return `<td style="border:1px solid #cbd5e1; text-align:center;">${val}</td>`;
-                  }).join('')}
-                </tr>
-              `).join('')}
-              <tr style="background:#f8fafc; font-weight:800;">
-                <td style="border:1px solid #cbd5e1;">TOTAL MARKS</td>
-                <td style="border:1px solid #cbd5e1; text-align:center;">${maxTotal}</td>
-                ${colTotals.map(tot => `<td style="border:1px solid #cbd5e1; text-align:center; color:#1d4ed8;">${tot !== null ? tot + ' / ' + maxTotal : '-'}</td>`).join('')}
-              </tr>
-              <tr style="background:#f1f5f9; font-weight:800;">
-                <td colspan="2" style="border:1px solid #cbd5e1;">GRADE</td>
+        <table style="width:100%; border-collapse:collapse; border:1px solid #cbd5e1; font-size:13px;">
+          <thead>
+            <tr style="background:#f1f5f9;">
+              <th style="border:1px solid #cbd5e1; padding:8px 10px;">Subject / Madrasa Skill</th>
+              <th style="border:1px solid #cbd5e1; padding:8px 10px; text-align:center;">Max Mark</th>
+              ${columns.map(c => `<th style="border:1px solid #cbd5e1; padding:8px 10px; text-align:center;">${c.label}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${state.evalItems.map(it => `
+              <tr>
+                <td style="border:1px solid #cbd5e1; padding:7px 10px;"><strong>${it.name}</strong> <span style="font-size:11px; color:#64748b;">(${it.type})</span></td>
+                <td style="border:1px solid #cbd5e1; padding:7px 10px; text-align:center;">${it.max}</td>
                 ${columns.map(c => {
                   const rec = state.marks[c.key];
-                  return `<td style="border:1px solid #cbd5e1; text-align:center;">${rec ? rec.grade : '-'}</td>`;
+                  const val = rec && rec.scores[it.id] !== undefined ? rec.scores[it.id] : '-';
+                  return `<td style="border:1px solid #cbd5e1; padding:7px 10px; text-align:center;">${val}</td>`;
                 }).join('')}
               </tr>
-            </tbody>
-          </table>
-        </div>
+            `).join('')}
+            <tr style="background:#f8fafc; font-weight:800;">
+              <td style="border:1px solid #cbd5e1; padding:8px 10px;">TOTAL MARKS</td>
+              <td style="border:1px solid #cbd5e1; padding:8px 10px; text-align:center;">${maxTotal}</td>
+              ${colTotals.map(tot => `<td style="border:1px solid #cbd5e1; padding:8px 10px; text-align:center; color:#1d4ed8;">${tot !== null ? tot : '-'}</td>`).join('')}
+            </tr>
+            <tr style="background:#f1f5f9; font-weight:800;">
+              <td colspan="2" style="border:1px solid #cbd5e1; padding:8px 10px;">GRADE</td>
+              ${columns.map(c => {
+                const rec = state.marks[c.key];
+                return `<td style="border:1px solid #cbd5e1; padding:8px 10px; text-align:center;">${rec ? rec.grade : '-'}</td>`;
+              }).join('')}
+            </tr>
+          </tbody>
+        </table>
 
-        <!-- BLANK SIGNATURE BOXES FOR SIGNING WHEN HANDING OVER / SHOWING REPORT -->
-        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:34px; padding-top:10px; text-align:center; font-size:12.5px;">
+        <!-- BLANK SIGNATURE BOXES FOR SIGNING WHEN HANDING OVER REPORT -->
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:28px; padding-top:8px; text-align:center; font-size:12px;">
           <div>
-            <div style="height:46px; border-bottom:1.5px dashed #64748b; margin:0 12px 6px;"></div>
-            <strong>Parent Signature</strong><br>
-            <span style="font-size:11px; color:#64748b;">(രക്ഷിതാവിന്റെ ഒപ്പ്)</span>
+            <div style="height:42px; border-bottom:1.5px dashed #64748b; margin:0 12px 5px;"></div>
+            <strong>Parent Signature</strong>
           </div>
           <div>
-            <div style="height:46px; border-bottom:1.5px dashed #64748b; margin:0 12px 6px;"></div>
-            <strong>Class Teacher Signature</strong><br>
-            <span style="font-size:11px; color:#64748b;">(ക്ലാസ് ഉസ്താദിന്റെ ഒപ്പ്)</span>
+            <div style="height:42px; border-bottom:1.5px dashed #64748b; margin:0 12px 5px;"></div>
+            <strong>Class Teacher Signature</strong>
           </div>
           <div>
-            <div style="height:46px; border-bottom:1.5px dashed #64748b; margin:0 12px 6px;"></div>
-            <strong>Sadar Ustad / Principal</strong><br>
-            <span style="font-size:11px; color:#64748b;">(സദർ ഉസ്താദിന്റെ ഒപ്പും സീലും)</span>
+            <div style="height:42px; border-bottom:1.5px dashed #64748b; margin:0 12px 5px;"></div>
+            <strong>Sadar Ustad / Principal</strong>
           </div>
         </div>
       `;
@@ -1871,7 +2005,7 @@ function doGet(e) {
       window.print();
     }
 
-    // Page 6: WhatsApp Notices
+    // Page 6: WhatsApp Notices (Class-wise + Individual Student Select)
     function applyWaTemplate(type) {
       const dt = document.getElementById('waDateTime').value.trim() || '[തീയതിയും സമയവും]';
       const templates = {
@@ -1882,6 +2016,24 @@ function doGet(e) {
       };
       document.getElementById('waMessageText').value = templates[type] || '';
       renderWaRecipients();
+    }
+
+    function populateWaStudentDropdown() {
+      const cls = document.getElementById('waTargetClass').value || 'ALL';
+      const stSel = document.getElementById('waTargetStudent');
+      const cur = stSel.value || 'ALL';
+
+      const matching = state.students.filter(s => {
+        const matchYear = (s.year || state.activeYear) === state.activeYear;
+        const matchCls = cls === 'ALL' || s.studentClass === cls;
+        return matchYear && matchCls;
+      });
+
+      stSel.innerHTML = '<option value="ALL">All Students in Selected Class</option>' +
+        matching.map(s => `<option value="${s.id}">${s.admNo} - ${s.name} (${s.studentClass})</option>`).join('');
+
+      if (matching.some(s => s.id === cur)) stSel.value = cur;
+      else stSel.value = 'ALL';
     }
 
     function buildPersonalMessage(student) {
@@ -1900,11 +2052,13 @@ function doGet(e) {
     }
 
     function getFilteredWaStudents() {
-      const target = document.getElementById('waTargetClass').value || 'ALL';
+      const targetCls = document.getElementById('waTargetClass').value || 'ALL';
+      const targetSt = document.getElementById('waTargetStudent').value || 'ALL';
       return state.students.filter(s => {
         const matchYear = (s.year || state.activeYear) === state.activeYear;
-        const matchCls = target === 'ALL' || s.studentClass === target;
-        return matchYear && matchCls;
+        const matchCls = targetCls === 'ALL' || s.studentClass === targetCls;
+        const matchSt = targetSt === 'ALL' || s.id === targetSt;
+        return matchYear && matchCls && matchSt;
       });
     }
 
@@ -1914,7 +2068,7 @@ function doGet(e) {
       const tbody = document.getElementById('waTableBody');
 
       if (!list.length) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:18px;">ഈ ക്ലാസ്സിൽ കുട്ടികളെ ചേർത്തിട്ടില്ല.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:18px;">No students found for this filter.</td></tr>';
         return;
       }
 
@@ -1922,7 +2076,13 @@ function doGet(e) {
         const sent = !!waSentMap[s.id];
         return `
           <tr>
-            <td><strong>${s.name}</strong></td>
+            <td>
+              ${s.photo
+                ? `<img src="${s.photo}" onclick="viewStudentPhoto('${s.id}')" class="clickable-photo" style="width:38px; height:38px; border-radius:9px; object-fit:cover;">`
+                : `<div style="width:38px; height:38px; border-radius:9px; background:var(--surface-soft); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:10px; color:var(--text-muted);">-</div>`
+              }
+            </td>
+            <td><strong>${s.name}</strong><br><span style="font-size:11px; color:var(--text-muted);">${s.admNo}</span></td>
             <td><span class="badge badge-blue">${s.studentClass}</span></td>
             <td>${s.parentName}</td>
             <td>${s.whatsapp || s.mobile}</td>
@@ -1951,7 +2111,7 @@ function doGet(e) {
       const list = getFilteredWaStudents();
       const next = list.find(s => !waSentMap[s.id]);
       if (!next) {
-        showToast('ലിസ്റ്റിലുള്ള എല്ലാവർക്കും അയച്ചു കഴിഞ്ഞു!');
+        showToast('All recipients in the list have been notified!');
         return;
       }
       sendWaToStudent(next.id);
@@ -1960,7 +2120,7 @@ function doGet(e) {
     function resetWaSentStatus() {
       waSentMap = {};
       renderWaRecipients();
-      showToast('Sent status റീസെറ്റ് ചെയ്തു.');
+      showToast('Sent status reset.');
     }
 
     // Backup & Google Sheet Sync
@@ -1970,7 +2130,7 @@ function doGet(e) {
       a.href = URL.createObjectURL(blob);
       a.download = 'madrasa-backup-' + new Date().toISOString().slice(0, 10) + '.json';
       a.click();
-      showToast('Backup ഫയൽ ഡൗൺലോഡ് ചെയ്തു!');
+      showToast('Backup file downloaded!');
     }
 
     function openSyncModal() { document.getElementById('syncModal').classList.add('open'); }
@@ -1978,28 +2138,28 @@ function doGet(e) {
     function saveScriptUrl() {
       state.scriptUrl = document.getElementById('scriptUrlInput').value.trim();
       saveState();
-      showToast('Google Script URL സേവ് ചെയ്തു!');
+      showToast('Google Script URL saved!');
     }
     function pushToGoogleSheet() {
-      if (!state.scriptUrl) { showToast('ആദ്യം Script URL നൽകുക!'); return; }
-      showToast('Google Sheet-ലേക്ക് അയക്കുന്നു...');
+      if (!state.scriptUrl) { showToast('Please enter Script URL first!'); return; }
+      showToast('Syncing data to Google Sheet...');
       fetch(state.scriptUrl, { method: 'POST', body: JSON.stringify(state) })
-        .then(() => showToast('Google Sheet-ൽ വിജയകരമായി സേവ് ചെയ്തു!'))
-        .catch(() => showToast('Sync പൂർത്തിയായി (Check Sheet).'));
+        .then(() => showToast('Successfully saved to Google Sheet!'))
+        .catch(() => showToast('Sync request sent (Check Google Sheet).'));
     }
     function pullFromGoogleSheet() {
-      if (!state.scriptUrl) { showToast('ആദ്യം Script URL നൽകുക!'); return; }
-      showToast('ഡാറ്റ ലോഡ് ചെയ്യുന്നു...');
+      if (!state.scriptUrl) { showToast('Please enter Script URL first!'); return; }
+      showToast('Loading data from Google Sheet...');
       fetch(state.scriptUrl)
         .then(r => r.json())
         .then(data => {
           if (data && data.institution) {
             state = Object.assign({}, state, data);
             saveState();
-            showToast('Google Sheet-ൽ നിന്ന് ഡാറ്റ ലോഡ് ചെയ്തു!');
+            showToast('Data loaded from Google Sheet!');
           }
         })
-        .catch(() => showToast('ഡാറ്റ ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല.'));
+        .catch(() => showToast('Could not load data from Sheet.'));
     }
 
     window.addEventListener('DOMContentLoaded', loadState);
