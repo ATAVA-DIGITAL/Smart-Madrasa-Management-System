@@ -1113,13 +1113,19 @@
               <label>Date / Time (Optional)</label>
               <input type="text" id="waDateTime" placeholder="e.g., Sunday 10:00 AM" oninput="renderWaRecipients()">
             </div>
+            <div class="form-group">
+              <label>Venue / Address (സ്ഥലം / വിലാസം)</label>
+              <input type="text" id="waVenueAddress" placeholder="e.g., Madrasa Auditorium, Vazhakkad" oninput="renderWaRecipients()">
+            </div>
           </div>
 
           <div class="form-group">
-            <label>Message Content ({student}, {class}, {madrasa} auto-fill per parent)</label>
-            <textarea id="waMessageText" rows="4" oninput="renderWaRecipients()">അസ്സലാമു അലൈക്കും,
+            <label>Message Content ({student}, {class}, {madrasa}, {venue} auto-fill per parent)</label>
+            <textarea id="waMessageText" rows="5" oninput="renderWaRecipients()">അസ്സലാമു അലൈക്കും,
 {madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:
-പ്രധാന അറിയിപ്പ് ഇവിടെ രേഖപ്പെടുത്തുക.</textarea>
+പ്രധാന അറിയിപ്പ് ഇവിടെ രേഖപ്പെടുത്തുക.
+
+സ്ഥലം / വിലാസം: {venue}</textarea>
           </div>
         </div>
 
@@ -1127,6 +1133,7 @@
           <div class="card-title">
             <span>2. Recipients List (<span id="waRecipientCount">0</span>)</span>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="sendAllInList()">🚀 Send All in List</button>
               <button type="button" class="btn btn-success btn-sm" onclick="sendNextInQueue()">⚡ Send Next in Queue</button>
               <button type="button" class="btn btn-outline btn-sm" onclick="resetWaSentStatus()">Reset Sent Status</button>
             </div>
@@ -1252,7 +1259,7 @@ function doGet(e) {
 
     function loadState() {
       try {
-        const saved = localStorage.getItem('smart_madrasa_v7');
+        const saved = localStorage.getItem('smart_madrasa_v8');
         if (saved) {
           const parsed = JSON.parse(saved);
           state = Object.assign({}, state, parsed);
@@ -1263,7 +1270,7 @@ function doGet(e) {
 
     function saveState() {
       try {
-        localStorage.setItem('smart_madrasa_v7', JSON.stringify(state));
+        localStorage.setItem('smart_madrasa_v8', JSON.stringify(state));
       } catch (e) {
         alert('Storage limit reached! Please use smaller photo/document sizes.');
       }
@@ -1766,6 +1773,7 @@ function doGet(e) {
       `).join('');
     }
 
+    // Student Name shown cleanly in Mark Entry dropdown
     function populateMarkStudentDropdown() {
       const sel = document.getElementById('markStudentSelect');
       const clsFilter = document.getElementById('markClassFilter').value || 'ALL';
@@ -1778,7 +1786,7 @@ function doGet(e) {
       });
 
       sel.innerHTML = '<option value="">-- Select Student --</option>' +
-        filteredStudents.map(s => `<option value="${s.id}">${s.admNo} - ${s.name} (${s.studentClass})</option>`).join('');
+        filteredStudents.map(s => `<option value="${s.id}">${s.name} (${s.admNo} • ${s.studentClass})</option>`).join('');
 
       if (filteredStudents.some(s => s.id === cur)) {
         sel.value = cur;
@@ -2021,14 +2029,15 @@ function doGet(e) {
       window.print();
     }
 
-    // Page 6: WhatsApp Notices (Class-wise + Individual Student Select)
+    // Page 6: WhatsApp Notices (Venue Address + Send All in List)
     function applyWaTemplate(type) {
       const dt = document.getElementById('waDateTime').value.trim() || '[തീയതിയും സമയവും]';
+      const venue = document.getElementById('waVenueAddress').value.trim() || (state.institution.place || '[സ്ഥലം / വിലാസം]');
       const templates = {
-        meeting: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:\n${dt} മദ്രസയിൽ വെച്ച് രക്ഷാകർതൃ യോഗം (PTA Meeting) ചേരുന്നതാണ്. എല്ലാവരും കൃത്യസമയത്ത് പങ്കെടുക്കണമെന്ന് അറിയിക്കുന്നു.`,
-        program: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിൽ വെച്ച് ${dt} നടക്കുന്ന പ്രത്യേക മദ്രസ പ്രോഗ്രാമിലേക്ക് {class} വിദ്യാർത്ഥി {student}-നെയും രക്ഷിതാക്കളെയും സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു.`,
-        holiday: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:\n${dt} മദ്രസയ്ക്ക് അവധിയായിരിക്കുമെന്ന് അറിയിക്കുന്നു.`,
-        exam: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} പരീക്ഷകൾ ${dt} ആരംഭിക്കുന്നതാണ്. വിദ്യാർത്ഥി {student}-നെ പരീക്ഷയ്ക്ക് കൃത്യമായി തയ്യാറാക്കി അയക്കണമെന്ന് അറിയിക്കുന്നു.`
+        meeting: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:\n${dt} മദ്രസയിൽ വെച്ച് രക്ഷാകർതൃ യോഗം (PTA Meeting) ചേരുന്നതാണ്. എല്ലാവരും കൃത്യസമയത്ത് പങ്കെടുക്കണമെന്ന് അറിയിക്കുന്നു.\n\nസ്ഥലം / വിലാസം: ${venue}`,
+        program: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിൽ വെച്ച് ${dt} നടക്കുന്ന പ്രത്യേക മദ്രസ പ്രോഗ്രാമിലേക്ക് {class} വിദ്യാർത്ഥി {student}-നെയും രക്ഷിതാക്കളെയും സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു.\n\nസ്ഥലം / വിലാസം: ${venue}`,
+        holiday: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} വിദ്യാർത്ഥി {student}-ന്റെ രക്ഷിതാവിന്റെ ശ്രദ്ധയ്ക്ക്:\n${dt} മദ്രസയ്ക്ക് അവധിയായിരിക്കുമെന്ന് അറിയിക്കുന്നു.\n\nസ്ഥലം / വിലാസം: ${venue}`,
+        exam: `അസ്സലാമു അലൈക്കും,\n{madrasa}-യിലെ {class} പരീക്ഷകൾ ${dt} ആരംഭിക്കുന്നതാണ്. വിദ്യാർത്ഥി {student}-നെ പരീക്ഷയ്ക്ക് കൃത്യമായി തയ്യാറാക്കി അയക്കണമെന്ന് അറിയിക്കുന്നു.\n\nസ്ഥലം / വിലാസം: ${venue}`
       };
       document.getElementById('waMessageText').value = templates[type] || '';
       renderWaRecipients();
@@ -2046,19 +2055,29 @@ function doGet(e) {
       });
 
       stSel.innerHTML = '<option value="ALL">All Students in Selected Class</option>' +
-        matching.map(s => `<option value="${s.id}">${s.admNo} - ${s.name} (${s.studentClass})</option>`).join('');
+        matching.map(s => `<option value="${s.id}">${s.name} (${s.admNo} • ${s.studentClass})</option>`).join('');
 
       if (matching.some(s => s.id === cur)) stSel.value = cur;
       else stSel.value = 'ALL';
     }
 
     function buildPersonalMessage(student) {
-      const raw = document.getElementById('waMessageText').value || '';
+      let msg = document.getElementById('waMessageText').value || '';
       const mName = state.institution.name || 'നമ്മുടെ മദ്രസ';
-      return raw
+      const venueInput = document.getElementById('waVenueAddress').value.trim();
+      const venue = venueInput || state.institution.place || '';
+
+      if (msg.includes('{venue}')) {
+        msg = msg.replace(/\{venue\}/g, venue);
+      } else if (venue) {
+        msg = msg + `\n\nസ്ഥലം / വിലാസം: ${venue}`;
+      }
+
+      return msg
         .replace(/\{student\}/g, student.name)
         .replace(/\{class\}/g, student.studentClass)
-        .replace(/\{madrasa\}/g, mName);
+        .replace(/\{madrasa\}/g, mName)
+        .trim();
     }
 
     function formatPhoneForWa(num) {
@@ -2121,6 +2140,22 @@ function doGet(e) {
       waSentMap[st.id] = true;
       renderWaRecipients();
       window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+    }
+
+    function sendAllInList() {
+      const list = getFilteredWaStudents();
+      if (!list.length) {
+        showToast('No recipients in the list!');
+        return;
+      }
+      if (!confirm(`Send WhatsApp messages to all ${list.length} recipients in the list?`)) return;
+
+      list.forEach((st, idx) => {
+        setTimeout(() => {
+          sendWaToStudent(st.id);
+        }, idx * 900);
+      });
+      showToast(`Sending to ${list.length} parents...`);
     }
 
     function sendNextInQueue() {
