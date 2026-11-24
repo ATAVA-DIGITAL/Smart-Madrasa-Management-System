@@ -148,6 +148,9 @@
           <button onclick="openResetModal()" title="Reset All Data" class="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-red-900/50 hover:bg-red-800 text-red-100 border border-red-400/30">
             Reset
           </button>
+        </div>
+      </div>
+
       <!-- 6-Page Navigation Tabs -->
       <nav class="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0">
         <button onclick="navigateTo('page1')" id="nav-page1" class="nav-btn active whitespace-nowrap px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 bg-goldAccent text-emeraldDark shadow">
@@ -172,6 +175,10 @@
 
       <!-- Desktop Data Controls -->
       <div class="hidden lg:flex items-center gap-2">
+        <button onclick="openGoogleSheetModal()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white border border-goldAccent/50 transition flex items-center gap-1.5">
+          <span>☁️ Google Sheet Sync</span>
+          <span id="sheetSyncBadge" class="w-2 h-2 rounded-full bg-amber-300"></span>
+        </button>
         <button onclick="loadDemoData(true)" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white/10 hover:bg-white/20 text-goldLight border border-goldAccent/40 transition">
           Load Demo Data
         </button>
@@ -180,10 +187,25 @@
         </button>
       </div>
     </div>
+
+    <!-- Mobile Quick Action Strip -->
+    <div class="flex lg:hidden items-center justify-between gap-2 px-3 py-2 bg-emeraldDark/90 border-t border-white/10 text-xs">
+      <button onclick="goBackPage()" class="px-3 py-1 rounded-lg bg-white/15 hover:bg-white/25 text-white font-bold flex items-center gap-1">
+        <span>&larr; Back</span>
+      </button>
+      <div class="flex items-center gap-1.5">
+        <button onclick="openGoogleSheetModal()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold">
+          ☁️ Sheet Sync
+        </button>
+        <button onclick="exportJsonBackup()" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-goldLight font-semibold">
+          Export JSON
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- Main Content Wrapper -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6 pb-20">
 
     <!-- ===================================================================== -->
     <!-- PAGE 1: WELCOME PAGE & NAVIGATION HUB                                 -->
@@ -301,12 +323,17 @@
     <!-- PAGE 2: MADRASA PROFILE & REGISTRATION                                -->
     <!-- ===================================================================== -->
     <section id="page2" class="page-section">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 2 • Institution Identity</span>
-          <h2 class="text-2xl font-extrabold text-slate-900">Madrasa Profile & Registration</h2>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="goBackPage()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-extrabold shadow-2xs transition flex items-center gap-1 shrink-0">
+            <span>&larr; Back</span>
+          </button>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 2 • Institution Identity</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 break-words">Madrasa Profile & Registration</h2>
+          </div>
         </div>
-        <button onclick="navigateTo('page3')" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
+        <button type="button" onclick="navigateTo('page3')" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition shrink-0">
           Next: Student Admission &rarr;
         </button>
       </div>
@@ -341,26 +368,30 @@
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">Mobile Number *</label>
                 <input type="tel" id="instMobile" required placeholder="e.g., +91 98470 12345"
-                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
+                  class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">Email Address *</label>
                 <input type="email" id="instEmail" required placeholder="e.g., office@hidayathulmadrasa.org"
-                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
+                  class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
               </div>
             </div>
 
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Academic Year (Hijri / Gregorian)</label>
               <input type="text" id="instAcademicYear" placeholder="e.g., 2026 - 2027 (1447 - 1448 AH)"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
+                class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep focus:ring-2 focus:ring-emeraldDeep/20 outline-none text-sm" />
             </div>
 
-            <div class="pt-2">
-              <button type="submit" class="w-full py-3 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-sm shadow-md transition">
+            <div class="pt-2 flex flex-col sm:flex-row gap-3">
+              <button type="submit" class="flex-1 py-3 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-sm shadow-md transition">
                 Save Madrasa Profile
               </button>
+              <button type="button" onclick="syncAllToGoogleSheet(false)" class="px-4 py-3 rounded-xl bg-emeraldLight hover:bg-emerald-100 text-emeraldDeep border border-emeraldDeep/30 font-bold text-xs transition">
+                ☁️ Sync to Sheet
+              </button>
             </div>
+            <p id="profileSavedStatus" class="hidden text-xs font-bold text-emeraldDeep bg-emeraldLight/70 px-3.5 py-2 rounded-xl border border-emeraldDeep/20"></p>
           </form>
         </div>
 
@@ -373,29 +404,29 @@
                 <span class="px-2.5 py-0.5 rounded-full bg-goldAccent/20 text-goldLight text-xs font-semibold">Verified Record</span>
               </div>
 
-              <h3 id="previewInstName" class="text-2xl font-extrabold text-white mb-1">
+              <h3 id="previewInstName" class="text-xl sm:text-2xl font-extrabold text-white mb-1 break-words">
                 Hidayathul Islam Madrassa
               </h3>
-              <p id="previewInstPlace" class="text-sm text-goldAccent font-medium mb-6">
+              <p id="previewInstPlace" class="text-sm text-goldAccent font-medium mb-6 break-words">
                 Malappuram, Kerala
               </p>
 
-              <div class="space-y-3 bg-white/10 rounded-xl p-4 border border-white/10 text-sm">
-                <div class="flex justify-between">
-                  <span class="text-emerald-200">Angeegara No:</span>
-                  <span id="previewInstRegNo" class="font-bold text-white">REG-KL-4829</span>
+              <div class="space-y-3 bg-white/10 rounded-xl p-4 border border-white/10 text-xs sm:text-sm">
+                <div class="flex justify-between gap-2">
+                  <span class="text-emerald-200 shrink-0">Angeegara No:</span>
+                  <span id="previewInstRegNo" class="font-bold text-white break-all text-right">REG-KL-4829</span>
                 </div>
-                <div class="flex justify-between">
-                  <span class="text-emerald-200">Mobile:</span>
-                  <span id="previewInstMobile" class="font-semibold text-white">+91 98470 12345</span>
+                <div class="flex justify-between gap-2">
+                  <span class="text-emerald-200 shrink-0">Mobile:</span>
+                  <span id="previewInstMobile" class="font-semibold text-white break-all text-right">+91 98470 12345</span>
                 </div>
-                <div class="flex justify-between">
-                  <span class="text-emerald-200">Email:</span>
-                  <span id="previewInstEmail" class="font-semibold text-white truncate max-w-[200px]">office@hidayathulmadrasa.org</span>
+                <div class="flex justify-between gap-2">
+                  <span class="text-emerald-200 shrink-0">Email:</span>
+                  <span id="previewInstEmail" class="font-semibold text-white break-all text-right">office@hidayathulmadrasa.org</span>
                 </div>
-                <div class="flex justify-between">
-                  <span class="text-emerald-200">Academic Year:</span>
-                  <span id="previewInstYear" class="font-semibold text-goldAccent">2026 - 2027</span>
+                <div class="flex justify-between gap-2">
+                  <span class="text-emerald-200 shrink-0">Academic Year:</span>
+                  <span id="previewInstYear" class="font-semibold text-goldAccent break-words text-right">2026 - 2027</span>
                 </div>
               </div>
             </div>
@@ -412,18 +443,23 @@
     <!-- PAGE 3: STUDENT ADMISSION & DIRECTORY (WITH DIGITAL SIGNATURES)       -->
     <!-- ===================================================================== -->
     <section id="page3" class="page-section">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 3 • Student Records & Verification</span>
-          <h2 class="text-2xl font-extrabold text-slate-900">Student Admission & Digital Signatures</h2>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="goBackPage()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-extrabold shadow-2xs transition flex items-center gap-1 shrink-0">
+            <span>&larr; Back</span>
+          </button>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 3 • Student Records & Verification</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 break-words">Student Admission & Digital Signatures</h2>
+          </div>
         </div>
-        <button onclick="navigateTo('page4')" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
+        <button type="button" onclick="navigateTo('page4')" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition shrink-0">
           Next: Madrasa Rules &rarr;
         </button>
       </div>
 
       <!-- Student Registration Form -->
-      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-6">
+      <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm mb-6">
         <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
           <h3 id="studentFormTitle" class="text-base font-bold text-emeraldDeep">New Student Admission Form</h3>
           <button type="button" id="cancelEditStudentBtn" onclick="resetStudentForm()" class="hidden text-xs font-semibold text-red-600 hover:underline">
@@ -439,22 +475,22 @@
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Serial No (Sl No) *</label>
               <input type="number" id="stuSlNo" required min="1"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm bg-slate-50 font-semibold" />
+                class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm bg-slate-50 font-semibold" />
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Admission Number *</label>
               <input type="text" id="stuAdmNo" required placeholder="e.g., ADM-2026-01"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+                class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Student Full Name *</label>
               <input type="text" id="stuName" required placeholder="e.g., Muhammed Rayyan"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+                class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Class *</label>
               <select id="stuClass" required
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm bg-white">
+                class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm bg-white">
                 <option value="Pre-Primary">Pre-Primary (Busthan)</option>
                 <option value="Class 1">Class 1</option>
                 <option value="Class 2">Class 2</option>
@@ -478,38 +514,38 @@
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Aadhaar Number (12 Digits) *</label>
               <input type="text" id="stuAadhaar" required maxlength="14" oninput="formatAadhaarInput(this)" placeholder="XXXX XXXX XXXX"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm font-mono" />
+                class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm font-mono" />
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Parent / Father Name *</label>
               <input type="text" id="stuParent" required placeholder="e.g., Abdul Kareem"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+                class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Mobile Number *</label>
               <input type="tel" id="stuMobile" required oninput="syncWhatsappIfChecked()" placeholder="e.g., 9847112233"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+                class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
             </div>
             <div>
-              <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center justify-between gap-1 mb-1">
                 <label class="text-xs font-bold text-slate-700">WhatsApp Number *</label>
-                <label class="flex items-center gap-1 text-[11px] text-emeraldDeep font-semibold cursor-pointer">
+                <label class="flex items-center gap-1 text-[11px] text-emeraldDeep font-semibold cursor-pointer shrink-0">
                   <input type="checkbox" id="sameAsMobileCheck" onchange="syncWhatsappIfChecked()" class="rounded text-emeraldDeep" />
-                  Same as Mobile
+                  <span>Same as Mobile</span>
                 </label>
               </div>
               <input type="tel" id="stuWhatsapp" required placeholder="e.g., 9847112233"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
+                class="w-full min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emeraldDeep outline-none text-sm" />
             </div>
           </div>
 
-          <!-- Row 3: Father's Google Sign & Child's Google Sign (Interactive Digital Signature Pads) -->
+          <!-- Row 3: Father's Google Sign & Child's Google Sign (Google Email + Handwritten Signature Canvas) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <!-- Father Signature Box -->
             <div class="bg-creamBg p-4 rounded-2xl border border-slate-200">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <label class="text-xs font-extrabold text-emeraldDeep uppercase tracking-wide">
-                  Father's Google Sign / Digital Signature
+                  Father's Google Sign & Digital Signature
                 </label>
                 <div class="flex items-center gap-1.5">
                   <button type="button" onclick="typeSignature('father')" class="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-700">
@@ -520,8 +556,14 @@
                   </button>
                 </div>
               </div>
-              <div class="border-2 border-dashed border-slate-300 rounded-xl overflow-hidden bg-white">
-                <canvas id="fatherSigCanvas" class="sig-canvas w-full h-28 block"></canvas>
+
+              <div class="mb-2.5">
+                <input type="email" id="fatherGoogleEmail" placeholder="Father's Google Account (e.g., father.name@gmail.com)"
+                  class="w-full min-w-0 px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs focus:border-emeraldDeep outline-none" />
+              </div>
+
+              <div class="border-2 border-dashed border-emeraldDeep/40 rounded-xl overflow-hidden bg-white relative">
+                <canvas id="fatherSigCanvas" class="sig-canvas w-full h-32 block"></canvas>
               </div>
               <p class="text-[11px] text-slate-500 mt-1.5">Draw signature above using finger or mouse, or click "Auto-Sign Text".</p>
             </div>
@@ -530,7 +572,7 @@
             <div class="bg-creamBg p-4 rounded-2xl border border-slate-200">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <label class="text-xs font-extrabold text-emeraldDeep uppercase tracking-wide">
-                  Child's Google Sign / Digital Signature
+                  Child's Google Sign & Digital Signature
                 </label>
                 <div class="flex items-center gap-1.5">
                   <button type="button" onclick="typeSignature('child')" class="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-700">
@@ -541,14 +583,21 @@
                   </button>
                 </div>
               </div>
-              <div class="border-2 border-dashed border-slate-300 rounded-xl overflow-hidden bg-white">
-                <canvas id="childSigCanvas" class="sig-canvas w-full h-28 block"></canvas>
+
+              <div class="mb-2.5">
+                <input type="email" id="childGoogleEmail" placeholder="Child's Google Account (e.g., child.name@gmail.com)"
+                  class="w-full min-w-0 px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs focus:border-emeraldDeep outline-none" />
+              </div>
+
+              <div class="border-2 border-dashed border-emeraldDeep/40 rounded-xl overflow-hidden bg-white relative">
+                <canvas id="childSigCanvas" class="sig-canvas w-full h-32 block"></canvas>
               </div>
               <p class="text-[11px] text-slate-500 mt-1.5">Draw student signature above using finger or mouse, or click "Auto-Sign Text".</p>
             </div>
           </div>
 
-          <div class="flex justify-end">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+            <p id="studentFormFeedback" class="text-xs font-bold text-emeraldDeep"></p>
             <button type="submit" id="saveStudentBtn" class="w-full sm:w-auto px-8 py-3 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-sm shadow-md transition">
               Register Student & Save Signatures
             </button>
@@ -557,9 +606,14 @@
       </div>
 
       <!-- Student Directory Table -->
-      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+      <div id="studentDirectorySection" class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
-          <h3 class="text-base font-bold text-emeraldDeep">Registered Student Directory</h3>
+          <div>
+            <h3 class="text-base font-bold text-emeraldDeep">
+              Registered Student Directory (<span id="studentDirectoryCount">0</span>)
+            </h3>
+            <p class="text-xs text-slate-500">Every registered student appears immediately below with signatures, Google IDs, and actions.</p>
+          </div>
           <div class="flex flex-col sm:flex-row gap-2">
             <input type="text" id="studentSearchInput" oninput="renderStudentTable()" placeholder="Search name, Adm No, parent..."
               class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:border-emeraldDeep outline-none" />
@@ -585,7 +639,7 @@
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+          <table class="w-full min-w-[820px] text-left border-collapse text-xs sm:text-sm">
             <thead>
               <tr class="bg-emeraldDeep text-white">
                 <th class="p-3 rounded-tl-xl">Sl</th>
@@ -593,7 +647,7 @@
                 <th class="p-3">Student Name</th>
                 <th class="p-3">Class</th>
                 <th class="p-3">Aadhaar No</th>
-                <th class="p-3">Parent & Contact</th>
+                <th class="p-3">Parent, Contact & Google Sign</th>
                 <th class="p-3">Father Sign</th>
                 <th class="p-3">Child Sign</th>
                 <th class="p-3 rounded-tr-xl text-center">Actions</th>
@@ -611,16 +665,21 @@
     <!-- PAGE 4: MADRASA RULES & REGULATIONS (NIYAMANGALUM CHATTANGALUM)       -->
     <!-- ===================================================================== -->
     <section id="page4" class="page-section">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 no-print">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 4 • Niyamangalum Chattangalum</span>
-          <h2 class="text-2xl font-extrabold text-slate-900">Madrasa Rules & Regulations</h2>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 no-print">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="goBackPage()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-extrabold shadow-2xs transition flex items-center gap-1 shrink-0">
+            <span>&larr; Back</span>
+          </button>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 4 • Niyamangalum Chattangalum</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 break-words">Madrasa Rules & Regulations</h2>
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="printRulesNotice()" class="px-4 py-2 rounded-xl bg-goldAccent text-emeraldDark text-xs font-extrabold hover:bg-yellow-500 transition shadow-sm">
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" onclick="printRulesNotice()" class="px-4 py-2 rounded-xl bg-goldAccent text-emeraldDark text-xs font-extrabold hover:bg-yellow-500 transition shadow-sm">
             🖨️ Print Rules Notice
           </button>
-          <button onclick="navigateTo('page5')" class="px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
+          <button type="button" onclick="navigateTo('page5')" class="px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
             Next: Marks & Skills &rarr;
           </button>
         </div>
@@ -698,18 +757,65 @@
     <!-- PAGE 5: 4-TERM MARK LIST, MONTHLY EXAMS & CUSTOM SKILLS EVALUATION    -->
     <!-- ===================================================================== -->
     <section id="page5" class="page-section">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 no-print">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 5 • Academic & Skill Assessment</span>
-          <h2 class="text-2xl font-extrabold text-slate-900">4-Term Mark List, Monthly Exams & Custom Skills</h2>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 no-print">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="goBackPage()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-extrabold shadow-2xs transition flex items-center gap-1 shrink-0">
+            <span>&larr; Back</span>
+          </button>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 5 • Academic & Skill Assessment</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 break-words">4-Term Mark List, Monthly Exams & Custom Skills</h2>
+          </div>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <button onclick="toggleSkillManager()" class="px-4 py-2 rounded-xl bg-goldAccent text-emeraldDark text-xs font-extrabold hover:bg-yellow-500 transition shadow-sm flex items-center gap-1.5">
+          <button type="button" onclick="toggleSkillManager()" class="px-4 py-2 rounded-xl bg-goldAccent text-emeraldDark text-xs font-extrabold hover:bg-yellow-500 transition shadow-sm flex items-center gap-1.5">
             <span>⚙️ Configure Subjects & Skills</span>
           </button>
-          <button onclick="navigateTo('page6')" class="px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
+          <button type="button" onclick="navigateTo('page6')" class="px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold hover:bg-emeraldDark transition">
             Next: WhatsApp Notices &rarr;
           </button>
+        </div>
+      </div>
+
+      <!-- Custom Subjects & Madrasa Skills Manager Panel (Collapsible) -->
+      <div id="skillManagerPanel" class="hidden bg-white rounded-2xl p-6 border-2 border-goldAccent shadow-md mb-6 no-print">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+          <div>
+            <h3 class="text-base font-extrabold text-emeraldDeep">Custom Madrasa Subjects & Skills Manager</h3>
+            <p class="text-xs text-slate-500">Add or customize subjects and Madrasa skills (Quran, Hifz, Tajweed, Akhlaq, Speech, etc.) for your institution.</p>
+          </div>
+          <button type="button" onclick="toggleSkillManager()" class="text-xs font-bold text-slate-500 hover:text-slate-800 px-2.5 py-1 rounded-lg bg-slate-100">
+            Hide Panel ✕
+          </button>
+        </div>
+
+        <form onsubmit="addEvaluationItem(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-5">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Subject or Skill Name *</label>
+            <input type="text" id="newItemName" required placeholder="e.g., Hifz Revision / Adab / Islamic Quiz"
+              class="w-full min-w-0 px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm outline-none focus:border-emeraldDeep" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Type *</label>
+            <select id="newItemType" class="w-full min-w-0 px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white outline-none focus:border-emeraldDeep">
+              <option value="Subject">Academic Subject</option>
+              <option value="Skill">Madrasa Skill</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Max Marks *</label>
+            <div class="flex gap-2">
+              <input type="number" id="newItemMax" required min="5" max="500" value="50"
+                class="w-full min-w-0 px-3 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm outline-none focus:border-emeraldDeep" />
+              <button type="submit" class="px-4 py-2 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-xs shrink-0 transition">
+                + Add
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div id="configuredItemsList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <!-- Populated dynamically -->
         </div>
       </div>
 
@@ -885,11 +991,16 @@
     <!-- PAGE 6: WHATSAPP ANNOUNCEMENT & NOTIFICATION CENTER                   -->
     <!-- ===================================================================== -->
     <section id="page6" class="page-section">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 no-print">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 6 • Parent & Class Communication</span>
-          <h2 class="text-2xl font-extrabold text-slate-900">WhatsApp Announcement & Notice Center</h2>
-          <p class="text-xs text-slate-600 mt-0.5">മദ്രസയിലെ മീറ്റിംഗുകൾ, പ്രോഗ്രാമുകൾ, ക്ലാസ് നിർദ്ദേശങ്ങൾ എന്നിവ രക്ഷിതാക്കളുടെ WhatsApp-ലേക്ക് ഒറ്റ ക്ലിക്കിൽ അറിയിക്കുക.</p>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 no-print">
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="goBackPage()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-extrabold shadow-2xs transition flex items-center gap-1 shrink-0">
+            <span>&larr; Back</span>
+          </button>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emeraldDeep">Page 6 • Parent & Class Communication</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 break-words">WhatsApp Announcement & Notice Center</h2>
+            <p class="text-xs text-slate-600 mt-0.5">മദ്രസയിലെ മീറ്റിംഗുകൾ, പ്രോഗ്രാമുകൾ, ക്ലാസ് നിർദ്ദേശങ്ങൾ എന്നിവ രക്ഷിതാക്കളുടെ WhatsApp-ലേക്ക് ഒറ്റ ക്ലിക്കിൽ അറിയിക്കുക.</p>
+          </div>
         </div>
       </div>
 
@@ -1056,6 +1167,115 @@
 
   </main>
 
+  <!-- Floating Persistent Back Button (Always Accessible Without Getting Stuck) -->
+  <div id="floatingBackBar" class="fixed bottom-4 left-4 z-40 no-print flex items-center gap-2">
+    <button type="button" onclick="goBackPage()" title="Go to Previous Page"
+      class="px-4 py-2.5 rounded-full bg-emeraldDeep hover:bg-emeraldDark text-white border-2 border-goldAccent/80 shadow-xl text-xs font-extrabold flex items-center gap-1.5 transition transform hover:scale-105">
+      <span>&larr;</span>
+      <span id="floatingBackLabel">Back</span>
+    </button>
+    <button type="button" onclick="navigateTo('page1')" title="Go to Home / Welcome Page"
+      class="px-3.5 py-2.5 rounded-full bg-white hover:bg-slate-100 text-emeraldDeep border border-slate-300 shadow-lg text-xs font-extrabold transition">
+      Home
+    </button>
+  </div>
+
+  <!-- Student Detail & Signature Inspect Modal -->
+  <div id="studentViewModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+        <h3 class="text-lg font-extrabold text-emeraldDeep">Student Record & Signatures</h3>
+        <button type="button" onclick="closeStudentViewModal()" class="text-slate-500 hover:text-slate-800 font-bold text-sm px-2 py-1 rounded-lg bg-slate-100">✕</button>
+      </div>
+      <div id="studentViewModalBody" class="space-y-3 text-xs sm:text-sm"></div>
+      <div class="mt-5 flex justify-end gap-2">
+        <button type="button" onclick="closeStudentViewModal()" class="px-4 py-2 rounded-xl bg-emeraldDeep text-white text-xs font-bold">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Apps Script / Google Sheets Sync & JSON Backup Modal -->
+  <div id="googleSheetModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-emeraldDeep">Cloud Database & Backup</span>
+          <h3 class="text-lg font-extrabold text-slate-900">Google Sheet Sync & JSON Backup</h3>
+        </div>
+        <button type="button" onclick="closeGoogleSheetModal()" class="text-slate-500 hover:text-slate-800 font-bold text-sm px-2.5 py-1 rounded-lg bg-slate-100">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Google Apps Script Web App URL</label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="url" id="googleScriptUrlInput" placeholder="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
+              class="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-mono focus:border-emeraldDeep outline-none" />
+            <button type="button" onclick="saveGoogleScriptUrl()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shrink-0">
+              Save URL
+            </button>
+          </div>
+          <p id="googleSheetStatusText" class="text-[11px] text-slate-500 mt-1.5">
+            Paste your deployed Google Apps Script Web App URL to sync all Madrasa data, students, rules, and marks to Google Sheets.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+          <button type="button" onclick="testGoogleSheetConnection()" class="py-2.5 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 font-bold text-xs">
+            🔌 Test Connection
+          </button>
+          <button type="button" onclick="syncAllToGoogleSheet(true)" class="py-2.5 px-3 rounded-xl bg-emeraldDeep hover:bg-emeraldDark text-white font-bold text-xs shadow-xs">
+            ⬆️ Push All to Sheet
+          </button>
+          <button type="button" onclick="pullAllFromGoogleSheet()" class="py-2.5 px-3 rounded-xl bg-goldLight hover:bg-goldAccent text-emeraldDark border border-goldAccent/50 font-extrabold text-xs">
+            ⬇️ Pull from Sheet
+          </button>
+        </div>
+
+        <!-- Local JSON File Backup & Restore -->
+        <div class="bg-creamBg p-4 rounded-2xl border border-slate-200">
+          <div class="font-bold text-slate-800 text-xs mb-1">Offline File Backup / Restore (.json)</div>
+          <p class="text-[11px] text-slate-500 mb-3">Download a full backup file to your device anytime, or restore from a saved JSON file.</p>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" onclick="exportJsonBackup()" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold text-xs">
+              💾 Download Backup JSON
+            </button>
+            <label class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-emeraldDeep border border-emeraldDeep/30 font-bold text-xs cursor-pointer">
+              📂 Restore JSON File
+              <input type="file" id="importJsonFileInput" accept=".json,application/json" onchange="importJsonBackup(event)" class="hidden" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Apps Script Starter Template -->
+        <details class="bg-slate-50 rounded-xl border border-slate-200 p-3">
+          <summary class="cursor-pointer font-bold text-xs text-emeraldDeep">
+            View Google Apps Script (Code.gs) Setup Snippet
+          </summary>
+          <pre class="mt-2 p-3 bg-slate-900 text-emerald-200 rounded-xl text-[11px] overflow-x-auto leading-relaxed">function doGet(e) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('MadrasaPortalData');
+  if (!sheet) return ContentService.createTextOutput(JSON.stringify({ ok: true, data: null })).setMimeType(ContentService.MimeType.JSON);
+  const raw = sheet.getRange('A1').getValue();
+  return ContentService.createTextOutput(JSON.stringify({ ok: true, data: raw ? JSON.parse(raw) : null })).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  const body = JSON.parse(e.postData.contents || '{}');
+  if (body.action === 'ping') {
+    return ContentService.createTextOutput(JSON.stringify({ ok: true, message: 'Connected to Google Sheet' })).setMimeType(ContentService.MimeType.JSON);
+  }
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName('MadrasaPortalData') || ss.insertSheet('MadrasaPortalData');
+  sheet.getRange('A1').setValue(JSON.stringify(body.payload));
+  sheet.getRange('B1').setValue(new Date().toISOString());
+  return ContentService.createTextOutput(JSON.stringify({ ok: true, message: 'Synced to Google Sheet' })).setMimeType(ContentService.MimeType.JSON);
+}</pre>
+        </details>
+      </div>
+    </div>
+  </div>
+
   <!-- Custom Reset Confirmation Modal -->
   <div id="resetModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
@@ -1080,7 +1300,8 @@
       STUDENTS: 'smart_madrasa_students_v1',
       RULES: 'smart_madrasa_rules_v1',
       ITEMS: 'smart_madrasa_eval_items_v1',
-      MARKS: 'smart_madrasa_marks_v1'
+      MARKS: 'smart_madrasa_marks_v1',
+      SHEET_URL: 'smart_madrasa_sheet_url_v1'
     };
 
     // Global State
@@ -1093,9 +1314,12 @@
     };
 
     let activePage = 'page1';
+    let pageHistoryStack = ['page1'];
+    let googleScriptUrl = '';
     let activeTermTab = 'term1';
     let activeAssessmentMode = 'term';
     let waSentStudentIds = new Set(); // Tracks sent status in current WhatsApp campaign session
+
     // Canvas Signature Pad Controllers
     const sigPads = {
       father: { canvas: null, ctx: null, drawing: false, hasDrawn: false },
@@ -1119,9 +1343,15 @@
     });
 
     // -------------------------------------------------------------------------
-    // 1. NAVIGATION & TOAST FEEDBACK
+    // 1. NAVIGATION, BACK BUTTON & TOAST FEEDBACK
     // -------------------------------------------------------------------------
-    function navigateTo(pageId) {
+    function navigateTo(pageId, recordHistory = true) {
+      if (!document.getElementById(pageId)) return;
+
+      if (recordHistory && activePage !== pageId) {
+        pageHistoryStack.push(pageId);
+      }
+
       activePage = pageId;
       document.querySelectorAll('.page-section').forEach(sec => {
         sec.classList.remove('active', 'print-active');
@@ -1130,6 +1360,283 @@
       if (target) {
         target.classList.add('active', 'print-active');
       }
+
+      // Update Nav Buttons
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-goldAccent', 'text-emeraldDark', 'shadow');
+        btn.classList.add('text-white/90', 'hover:bg-white/10');
+      });
+      const activeBtn = document.getElementById('nav-' + pageId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-white/90', 'hover:bg-white/10');
+        activeBtn.classList.add('bg-goldAccent', 'text-emeraldDark', 'shadow');
+      }
+
+      updateFloatingBackLabel();
+
+      if (pageId === 'page3') {
+        setTimeout(() => {
+          resizeCanvasPreserve('father');
+          resizeCanvasPreserve('child');
+          renderStudentTable();
+        }, 60);
+      }
+      if (pageId === 'page5') {
+        populateMarksStudentDropdown();
+      }
+      if (pageId === 'page6') {
+        initWhatsAppCenter();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBackPage() {
+      if (pageHistoryStack.length > 1) {
+        pageHistoryStack.pop(); // remove current page
+        const prevPage = pageHistoryStack[pageHistoryStack.length - 1] || 'page1';
+        navigateTo(prevPage, false);
+        return;
+      }
+
+      const order = ['page1', 'page2', 'page3', 'page4', 'page5', 'page6'];
+      const idx = order.indexOf(activePage);
+      if (idx > 0) {
+        navigateTo(order[idx - 1], false);
+      } else {
+        navigateTo('page1', false);
+      }
+    }
+
+    function updateFloatingBackLabel() {
+      const labelEl = document.getElementById('floatingBackLabel');
+      if (!labelEl) return;
+      if (pageHistoryStack.length > 1) {
+        const prev = pageHistoryStack[pageHistoryStack.length - 2];
+        const map = { page1: 'Welcome', page2: 'Profile', page3: 'Students', page4: 'Rules', page5: 'Marks', page6: 'WhatsApp' };
+        labelEl.textContent = `Back (${map[prev] || 'Prev'})`;
+      } else {
+        labelEl.textContent = activePage === 'page1' ? 'Welcome' : 'Back';
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      const bgClass = type === 'error' ? 'bg-red-700 text-white' : 'bg-emeraldDeep text-white border border-goldAccent';
+      toast.className = `${bgClass} px-4 py-3 rounded-xl shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all duration-300 transform translate-x-0`;
+      toast.innerHTML = `<span>${type === 'error' ? '⚠️' : '✅'}</span><span>${escapeHTML(message)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. DATA PERSISTENCE, GOOGLE SHEET SYNC, JSON BACKUP & DEMO DATA
+    // -------------------------------------------------------------------------
+    function loadStateFromStorage() {
+      try {
+        const p = localStorage.getItem(STORAGE_KEYS.PROFILE);
+        const s = localStorage.getItem(STORAGE_KEYS.STUDENTS);
+        const r = localStorage.getItem(STORAGE_KEYS.RULES);
+        const i = localStorage.getItem(STORAGE_KEYS.ITEMS);
+        const m = localStorage.getItem(STORAGE_KEYS.MARKS);
+        const u = localStorage.getItem(STORAGE_KEYS.SHEET_URL);
+
+        if (p) appState.profile = JSON.parse(p);
+        if (s) appState.students = JSON.parse(s);
+        if (r) appState.rules = JSON.parse(r);
+        if (i) appState.evalItems = JSON.parse(i);
+        if (m) appState.marks = JSON.parse(m);
+        if (u) googleScriptUrl = u;
+      } catch (e) {
+        console.error('Error reading localStorage:', e);
+      }
+      updateGoogleSheetBadge();
+    }
+
+    function saveStateToStorage(autoSyncSheet = true) {
+      try {
+        localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(appState.profile));
+        localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(appState.students));
+        localStorage.setItem(STORAGE_KEYS.RULES, JSON.stringify(appState.rules));
+        localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify(appState.evalItems));
+        localStorage.setItem(STORAGE_KEYS.MARKS, JSON.stringify(appState.marks));
+        updateDashboardStats();
+        if (autoSyncSheet && googleScriptUrl) {
+          syncAllToGoogleSheet(false);
+        }
+      } catch (e) {
+        console.error('Error saving to localStorage:', e);
+        showToast('Browser storage limit reached. Export JSON backup to keep all data safe.', 'error');
+      }
+    }
+
+    function updateGoogleSheetBadge() {
+      const badge = document.getElementById('sheetSyncBadge');
+      const statusText = document.getElementById('googleSheetStatusText');
+      const inputEl = document.getElementById('googleScriptUrlInput');
+      if (inputEl && !inputEl.value) {
+        inputEl.value = googleScriptUrl || '';
+      }
+      if (badge) {
+        badge.className = googleScriptUrl
+          ? 'w-2 h-2 rounded-full bg-lime-300'
+          : 'w-2 h-2 rounded-full bg-amber-300';
+      }
+      if (statusText) {
+        statusText.textContent = googleScriptUrl
+          ? 'Connected URL configured. Changes automatically sync when you push or save.'
+          : 'No Google Apps Script URL saved yet. Paste your Web App URL below to sync with Google Sheets.';
+      }
+    }
+
+    function openGoogleSheetModal() {
+      updateGoogleSheetBadge();
+      document.getElementById('googleSheetModal').classList.remove('hidden');
+    }
+
+    function closeGoogleSheetModal() {
+      document.getElementById('googleSheetModal').classList.add('hidden');
+    }
+
+    function saveGoogleScriptUrl() {
+      const val = (document.getElementById('googleScriptUrlInput').value || '').trim();
+      if (val && !val.startsWith('https://script.google.com/')) {
+        showToast('Please enter a valid https://script.google.com/... Web App URL.', 'error');
+        return;
+      }
+      googleScriptUrl = val;
+      localStorage.setItem(STORAGE_KEYS.SHEET_URL, googleScriptUrl);
+      updateGoogleSheetBadge();
+      showToast(googleScriptUrl ? 'Google Apps Script URL saved!' : 'Google Sheet URL cleared.');
+    }
+
+    async function testGoogleSheetConnection() {
+      saveGoogleScriptUrl();
+      if (!googleScriptUrl) return;
+      try {
+        showToast('Testing connection to Google Sheet...');
+        await fetch(googleScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'ping', timestamp: new Date().toISOString() })
+        });
+        showToast('Request sent to Google Apps Script endpoint! Verify deployment access is set to "Anyone".');
+      } catch (err) {
+        showToast('Network error while contacting Google Apps Script URL.', 'error');
+      }
+    }
+
+    async function syncAllToGoogleSheet(showConfirmToast = true) {
+      if (!googleScriptUrl) {
+        if (showConfirmToast) {
+          openGoogleSheetModal();
+          showToast('Please paste your Google Apps Script Web App URL first.', 'error');
+        }
+        return;
+      }
+      try {
+        if (showConfirmToast) showToast('Syncing all Madrasa records to Google Sheet...');
+        const payload = {
+          action: 'syncAll',
+          syncedAt: new Date().toISOString(),
+          payload: appState
+        };
+        await fetch(googleScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+        if (showConfirmToast) {
+          showToast('All data pushed to Google Sheet!');
+        }
+      } catch (err) {
+        if (showConfirmToast) {
+          showToast('Failed to sync with Google Sheet. Check URL & internet.', 'error');
+        }
+      }
+    }
+
+    async function pullAllFromGoogleSheet() {
+      saveGoogleScriptUrl();
+      if (!googleScriptUrl) return;
+      try {
+        showToast('Pulling latest records from Google Sheet...');
+        const res = await fetch(`${googleScriptUrl}?action=getAll&t=${Date.now()}`);
+        const json = await res.json();
+        const remoteData = json && json.data ? json.data : json;
+        if (remoteData && (remoteData.profile || Array.isArray(remoteData.students))) {
+          appState = {
+            profile: remoteData.profile || appState.profile,
+            students: Array.isArray(remoteData.students) ? remoteData.students : [],
+            rules: Array.isArray(remoteData.rules) ? remoteData.rules : [],
+            evalItems: Array.isArray(remoteData.evalItems) ? remoteData.evalItems : [],
+            marks: remoteData.marks || {}
+          };
+          saveStateToStorage(false);
+          refreshAllUI();
+          closeGoogleSheetModal();
+          showToast('Data pulled from Google Sheet successfully!');
+        } else {
+          showToast('Connected, but no portal snapshot found yet. Push data first.', 'error');
+        }
+      } catch (err) {
+        showToast('Could not read from Google Sheet. Ensure doGet returns JSON & access is "Anyone".', 'error');
+      }
+    }
+
+    function exportJsonBackup() {
+      const backupObj = {
+        exportedAt: new Date().toISOString(),
+        app: 'Smart Madrasa Management System',
+        data: appState
+      };
+      const blob = new Blob([JSON.stringify(backupObj, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `madrasa-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('JSON backup downloaded!');
+    }
+
+    function importJsonBackup(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          const imported = parsed.data || parsed;
+          if (imported && typeof imported === 'object') {
+            appState = {
+              profile: imported.profile || null,
+              students: Array.isArray(imported.students) ? imported.students : [],
+              rules: Array.isArray(imported.rules) ? imported.rules : [],
+              evalItems: Array.isArray(imported.evalItems) ? imported.evalItems : [],
+              marks: imported.marks || {}
+            };
+            saveStateToStorage(false);
+            refreshAllUI();
+            closeGoogleSheetModal();
+            showToast('Backup restored successfully!');
+          } else {
+            showToast('Invalid JSON backup file structure.', 'error');
+          }
+        } catch (err) {
+          showToast('Could not parse JSON file.', 'error');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
 
       // Update Nav Buttons
       document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -1354,7 +1861,7 @@
         }
       };
 
-      saveStateToStorage();
+      saveStateToStorage(false);
       refreshAllUI();
       if (notify) showToast('Sample Kerala Madrasa data loaded successfully!');
     }
@@ -1380,7 +1887,7 @@
         ],
         marks: {}
       };
-      saveStateToStorage();
+      saveStateToStorage(false);
       refreshAllUI();
       closeResetModal();
       showToast('All data has been reset.', 'error');
@@ -1466,7 +1973,428 @@
       saveStateToStorage();
       renderMadrasaProfile();
       updateWhatsAppPreview();
+      const statusEl = document.getElementById('profileSavedStatus');
+      if (statusEl) {
+        statusEl.textContent = `Saved "${appState.profile.name}" (${appState.profile.regNo}) at ${new Date().toLocaleTimeString()}.`;
+        statusEl.classList.remove('hidden');
+      }
       showToast('Madrasa Profile saved and updated across all pages!');
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. PAGE 3: SIGNATURE PADS (MOUSE + TOUCH + AUTO-SIGN) & STUDENT CRUD
+    // -------------------------------------------------------------------------
+    function initSignaturePads() {
+      setupCanvasEvents('father', document.getElementById('fatherSigCanvas'));
+      setupCanvasEvents('child', document.getElementById('childSigCanvas'));
+      resizeCanvasPreserve('father');
+      resizeCanvasPreserve('child');
+    }
+
+    function resizeCanvasPreserve(role) {
+      const pad = sigPads[role];
+      if (!pad || !pad.canvas) return;
+      const rect = pad.canvas.getBoundingClientRect();
+      const targetWidth = Math.max(240, Math.floor(rect.width || pad.canvas.parentElement.clientWidth || 320));
+      const targetHeight = Math.max(110, Math.floor(rect.height || 128));
+
+      let previousDataUrl = null;
+      if (pad.hasDrawn && pad.canvas.width > 0 && pad.canvas.height > 0) {
+        previousDataUrl = pad.canvas.toDataURL('image/png');
+      }
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      pad.canvas.width = targetWidth * dpr;
+      pad.canvas.height = targetHeight * dpr;
+
+      pad.ctx = pad.canvas.getContext('2d');
+      pad.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      pad.ctx.scale(dpr, dpr);
+      pad.ctx.fillStyle = '#ffffff';
+      pad.ctx.fillRect(0, 0, targetWidth, targetHeight);
+      pad.ctx.strokeStyle = '#0f5132';
+      pad.ctx.lineWidth = 2.6;
+      pad.ctx.lineCap = 'round';
+      pad.ctx.lineJoin = 'round';
+
+      if (previousDataUrl) {
+        const img = new Image();
+        img.onload = function () {
+          pad.ctx.save();
+          pad.ctx.setTransform(1, 0, 0, 1, 0, 0);
+          pad.ctx.drawImage(img, 0, 0, pad.canvas.width, pad.canvas.height);
+          pad.ctx.restore();
+        };
+        img.src = previousDataUrl;
+      }
+    }
+
+    function getCanvasCoordinates(canvas, evt) {
+      const rect = canvas.getBoundingClientRect();
+      let clientX = 0;
+      let clientY = 0;
+
+      if (evt.touches && evt.touches.length > 0) {
+        clientX = evt.touches[0].clientX;
+        clientY = evt.touches[0].clientY;
+      } else if (evt.changedTouches && evt.changedTouches.length > 0) {
+        clientX = evt.changedTouches[0].clientX;
+        clientY = evt.changedTouches[0].clientY;
+      } else {
+        clientX = evt.clientX;
+        clientY = evt.clientY;
+      }
+
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function setupCanvasEvents(role, canvas) {
+      if (!canvas) return;
+      const pad = sigPads[role];
+      pad.canvas = canvas;
+      pad.ctx = canvas.getContext('2d');
+
+      const startDraw = (e) => {
+        if (e.cancelable) e.preventDefault();
+        if (!pad.ctx || pad.canvas.width === 0) resizeCanvasPreserve(role);
+        pad.drawing = true;
+        pad.hasDrawn = true;
+        const pos = getCanvasCoordinates(canvas, e);
+        pad.ctx.strokeStyle = '#0f5132';
+        pad.ctx.lineWidth = 2.6;
+        pad.ctx.lineCap = 'round';
+        pad.ctx.lineJoin = 'round';
+        pad.ctx.beginPath();
+        pad.ctx.moveTo(pos.x, pos.y);
+      };
+
+      const moveDraw = (e) => {
+        if (!pad.drawing) return;
+        if (e.cancelable) e.preventDefault();
+        const pos = getCanvasCoordinates(canvas, e);
+        pad.ctx.lineTo(pos.x, pos.y);
+        pad.ctx.stroke();
+      };
+
+      const endDraw = (e) => {
+        if (!pad.drawing) return;
+        if (e && e.cancelable) e.preventDefault();
+        pad.drawing = false;
+        if (pad.ctx) pad.ctx.closePath();
+      };
+
+      // Mouse Events
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', moveDraw);
+      window.addEventListener('mouseup', endDraw);
+
+      // Touch Events
+      canvas.addEventListener('touchstart', startDraw, { passive: false });
+      canvas.addEventListener('touchmove', moveDraw, { passive: false });
+      window.addEventListener('touchend', endDraw, { passive: false });
+      window.addEventListener('touchcancel', endDraw, { passive: false });
+    }
+
+    function clearSignature(role) {
+      const pad = sigPads[role];
+      if (!pad || !pad.canvas) return;
+      pad.hasDrawn = false;
+      pad.drawing = false;
+      const rect = pad.canvas.getBoundingClientRect();
+      const w = rect.width || 300;
+      const h = rect.height || 128;
+      pad.ctx.save();
+      pad.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      pad.ctx.clearRect(0, 0, pad.canvas.width, pad.canvas.height);
+      pad.ctx.restore();
+      pad.ctx.fillStyle = '#ffffff';
+      pad.ctx.fillRect(0, 0, w, h);
+    }
+
+    function typeSignature(role) {
+      const pad = sigPads[role];
+      if (!pad || !pad.canvas) resizeCanvasPreserve(role);
+      const sourceText = role === 'father'
+        ? (document.getElementById('stuParent').value.trim() || document.getElementById('fatherGoogleEmail').value.split('@')[0] || 'Father Sign')
+        : (document.getElementById('stuName').value.trim() || document.getElementById('childGoogleEmail').value.split('@')[0] || 'Student Sign');
+
+      clearSignature(role);
+      const rect = pad.canvas.getBoundingClientRect();
+      const w = rect.width || 300;
+      const h = rect.height || 128;
+
+      pad.ctx.save();
+      pad.ctx.font = 'italic 28px "Amiri", Georgia, serif';
+      pad.ctx.fillStyle = '#0f5132';
+      pad.ctx.textAlign = 'center';
+      pad.ctx.textBaseline = 'middle';
+      pad.ctx.fillText(sourceText, w / 2, h / 2 - 4);
+
+      pad.ctx.strokeStyle = '#d4af37';
+      pad.ctx.lineWidth = 1.5;
+      pad.ctx.beginPath();
+      pad.ctx.moveTo(w * 0.18, h * 0.72);
+      pad.ctx.quadraticCurveTo(w * 0.5, h * 0.8, w * 0.82, h * 0.68);
+      pad.ctx.stroke();
+      pad.ctx.restore();
+      pad.hasDrawn = true;
+    }
+
+    function drawDataUrlOntoCanvas(role, dataUrl) {
+      clearSignature(role);
+      if (!dataUrl) return;
+      const pad = sigPads[role];
+      const img = new Image();
+      img.onload = function () {
+        const rect = pad.canvas.getBoundingClientRect();
+        const w = rect.width || 300;
+        const h = rect.height || 128;
+        pad.ctx.drawImage(img, 0, 0, w, h);
+        pad.hasDrawn = true;
+      };
+      img.src = dataUrl;
+    }
+
+    function formatAadhaarInput(input) {
+      let digits = input.value.replace(/\D/g, '').slice(0, 12);
+      let formatted = digits.match(/.{1,4}/g);
+      input.value = formatted ? formatted.join(' ') : '';
+    }
+
+    function syncWhatsappIfChecked() {
+      const chk = document.getElementById('sameAsMobileCheck');
+      const mob = document.getElementById('stuMobile').value;
+      const wa = document.getElementById('stuWhatsapp');
+      if (chk && chk.checked) {
+        wa.value = mob;
+      }
+    }
+
+    function setNextSerialNumber() {
+      const slInput = document.getElementById('stuSlNo');
+      if (!slInput || document.getElementById('editStudentId').value) return;
+      const maxSl = appState.students.reduce((max, s) => Math.max(max, Number(s.slNo) || 0), 0);
+      slInput.value = maxSl + 1;
+    }
+
+    function resetStudentForm() {
+      document.getElementById('studentForm').reset();
+      document.getElementById('editStudentId').value = '';
+      document.getElementById('studentFormTitle').textContent = 'New Student Admission Form';
+      document.getElementById('saveStudentBtn').textContent = 'Register Student & Save Signatures';
+      document.getElementById('cancelEditStudentBtn').classList.add('hidden');
+      clearSignature('father');
+      clearSignature('child');
+      setNextSerialNumber();
+    }
+
+    function saveStudent(e) {
+      e.preventDefault();
+      resizeCanvasPreserve('father');
+      resizeCanvasPreserve('child');
+
+      const editId = document.getElementById('editStudentId').value;
+      const slNo = parseInt(document.getElementById('stuSlNo').value, 10) || (appState.students.length + 1);
+      const admNo = document.getElementById('stuAdmNo').value.trim();
+      const name = document.getElementById('stuName').value.trim();
+      const studentClass = document.getElementById('stuClass').value;
+      const aadhaar = document.getElementById('stuAadhaar').value.trim();
+      const parentName = document.getElementById('stuParent').value.trim();
+      const mobile = document.getElementById('stuMobile').value.trim();
+      const whatsapp = document.getElementById('stuWhatsapp').value.trim() || mobile;
+      const fatherEmail = document.getElementById('fatherGoogleEmail').value.trim();
+      const childEmail = document.getElementById('childGoogleEmail').value.trim();
+
+      const fatherSign = sigPads.father.hasDrawn
+        ? sigPads.father.canvas.toDataURL('image/png')
+        : (editId ? (appState.students.find(s => s.id === editId)?.fatherSign || '') : '');
+      const childSign = sigPads.child.hasDrawn
+        ? sigPads.child.canvas.toDataURL('image/png')
+        : (editId ? (appState.students.find(s => s.id === editId)?.childSign || '') : '');
+
+      const studentObj = {
+        id: editId || ('stu_' + Date.now()),
+        slNo,
+        admNo,
+        name,
+        studentClass,
+        aadhaar,
+        parentName,
+        mobile,
+        whatsapp,
+        fatherEmail,
+        childEmail,
+        fatherSign,
+        childSign
+      };
+
+      if (editId) {
+        const idx = appState.students.findIndex(s => s.id === editId);
+        if (idx !== -1) {
+          appState.students[idx] = studentObj;
+        }
+        showToast(`Updated student record for ${name}!`);
+      } else {
+        appState.students.push(studentObj);
+        showToast(`Student "${name}" registered and added to directory!`);
+      }
+
+      saveStateToStorage();
+      renderStudentTable();
+      populateMarksStudentDropdown();
+      renderWhatsAppRecipientsTable();
+
+      const fbEl = document.getElementById('studentFormFeedback');
+      if (fbEl) {
+        fbEl.textContent = `Saved "${name}" (Adm No: ${admNo}) — visible in Registered Student Directory below.`;
+      }
+
+      resetStudentForm();
+      document.getElementById('studentDirectorySection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function editStudent(id) {
+      const stu = appState.students.find(s => s.id === id);
+      if (!stu) return;
+
+      document.getElementById('editStudentId').value = stu.id;
+      document.getElementById('stuSlNo').value = stu.slNo;
+      document.getElementById('stuAdmNo').value = stu.admNo;
+      document.getElementById('stuName').value = stu.name;
+      document.getElementById('stuClass').value = stu.studentClass;
+      document.getElementById('stuAadhaar').value = stu.aadhaar;
+      document.getElementById('stuParent').value = stu.parentName;
+      document.getElementById('stuMobile').value = stu.mobile;
+      document.getElementById('stuWhatsapp').value = stu.whatsapp;
+      document.getElementById('fatherGoogleEmail').value = stu.fatherEmail || '';
+      document.getElementById('childGoogleEmail').value = stu.childEmail || '';
+      document.getElementById('sameAsMobileCheck').checked = stu.whatsapp === stu.mobile;
+
+      document.getElementById('studentFormTitle').textContent = `Editing Student: ${stu.name}`;
+      document.getElementById('saveStudentBtn').textContent = 'Update Student Record';
+      document.getElementById('cancelEditStudentBtn').classList.remove('hidden');
+
+      resizeCanvasPreserve('father');
+      resizeCanvasPreserve('child');
+      drawDataUrlOntoCanvas('father', stu.fatherSign);
+      drawDataUrlOntoCanvas('child', stu.childSign);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function viewStudentModal(id) {
+      const stu = appState.students.find(s => s.id === id);
+      if (!stu) return;
+      const body = document.getElementById('studentViewModalBody');
+      body.innerHTML = `
+        <div class="grid grid-cols-2 gap-3 bg-creamBg p-4 rounded-xl border border-slate-200">
+          <div><span class="text-slate-500 text-xs block">Sl No / Adm No</span><strong>#${stu.slNo} • ${escapeHTML(stu.admNo)}</strong></div>
+          <div><span class="text-slate-500 text-xs block">Class</span><strong>${escapeHTML(stu.studentClass)}</strong></div>
+          <div><span class="text-slate-500 text-xs block">Student Name</span><strong>${escapeHTML(stu.name)}</strong></div>
+          <div><span class="text-slate-500 text-xs block">Aadhaar No</span><strong class="font-mono">${escapeHTML(stu.aadhaar)}</strong></div>
+          <div><span class="text-slate-500 text-xs block">Parent Name</span><strong>${escapeHTML(stu.parentName)}</strong></div>
+          <div><span class="text-slate-500 text-xs block">Mobile / WhatsApp</span><strong>${escapeHTML(stu.mobile)} / ${escapeHTML(stu.whatsapp)}</strong></div>
+          <div><span class="text-slate-500 text-xs block">Father Google Sign</span><strong class="break-all">${escapeHTML(stu.fatherEmail || 'Not entered')}</strong></div>
+          <div><span class="text-slate-500 text-xs block">Child Google Sign</span><strong class="break-all">${escapeHTML(stu.childEmail || 'Not entered')}</strong></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 pt-1">
+          <div class="p-3 rounded-xl border border-slate-200 text-center">
+            <div class="text-xs font-bold text-slate-600 mb-1">Father Signature</div>
+            ${stu.fatherSign ? `<img src="${stu.fatherSign}" class="h-16 mx-auto object-contain" />` : `<span class="text-xs text-slate-400">No signature</span>`}
+          </div>
+          <div class="p-3 rounded-xl border border-slate-200 text-center">
+            <div class="text-xs font-bold text-slate-600 mb-1">Child Signature</div>
+            ${stu.childSign ? `<img src="${stu.childSign}" class="h-16 mx-auto object-contain" />` : `<span class="text-xs text-slate-400">No signature</span>`}
+          </div>
+        </div>
+      `;
+      document.getElementById('studentViewModal').classList.remove('hidden');
+    }
+
+    function closeStudentViewModal() {
+      document.getElementById('studentViewModal').classList.add('hidden');
+    }
+
+    function deleteStudent(id) {
+      const stu = appState.students.find(s => s.id === id);
+      appState.students = appState.students.filter(s => s.id !== id);
+      delete appState.marks[id];
+      saveStateToStorage();
+      renderStudentTable();
+      populateMarksStudentDropdown();
+      renderWhatsAppRecipientsTable();
+      showToast(`Removed ${stu ? stu.name : 'student'}.`, 'error');
+    }
+
+    function renderStudentTable() {
+      const tbody = document.getElementById('studentTableBody');
+      const countEl = document.getElementById('studentDirectoryCount');
+      const query = (document.getElementById('studentSearchInput')?.value || '').toLowerCase().trim();
+      const classFilter = document.getElementById('studentClassFilter')?.value || 'ALL';
+
+      if (countEl) countEl.textContent = appState.students.length;
+
+      const filtered = appState.students.filter(s => {
+        const matchesClass = classFilter === 'ALL' || s.studentClass === classFilter;
+        const matchesQuery = !query ||
+          String(s.name).toLowerCase().includes(query) ||
+          String(s.admNo).toLowerCase().includes(query) ||
+          String(s.parentName).toLowerCase().includes(query) ||
+          String(s.aadhaar).toLowerCase().includes(query);
+        return matchesClass && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="p-6 text-center text-slate-500">No students match the current filter. Fill out the admission form above to add a student.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(s => `
+        <tr class="hover:bg-slate-50/90 transition align-top">
+          <td class="p-3 font-bold text-slate-700">${s.slNo}</td>
+          <td class="p-3 font-mono text-xs font-bold text-emeraldDeep">${escapeHTML(s.admNo)}</td>
+          <td class="p-3 font-bold text-slate-900">${escapeHTML(s.name)}</td>
+          <td class="p-3">
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emeraldLight text-emeraldDeep whitespace-nowrap">
+              ${escapeHTML(s.studentClass)}
+            </span>
+          </td>
+          <td class="p-3 font-mono text-xs text-slate-600 whitespace-nowrap">${escapeHTML(s.aadhaar)}</td>
+          <td class="p-3 text-xs">
+            <div class="font-bold text-slate-800">${escapeHTML(s.parentName)}</div>
+            <div class="text-slate-600">Mob: ${escapeHTML(s.mobile)}</div>
+            <div class="text-emeraldDeep font-semibold">WA: ${escapeHTML(s.whatsapp)}</div>
+            ${s.fatherEmail ? `<div class="text-[11px] text-slate-500 break-all">Father Sign: ${escapeHTML(s.fatherEmail)}</div>` : ''}
+            ${s.childEmail ? `<div class="text-[11px] text-slate-500 break-all">Child Sign: ${escapeHTML(s.childEmail)}</div>` : ''}
+          </td>
+          <td class="p-3">
+            ${s.fatherSign
+              ? `<img src="${s.fatherSign}" alt="Father Signature" class="h-11 w-24 object-contain border border-slate-200 rounded bg-white p-0.5" />`
+              : `<span class="text-xs text-slate-400">No Sign</span>`
+            }
+          </td>
+          <td class="p-3">
+            ${s.childSign
+              ? `<img src="${s.childSign}" alt="Child Signature" class="h-11 w-24 object-contain border border-slate-200 rounded bg-white p-0.5" />`
+              : `<span class="text-xs text-slate-400">No Sign</span>`
+            }
+          </td>
+          <td class="p-3 text-center whitespace-nowrap">
+            <button type="button" onclick="viewStudentModal('${s.id}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold mr-1">
+              View
+            </button>
+            <button type="button" onclick="editStudent('${s.id}')" class="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold mr-1">
+              Edit
+            </button>
+            <button type="button" onclick="deleteStudent('${s.id}')" class="px-2.5 py-1 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 text-xs font-bold">
+              Delete
+            </button>
+          </td>
+        </tr>
+      `).join('');
     }
 
     // -------------------------------------------------------------------------
