@@ -25,6 +25,8 @@
       --danger-soft: #fef2f2;
       --success: #15803d;
       --success-soft: #f0fdf4;
+      --amber: #b45309;
+      --amber-soft: #fffbeb;
       --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
       --shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
       --radius: 16px;
@@ -72,14 +74,24 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      max-width: 620px;
+      max-width: 640px;
     }
 
     .bismillah {
       font-family: 'Amiri', serif;
       font-size: 36px;
       color: var(--primary);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+    }
+    .welcome-logo-img {
+      width: 84px;
+      height: 84px;
+      border-radius: 20px;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 12px;
+      background: #fff;
     }
     .welcome-badge {
       display: inline-flex;
@@ -93,7 +105,7 @@
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       border: 1px solid #dbeafe;
     }
     .welcome-madrasa-name {
@@ -103,7 +115,7 @@
       margin-bottom: 6px;
     }
     .welcome-title {
-      font-size: clamp(30px, 5vw, 46px);
+      font-size: clamp(28px, 5vw, 44px);
       font-weight: 800;
       color: var(--text);
       letter-spacing: -0.03em;
@@ -112,9 +124,9 @@
     }
     .welcome-sub {
       color: var(--text-muted);
-      font-size: 15.5px;
-      margin-bottom: 30px;
-      max-width: 520px;
+      font-size: 15px;
+      margin-bottom: 28px;
+      max-width: 540px;
     }
     .btn-enter {
       background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
@@ -190,8 +202,8 @@
       gap: 12px;
     }
     .brand-icon {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 11px;
       background: linear-gradient(135deg, #1d4ed8, #2563eb);
       color: #fff;
@@ -201,7 +213,10 @@
       font-size: 19px;
       font-weight: 800;
       box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+      overflow: hidden;
+      flex-shrink: 0;
     }
+    .brand-icon img { width: 100%; height: 100%; object-fit: cover; }
     .brand-area h2 { font-size: 17px; font-weight: 800; color: var(--text); letter-spacing: -0.01em; }
     .brand-area p { font-size: 12px; color: var(--text-muted); }
 
@@ -241,9 +256,9 @@
       background: var(--surface-soft);
       border: 1px solid var(--border);
       color: #334155;
-      padding: 9px 16px;
+      padding: 8px 14px;
       border-radius: 11px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
@@ -257,7 +272,7 @@
       box-shadow: 0 4px 12px rgba(29, 78, 216, 0.22);
     }
 
-    .container { max-width: 1140px; width: 100%; margin: 24px auto; padding: 0 18px; flex: 1; }
+    .container { max-width: 1160px; width: 100%; margin: 24px auto; padding: 0 18px; flex: 1; }
 
     .page-section { display: none; }
     .page-section.active { display: block; }
@@ -296,7 +311,7 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 15px;
     }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -318,15 +333,15 @@
       box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
     }
 
-    /* Photo & Proof Preview */
+    /* Photo & Logo Preview */
     .photo-preview-box {
       display: flex;
       align-items: center;
       gap: 12px;
     }
     .student-avatar {
-      width: 56px;
-      height: 56px;
+      width: 60px;
+      height: 60px;
       border-radius: 12px;
       object-fit: cover;
       border: 1.5px solid var(--border-strong);
@@ -377,7 +392,7 @@
     /* Boards on Page 2 */
     .boards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
       gap: 15px;
       margin-top: 8px;
     }
@@ -385,11 +400,10 @@
       background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 20px;
+      padding: 19px;
       cursor: pointer;
       transition: all 0.2s ease;
       text-align: left;
-      position: relative;
     }
     .nav-board:hover {
       border-color: var(--primary);
@@ -407,8 +421,24 @@
       text-transform: uppercase;
       margin-bottom: 10px;
     }
-    .nav-board h3 { font-size: 16.5px; font-weight: 800; margin-bottom: 6px; color: var(--text); }
+    .nav-board h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; color: var(--text); }
     .nav-board p { font-size: 12.5px; color: var(--text-muted); line-height: 1.45; }
+
+    /* KPI / Summary Strip */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .kpi-box {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .kpi-box .k-label { font-size: 12px; font-weight: 700; color: var(--text-muted); }
+    .kpi-box .k-val { font-size: 20px; font-weight: 800; color: var(--primary); margin-top: 2px; }
 
     /* Rules Undertaking Box */
     .undertaking-box {
@@ -481,7 +511,7 @@
     tr:last-child td { border-bottom: none; }
     .sig-thumb { max-height: 36px; max-width: 105px; border: 1px solid var(--border); border-radius: 6px; background: #fff; }
 
-    /* Rules List */
+    /* Rules & Awards List */
     .rule-item {
       display: flex;
       justify-content: space-between;
@@ -497,19 +527,22 @@
       background: var(--primary-soft);
       color: var(--primary);
       font-weight: 800;
-      width: 28px;
+      min-width: 28px;
       height: 28px;
+      padding: 0 7px;
       border-radius: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 13px;
+      font-size: 12.5px;
     }
 
     .badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
     .badge-blue { background: var(--primary-soft); color: var(--primary); }
     .badge-green { background: var(--success-soft); color: var(--success); }
+    .badge-red { background: var(--danger-soft); color: var(--danger); }
+    .badge-amber { background: var(--amber-soft); color: var(--amber); }
 
     /* Bottom Portal Summary Footer */
     .portal-footer {
@@ -519,7 +552,7 @@
       margin-top: 28px;
     }
     .footer-inner {
-      max-width: 1140px;
+      max-width: 1160px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -600,7 +633,7 @@
       box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
     }
 
-    /* SINGLE PAGE CLEAN PRINT STYLES (NO EXTRA BLANK PAGE) */
+    /* SINGLE PAGE CLEAN PRINT STYLES */
     @page {
       size: A4 portrait;
       margin: 8mm;
@@ -635,10 +668,7 @@
       }
 
       /* Print Rules Mode */
-      body.print-rules-mode #page2,
-      body.print-rules-mode #page3,
-      body.print-rules-mode #page5,
-      body.print-rules-mode #page6 {
+      body.print-rules-mode .page-section {
         display: none !important;
       }
       body.print-rules-mode #page4 {
@@ -646,10 +676,7 @@
       }
 
       /* Print Progress Report Only Mode */
-      body:not(.print-rules-mode) #page2,
-      body:not(.print-rules-mode) #page3,
-      body:not(.print-rules-mode) #page4,
-      body:not(.print-rules-mode) #page6 {
+      body:not(.print-rules-mode) .page-section {
         display: none !important;
       }
       body:not(.print-rules-mode) #page5 {
@@ -677,11 +704,12 @@
   <section id="page1" class="anim-welcome">
     <div class="welcome-center">
       <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+      <img id="welcomeLogoImg" class="welcome-logo-img" style="display:none;" alt="Madrasa Logo">
       <div class="welcome-badge">Smart Madrasa Digital Register</div>
       <div id="welcomeMadrasaDisplay" class="welcome-madrasa-name"></div>
       <h1 class="welcome-title">Welcome to Smart Madrasa Portal</h1>
       <p class="welcome-sub">
-        Complete digital administration for Madrasa Profile, Student Admissions, Digital Signatures, Rules & Regulations, 4-Term & Monthly Mark Lists, and WhatsApp Parent Notices.
+        Complete digital administration for Madrasa Profile, Logo, Classes & Subjects, Student Admissions, Digital Signatures, Rules, Awards, Timetable, Merit/Demerit, Cash Collection, 4-Term Marks & WhatsApp Notices.
       </p>
       <button type="button" class="btn-enter" onclick="enterPortal()">
         Enter Madrasa Portal →
@@ -695,11 +723,11 @@
     </div>
   </section>
 
-  <!-- INNER PORTAL (PAGES 2 TO 6) -->
+  <!-- INNER PORTAL -->
   <div id="portalWrapper">
     <header class="topbar no-print">
       <div class="brand-area">
-        <div class="brand-icon">🕌</div>
+        <div class="brand-icon" id="topBrandIcon">🕌</div>
         <div>
           <h2 id="topMadrasaName">Smart Madrasa Register</h2>
           <p id="topMadrasaSub">Academic & Student Administration System</p>
@@ -718,27 +746,30 @@
     </header>
 
     <nav class="nav-strip no-print">
-      <button type="button" class="nav-pill active" id="nav-page2" onclick="showPage('page2')">2. Madrasa Profile</button>
-      <button type="button" class="nav-pill" id="nav-page3" onclick="showPage('page3')">3. Students & Signatures</button>
-      <button type="button" class="nav-pill" id="nav-page4" onclick="showPage('page4')">4. Rules & Regulations</button>
-      <button type="button" class="nav-pill" id="nav-page5" onclick="showPage('page5')">5. 4-Term Marks & Skills</button>
-      <button type="button" class="nav-pill" id="nav-page6" onclick="showPage('page6')">6. WhatsApp Notices</button>
+      <button type="button" class="nav-pill active" id="nav-page2" onclick="showPage('page2')">2. Profile & Classes</button>
+      <button type="button" class="nav-pill" id="nav-page3" onclick="showPage('page3')">3. Students & Sign</button>
+      <button type="button" class="nav-pill" id="nav-page4" onclick="showPage('page4')">4. Rules & Awards</button>
+      <button type="button" class="nav-pill" id="nav-page7" onclick="showPage('page7')">5. Timetable</button>
+      <button type="button" class="nav-pill" id="nav-page8" onclick="showPage('page8')">6. Merit / Demerit</button>
+      <button type="button" class="nav-pill" id="nav-page9" onclick="showPage('page9')">7. Cash Collection</button>
+      <button type="button" class="nav-pill" id="nav-page5" onclick="showPage('page5')">8. 4-Term Marks</button>
+      <button type="button" class="nav-pill" id="nav-page6" onclick="showPage('page6')">9. WhatsApp Notices</button>
     </nav>
 
     <main class="container">
 
-      <!-- PAGE 2: INSTITUTION DETAILS + NAVIGATION BOARDS -->
+      <!-- PAGE 2: INSTITUTION DETAILS, LOGO, CLASSES & NAVIGATION BOARDS -->
       <section id="page2" class="page-section active anim-up">
         <div class="page-head">
           <div>
-            <h1>Madrasa Profile & Institution Details</h1>
-            <p>Configure your institution name, recognition number, place, and contact details.</p>
+            <h1>Madrasa Profile, Logo & Classes</h1>
+            <p>Configure institution profile, upload Madrasa logo, manage classes, and jump to any board.</p>
           </div>
           <button type="button" class="btn btn-outline btn-sm" onclick="goWelcome()">← Back to Welcome</button>
         </div>
 
         <div class="card">
-          <div class="card-title">Institution Registration Information</div>
+          <div class="card-title">Institution Registration & Logo</div>
           <form onsubmit="saveInstitution(event)">
             <div class="form-grid">
               <div class="form-group">
@@ -765,6 +796,16 @@
                 <label>Academic Year</label>
                 <input type="text" id="instYear" value="2026-2027">
               </div>
+              <div class="form-group">
+                <label>Madrasa Logo (Optional)</label>
+                <div class="photo-preview-box">
+                  <div id="instLogoPreview" class="student-avatar">Logo</div>
+                  <div style="display:flex; flex-direction:column; gap:5px;">
+                    <input type="file" id="instLogoInput" accept="image/*" onchange="handleLogoUpload(event)">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="clearInstLogo()">Remove Logo</button>
+                  </div>
+                </div>
+              </div>
             </div>
             <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
               <button type="submit" class="btn btn-primary">Save Institution Details</button>
@@ -773,28 +814,54 @@
           </form>
         </div>
 
+        <!-- Custom Classes Manager -->
         <div class="card">
-          <div class="card-title">Quick Navigation Modules</div>
+          <div class="card-title">Manage Madrasa Classes</div>
+          <form onsubmit="addNewClass(event)" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+            <input type="text" id="newClassNameInput" required placeholder="e.g., Class 11 or Dars / Hifz Junior" style="flex:1; min-width:220px; padding:10px 13px; border:1px solid var(--border-strong); border-radius:10px; font-size:14px;">
+            <button type="submit" class="btn btn-primary">+ Add Class</button>
+          </form>
+          <div id="classChipsContainer" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+        </div>
+
+        <!-- Quick Navigation Boards -->
+        <div class="card">
+          <div class="card-title">All Madrasa Boards</div>
           <div class="boards-grid">
             <div class="nav-board" onclick="showPage('page3')">
-              <div class="tag">Module 03</div>
+              <div class="tag">Board 03</div>
               <h3>Student Admission & Sign</h3>
-              <p>Register students with Photo, ID Proof, Aadhaar, Mobile, WhatsApp & Father/Child Digital Signatures.</p>
+              <p>Register students with Photo, ID Proof, Aadhaar, Mobile, WhatsApp & Digital Signatures.</p>
             </div>
             <div class="nav-board" onclick="showPage('page4')">
-              <div class="tag">Module 04</div>
-              <h3>Rules & Regulations</h3>
-              <p>Manage official Madrasa rules, discipline guidelines, and print formal notice sheets.</p>
+              <div class="tag">Board 04</div>
+              <h3>Rules & Madrasa Awards</h3>
+              <p>Manage official Madrasa rules, print notice sheets, and add/edit awards received.</p>
+            </div>
+            <div class="nav-board" onclick="showPage('page7')">
+              <div class="tag">Board 05</div>
+              <h3>Daily Timetable</h3>
+              <p>Add and edit daily class timetable (Day, Period, Subject & Ustad/Teacher).</p>
+            </div>
+            <div class="nav-board" onclick="showPage('page8')">
+              <div class="tag">Board 06</div>
+              <h3>Merit & Demerit Notes</h3>
+              <p>Record student merits, achievements, or demerit/discipline notes with dates.</p>
+            </div>
+            <div class="nav-board" onclick="showPage('page9')">
+              <div class="tag">Board 07</div>
+              <h3>Cash Collection</h3>
+              <p>Create custom collections (Exam Fee, Program Fee, etc.) & record student payments.</p>
             </div>
             <div class="nav-board" onclick="showPage('page5')">
-              <div class="tag">Module 05</div>
-              <h3>4-Term Marks & Skills</h3>
-              <p>Customize subjects & skills, record 4-Term & Monthly marks, auto-calculate grades & print report cards.</p>
+              <div class="tag">Board 08</div>
+              <h3>Class Subjects & 4-Term Marks</h3>
+              <p>Add subjects per class, enter 4-Term & Monthly marks, auto-grade & print report cards.</p>
             </div>
             <div class="nav-board" onclick="showPage('page6')">
-              <div class="tag">Module 06</div>
+              <div class="tag">Board 09</div>
               <h3>WhatsApp Notices</h3>
-              <p>Send meeting, program, or holiday notices to all classes, a specific class, or individual parents.</p>
+              <p>Send meeting, program, or holiday notices to parents on Mobile or PC.</p>
             </div>
           </div>
         </div>
@@ -831,19 +898,7 @@
               </div>
               <div class="form-group">
                 <label>Class *</label>
-                <select id="stClass" required>
-                  <option value="Class 1">Class 1</option>
-                  <option value="Class 2">Class 2</option>
-                  <option value="Class 3">Class 3</option>
-                  <option value="Class 4">Class 4</option>
-                  <option value="Class 5">Class 5</option>
-                  <option value="Class 6">Class 6</option>
-                  <option value="Class 7">Class 7</option>
-                  <option value="Class 8">Class 8</option>
-                  <option value="Class 9">Class 9</option>
-                  <option value="Class 10">Class 10</option>
-                  <option value="Hifz">Hifz</option>
-                </select>
+                <select id="stClass" required></select>
               </div>
               <div class="form-group">
                 <label>Aadhaar Number *</label>
@@ -866,7 +921,6 @@
                 <input type="email" id="stFatherGoogle" placeholder="father@gmail.com">
               </div>
 
-              <!-- Student Photo Upload -->
               <div class="form-group">
                 <label>Student Photo</label>
                 <div class="photo-preview-box">
@@ -875,7 +929,6 @@
                 </div>
               </div>
 
-              <!-- Birth Certificate / Aadhaar Proof Upload -->
               <div class="form-group">
                 <label>ID Proof (Birth Certificate / Aadhaar)</label>
                 <input type="file" id="stProofInput" accept="image/*,.pdf" onchange="handleProofUpload(event)">
@@ -883,7 +936,6 @@
               </div>
             </div>
 
-            <!-- Rules Acceptance Undertaking -->
             <div class="undertaking-box">
               <input type="checkbox" id="rulesAgreeCheck" required>
               <label for="rulesAgreeCheck">
@@ -927,9 +979,7 @@
             <span>Registered Students Directory (<span id="studentCountBadge">0</span>)</span>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
               <input type="text" id="searchStudentInput" placeholder="Search name or Adm No..." oninput="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
-              <select id="filterClassSelect" onchange="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
-                <option value="ALL">All Classes</option>
-              </select>
+              <select id="filterClassSelect" onchange="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;"></select>
             </div>
           </div>
           <div class="table-wrap">
@@ -953,12 +1003,12 @@
         </div>
       </section>
 
-      <!-- PAGE 4: MADRASA RULES & REGULATIONS -->
+      <!-- PAGE 4: MADRASA RULES & AWARDS -->
       <section id="page4" class="page-section anim-unfold">
         <div class="page-head no-print">
           <div>
-            <h1>Madrasa Rules & Regulations (നിയമാവലി)</h1>
-            <p>Manage and print official rules and discipline guidelines for students and parents.</p>
+            <h1>Madrasa Rules & Awards</h1>
+            <p>Manage official rules, print notice sheets, and add/edit awards received by the Madrasa.</p>
           </div>
           <div style="display:flex; gap:8px;">
             <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
@@ -980,21 +1030,312 @@
           </div>
           <div id="rulesListContainer"></div>
         </div>
+
+        <!-- Madrasa Awards Board -->
+        <div class="card no-print">
+          <div class="card-title">
+            <span id="awardFormTitle">🏆 Madrasa Awards & Achievements</span>
+            <button type="button" class="btn btn-outline btn-sm" id="cancelAwardEditBtn" style="display:none;" onclick="resetAwardForm()">Cancel Edit</button>
+          </div>
+          <form onsubmit="saveAward(event)" class="form-grid" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>Award / Recognition Title *</label>
+              <input type="text" id="awardTitleInput" required placeholder="e.g., Best Madrasa Award / Kalolsavam 1st">
+            </div>
+            <div class="form-group">
+              <label>Year / Date *</label>
+              <input type="text" id="awardYearInput" required placeholder="e.g., 2026">
+            </div>
+            <div class="form-group">
+              <label>Given By / Organizers</label>
+              <input type="text" id="awardByInput" placeholder="e.g., Samastha / District Committee">
+            </div>
+            <div class="form-group" style="justify-content:flex-end;">
+              <button type="submit" class="btn btn-primary" id="saveAwardBtn">+ Add Award</button>
+            </div>
+          </form>
+          <div id="awardsListContainer"></div>
+        </div>
       </section>
 
-      <!-- PAGE 5: 4-TERM MARK LIST, MONTHLY EXAMS & CUSTOM SKILLS -->
-      <section id="page5" class="page-section anim-up">
-        <div class="page-head no-print">
+      <!-- PAGE 7: DAILY TIMETABLE (ADD & EDIT) -->
+      <section id="page7" class="page-section anim-up">
+        <div class="page-head">
           <div>
-            <h1>4-Term Marks, Monthly Exams & Custom Skills</h1>
-            <p>Configure subjects & skills, select a class & student to enter marks, and print the Progress Report Card.</p>
+            <h1>Daily Timetable (ദിവസേനയുള്ള ടൈംടേബിൾ)</h1>
+            <p>Add and edit daily class schedules by day, class, period, subject, and Ustad.</p>
           </div>
           <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
         </div>
 
-        <!-- Custom Subjects & Skills Configurator -->
+        <div class="card">
+          <div class="card-title">
+            <span id="ttFormTitle">Add Timetable Period</span>
+            <button type="button" class="btn btn-outline btn-sm" id="cancelTtEditBtn" style="display:none;" onclick="resetTimetableForm()">Cancel Edit</button>
+          </div>
+          <form onsubmit="saveTimetableEntry(event)" class="form-grid">
+            <div class="form-group">
+              <label>Day *</label>
+              <select id="ttDay" required>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Class *</label>
+              <select id="ttClass" required></select>
+            </div>
+            <div class="form-group">
+              <label>Period / Time *</label>
+              <input type="text" id="ttPeriod" required placeholder="e.g., 1st Period (7:00 - 7:45 AM)">
+            </div>
+            <div class="form-group">
+              <label>Subject *</label>
+              <input type="text" id="ttSubject" required placeholder="e.g., Quran / Fiqh">
+            </div>
+            <div class="form-group">
+              <label>Ustad / Teacher Name</label>
+              <input type="text" id="ttTeacher" placeholder="e.g., Ustad...">
+            </div>
+            <div class="form-group" style="justify-content:flex-end;">
+              <button type="submit" class="btn btn-primary" id="saveTtBtn">+ Save Period</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Timetable Schedule</span>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <select id="ttFilterDay" onchange="renderTimetableTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
+                <option value="ALL">All Days</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+              </select>
+              <select id="ttFilterClass" onchange="renderTimetableTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;"></select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Class</th>
+                  <th>Period / Time</th>
+                  <th>Subject</th>
+                  <th>Teacher</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="timetableTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 8: STUDENT MERIT & DEMERIT NOTES -->
+      <section id="page8" class="page-section anim-right">
+        <div class="page-head">
+          <div>
+            <h1>Student Merit & Demerit Notes</h1>
+            <p>Record positive merits/achievements or discipline/demerit remarks for students.</p>
+          </div>
+          <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Add Merit / Demerit Entry</div>
+          <form onsubmit="saveMeritEntry(event)" class="form-grid">
+            <div class="form-group">
+              <label>Class Filter</label>
+              <select id="mdClassFilter" onchange="populateMdStudentDropdown()"></select>
+            </div>
+            <div class="form-group">
+              <label>Student *</label>
+              <select id="mdStudentSelect" required></select>
+            </div>
+            <div class="form-group">
+              <label>Type *</label>
+              <select id="mdTypeSelect" required>
+                <option value="Merit">Merit (നല്ല കാര്യം / നേട്ടം)</option>
+                <option value="Demerit">Demerit (ശ്രദ്ധിക്കേണ്ടത് / വീഴ്ച)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Date *</label>
+              <input type="date" id="mdDateInput" required>
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>Remark / Note *</label>
+              <input type="text" id="mdNoteInput" required placeholder="Write merit or demerit details...">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">+ Save Entry</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Merit & Demerit Log</span>
+            <select id="mdFilterType" onchange="renderMeritTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
+              <option value="ALL">All Entries</option>
+              <option value="Merit">Merit Only</option>
+              <option value="Demerit">Demerit Only</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Student</th>
+                  <th>Class</th>
+                  <th>Type</th>
+                  <th>Note</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="meritTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 9: DEDICATED CASH COLLECTION BOARD -->
+      <section id="page9" class="page-section anim-pop">
+        <div class="page-head">
+          <div>
+            <h1>Cash Collection Board (ഫീസ് & പിരിവുകൾ)</h1>
+            <p>Create custom collection heads (Exam Fee, Program Fee, etc.) and record student payments.</p>
+          </div>
+          <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-box">
+            <div class="k-label">Collection Heads</div>
+            <div class="k-val" id="kpiHeadsCount">0</div>
+          </div>
+          <div class="kpi-box">
+            <div class="k-label">Total Collected (<span id="kpiYearLabel">2026-2027</span>)</div>
+            <div class="k-val" id="kpiTotalCollected">₹0</div>
+          </div>
+          <div class="kpi-box">
+            <div class="k-label">Payment Entries</div>
+            <div class="k-val" id="kpiPaymentsCount">0</div>
+          </div>
+        </div>
+
+        <!-- Create Custom Collection Head -->
+        <div class="card">
+          <div class="card-title">1. Create Custom Collection Head (Exam Fee / Program Fee / Other)</div>
+          <form onsubmit="addCollectionHead(event)" class="form-grid">
+            <div class="form-group">
+              <label>Collection Name *</label>
+              <input type="text" id="collHeadName" required placeholder="e.g., Term 1 Exam Fee, Annual Program Fee">
+            </div>
+            <div class="form-group">
+              <label>Default Amount (Optional)</label>
+              <input type="number" id="collHeadAmount" min="0" step="0.01" placeholder="e.g., 100">
+            </div>
+            <div class="form-group" style="justify-content:flex-end;">
+              <button type="submit" class="btn btn-primary">+ Add Collection Head</button>
+            </div>
+          </form>
+          <div id="collHeadsChips" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;"></div>
+        </div>
+
+        <!-- Record Student Collection Payment -->
+        <div class="card">
+          <div class="card-title">2. Record Student Cash Collection</div>
+          <form onsubmit="saveCashCollection(event)" class="form-grid">
+            <div class="form-group">
+              <label>Collection Head *</label>
+              <select id="collPayHeadSelect" required onchange="applyDefaultCollAmount()"></select>
+            </div>
+            <div class="form-group">
+              <label>Class Filter</label>
+              <select id="collClassFilter" onchange="populateCollStudentDropdown()"></select>
+            </div>
+            <div class="form-group">
+              <label>Student *</label>
+              <select id="collStudentSelect" required></select>
+            </div>
+            <div class="form-group">
+              <label>Amount Paid *</label>
+              <input type="number" id="collPayAmount" required min="0" step="0.01" placeholder="0.00">
+            </div>
+            <div class="form-group">
+              <label>Date *</label>
+              <input type="date" id="collPayDate" required>
+            </div>
+            <div class="form-group">
+              <label>Remarks (Optional)</label>
+              <input type="text" id="collPayNote" placeholder="e.g., Receipt #12 / Paid by parent">
+            </div>
+            <div class="form-group" style="justify-content:flex-end;">
+              <button type="submit" class="btn btn-success">+ Record Payment</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Collection Records Table -->
+        <div class="card">
+          <div class="card-title">
+            <span>3. Cash Collection Register</span>
+            <select id="collFilterHead" onchange="renderCashCollectionTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
+              <option value="ALL">All Collection Heads</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Collection Head</th>
+                  <th>Student</th>
+                  <th>Class</th>
+                  <th>Amount</th>
+                  <th>Remarks</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="cashCollTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 5: CLASS-WISE SUBJECTS & 4-TERM MARK LIST -->
+      <section id="page5" class="page-section anim-up">
+        <div class="page-head no-print">
+          <div>
+            <h1>Class-wise Subjects & 4-Term Marks</h1>
+            <p>Add subjects/skills for each class, enter 4-Term & Monthly marks, and print the Progress Report Card.</p>
+          </div>
+          <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
+        </div>
+
+        <!-- Class-wise Subjects & Skills Configurator -->
         <div class="card no-print">
-          <div class="card-title">1. Configure Subjects & Madrasa Skills</div>
+          <div class="card-title">
+            <span>1. Configure Subjects & Skills for Class</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <label style="font-size:13px; font-weight:700;">Target Class:</label>
+              <select id="evalTargetClass" onchange="renderEvalChips(); loadStudentMarksForm();" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px; font-weight:700;"></select>
+            </div>
+          </div>
           <form onsubmit="addEvaluationItem(event)" class="form-grid">
             <div class="form-group">
               <label>Subject / Skill Name *</label>
@@ -1012,22 +1353,20 @@
               <input type="number" id="evalItemMax" value="50" min="1" required>
             </div>
             <div class="form-group" style="justify-content:flex-end;">
-              <button type="submit" class="btn btn-primary">+ Add Subject / Skill</button>
+              <button type="submit" class="btn btn-primary">+ Add to Selected Class</button>
             </div>
           </form>
 
           <div id="evalItemsChips" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;"></div>
         </div>
 
-        <!-- Marks Entry Card with Class Filter -->
+        <!-- Marks Entry Card -->
         <div class="card no-print">
-          <div class="card-title">2. Enter Student Marks (Class-wise Selection)</div>
+          <div class="card-title">2. Enter Student Marks</div>
           <div class="form-grid" style="margin-bottom:16px;">
             <div class="form-group">
-              <label>Select Class (ക്ലാസ് തിരഞ്ഞെടുക്കുക)</label>
-              <select id="markClassFilter" onchange="populateMarkStudentDropdown()">
-                <option value="ALL">All Classes</option>
-              </select>
+              <label>Select Class</label>
+              <select id="markClassFilter" onchange="syncEvalClassAndStudents()"></select>
             </div>
             <div class="form-group">
               <label>Select Student *</label>
@@ -1069,7 +1408,7 @@
           </div>
         </div>
 
-        <!-- Saved Progress Card (ONLY THIS PRINTS ON SINGLE PAGE!) -->
+        <!-- Saved Progress Card -->
         <div class="card" id="reportCardContainer" style="display:none;">
           <div class="card-title no-print">
             <span>3. Student Progress Report Card</span>
@@ -1103,9 +1442,7 @@
           <div class="form-grid" style="margin-bottom:12px;">
             <div class="form-group">
               <label>Filter by Class</label>
-              <select id="waTargetClass" onchange="populateWaStudentDropdown(); renderWaRecipients()">
-                <option value="ALL">All Classes</option>
-              </select>
+              <select id="waTargetClass" onchange="populateWaStudentDropdown(); renderWaRecipients()"></select>
             </div>
             <div class="form-group">
               <label>Select Individual Student (Optional)</label>
@@ -1184,7 +1521,7 @@ Sadar Muallim: {sadar}
         <div class="footer-stats">
           <div class="f-stat">Academic Year: <strong id="footerYear">2026-2027</strong></div>
           <div class="f-stat">Total Students: <strong id="footerStudents">0</strong></div>
-          <div class="f-stat">Subjects & Skills: <strong id="footerSubjects">0</strong></div>
+          <div class="f-stat">Classes: <strong id="footerClasses">0</strong></div>
         </div>
         <div style="font-size:12px; color:var(--text-muted); text-align:right;">
           <strong style="color:var(--text);">ATAVA DIGITAL SERVICES & TRADING</strong> • Vazhakkad, Malappuram
@@ -1280,10 +1617,17 @@ function doGet(e) {
   </div>
 
   <script>
-    const ALL_CLASSES = ['Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Hifz'];
+    const DEFAULT_CLASSES = ['Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Hifz'];
+    const DEFAULT_EVAL_ITEMS = [
+      { id: 'sub1', name: 'Quran & Tajweed', type: 'Subject', max: 50 },
+      { id: 'sub2', name: 'Fiqh & Aqeedah', type: 'Subject', max: 50 },
+      { id: 'skl1', name: 'Akhlaq & Discipline', type: 'Skill', max: 25 },
+      { id: 'skl2', name: 'Namaz Practice', type: 'Skill', max: 25 }
+    ];
 
     let state = {
-      institution: { name: '', regNo: '', place: '', mobile: '', email: '', year: '2026-2027' },
+      institution: { name: '', regNo: '', place: '', mobile: '', email: '', year: '2026-2027', logo: '' },
+      classes: [...DEFAULT_CLASSES],
       academicYears: ['2026-2027', '2027-2028'],
       activeYear: '2026-2027',
       students: [],
@@ -1292,12 +1636,16 @@ function doGet(e) {
         'മദ്രസ യൂണിഫോമും വൃത്തിയും നിർബന്ധമായും പാലിക്കേണ്ടതാണ്.',
         'അവധി ആവശ്യമുള്ളപ്പോൾ രക്ഷിതാവിന്റെ അറിവോടെ മുൻകൂട്ടി അറിയിക്കണം.'
       ],
-      evalItems: [
-        { id: 'sub1', name: 'Quran & Tajweed', type: 'Subject', max: 50 },
-        { id: 'sub2', name: 'Fiqh & Aqeedah', type: 'Subject', max: 50 },
-        { id: 'skl1', name: 'Akhlaq & Discipline', type: 'Skill', max: 25 },
-        { id: 'skl2', name: 'Namaz Practice', type: 'Skill', max: 25 }
+      awards: [],
+      timetable: [],
+      meritDemerit: [],
+      collectionHeads: [
+        { id: 'col_exam', name: 'Exam Fee', defaultAmount: 0 },
+        { id: 'col_prog', name: 'Program Fee', defaultAmount: 0 }
       ],
+      cashCollections: [],
+      // Map of className -> array of { id, name, type, max }
+      classEvalItems: {},
       marks: {},
       scriptUrl: ''
     };
@@ -1305,26 +1653,70 @@ function doGet(e) {
     let pageHistory = ['page1'];
     let waSentMap = {};
     let editingStudentId = null;
+    let editingAwardId = null;
+    let editingTtId = null;
+    let tempLogoData = '';
     let tempPhotoData = '';
     let tempProofData = '';
     let tempProofName = '';
 
+    function ensureClassEvalMap(parsed) {
+      if (!parsed.classes || !Array.isArray(parsed.classes) || !parsed.classes.length) {
+        parsed.classes = [...DEFAULT_CLASSES];
+      }
+      if (!parsed.classEvalItems || typeof parsed.classEvalItems !== 'object') {
+        parsed.classEvalItems = {};
+      }
+      // Migrate legacy global evalItems if present
+      if (Array.isArray(parsed.evalItems) && parsed.evalItems.length && !Object.keys(parsed.classEvalItems).length) {
+        parsed.classes.forEach(c => {
+          parsed.classEvalItems[c] = parsed.evalItems.map((it, idx) => Object.assign({}, it, { id: it.id || ('ev_' + c + '_' + idx) }));
+        });
+      }
+      parsed.classes.forEach(c => {
+        if (!Array.isArray(parsed.classEvalItems[c]) || !parsed.classEvalItems[c].length) {
+          parsed.classEvalItems[c] = DEFAULT_EVAL_ITEMS.map((it, idx) => ({
+            id: `${c.replace(/\s+/g, '_')}_${it.id}_${idx}`,
+            name: it.name,
+            type: it.type,
+            max: it.max
+          }));
+        }
+      });
+    }
+
+    function getItemsForClass(clsName) {
+      const target = clsName || state.classes[0] || 'Class 1';
+      if (!state.classEvalItems[target]) {
+        state.classEvalItems[target] = DEFAULT_EVAL_ITEMS.map((it, idx) => ({
+          id: `${target.replace(/\s+/g, '_')}_${it.id}_${idx}`,
+          name: it.name,
+          type: it.type,
+          max: it.max
+        }));
+      }
+      return state.classEvalItems[target];
+    }
+
     function loadState() {
       try {
-        const saved = localStorage.getItem('smart_madrasa_v11');
+        const saved = localStorage.getItem('smart_madrasa_v12') || localStorage.getItem('smart_madrasa_v11');
         if (saved) {
           const parsed = JSON.parse(saved);
           state = Object.assign({}, state, parsed);
+          state.institution = Object.assign({ name: '', regNo: '', place: '', mobile: '', email: '', year: '2026-2027', logo: '' }, parsed.institution || {});
         }
       } catch (e) { console.error(e); }
+      ensureClassEvalMap(state);
       applyStateToUI();
     }
 
     function saveState() {
+      ensureClassEvalMap(state);
       try {
-        localStorage.setItem('smart_madrasa_v11', JSON.stringify(state));
+        localStorage.setItem('smart_madrasa_v12', JSON.stringify(state));
       } catch (e) {
-        alert('Storage limit reached! Please use smaller photo/document sizes.');
+        alert('Storage limit reached! Please use smaller photo/document/logo sizes.');
       }
       applyStateToUI();
     }
@@ -1361,7 +1753,8 @@ function doGet(e) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.nav-pill').forEach(btn => btn.classList.remove('active'));
 
-      document.getElementById(pageId).classList.add('active');
+      const targetSec = document.getElementById(pageId);
+      if (targetSec) targetSec.classList.add('active');
       const pill = document.getElementById('nav-' + pageId);
       if (pill) pill.classList.add('active');
 
@@ -1377,11 +1770,28 @@ function doGet(e) {
         populateAllClassDropdowns();
         populateMarkStudentDropdown();
         renderEvalChips();
+        loadStudentMarksForm();
       }
       if (pageId === 'page6') {
         populateAllClassDropdowns();
         populateWaStudentDropdown();
         renderWaRecipients();
+      }
+      if (pageId === 'page7') {
+        populateAllClassDropdowns();
+        renderTimetableTable();
+      }
+      if (pageId === 'page8') {
+        populateAllClassDropdowns();
+        populateMdStudentDropdown();
+        renderMeritTable();
+      }
+      if (pageId === 'page9') {
+        populateAllClassDropdowns();
+        populateCollHeadDropdowns();
+        populateCollStudentDropdown();
+        renderCollectionHeadsChips();
+        renderCashCollectionTable();
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1413,6 +1823,7 @@ function doGet(e) {
       sel.value = state.activeYear;
       document.getElementById('formYearTag').textContent = state.activeYear;
       document.getElementById('footerYear').textContent = state.activeYear;
+      document.getElementById('kpiYearLabel').textContent = state.activeYear;
     }
 
     function changeActiveYear() {
@@ -1445,6 +1856,22 @@ function doGet(e) {
         ? `${inst.name} - Rules & Regulations`
         : 'Madrasa Rules & Regulations';
 
+      // Logo display
+      const wLogo = document.getElementById('welcomeLogoImg');
+      const topIcon = document.getElementById('topBrandIcon');
+      const logoPrev = document.getElementById('instLogoPreview');
+      tempLogoData = inst.logo || '';
+      if (inst.logo) {
+        wLogo.src = inst.logo;
+        wLogo.style.display = 'block';
+        topIcon.innerHTML = `<img src="${inst.logo}" alt="Logo">`;
+        logoPrev.innerHTML = `<img src="${inst.logo}" alt="Logo">`;
+      } else {
+        wLogo.style.display = 'none';
+        topIcon.innerHTML = '🕌';
+        logoPrev.innerHTML = 'Logo';
+      }
+
       document.getElementById('instName').value = inst.name || '';
       document.getElementById('instReg').value = inst.regNo || '';
       document.getElementById('instPlace').value = inst.place || '';
@@ -1454,20 +1881,59 @@ function doGet(e) {
       document.getElementById('scriptUrlInput').value = state.scriptUrl || '';
 
       renderYearDropdown();
+      renderClassChips();
       populateAllClassDropdowns();
       populateMarkStudentDropdown();
       populateWaStudentDropdown();
+      populateMdStudentDropdown();
+      populateCollHeadDropdowns();
+      populateCollStudentDropdown();
       renderStudentsTable();
       renderRules();
+      renderAwards();
+      renderTimetableTable();
+      renderMeritTable();
+      renderCollectionHeadsChips();
+      renderCashCollectionTable();
       renderEvalChips();
       renderWaRecipients();
 
       const yearStudents = state.students.filter(s => (s.year || state.activeYear) === state.activeYear);
       document.getElementById('footerStudents').textContent = yearStudents.length;
-      document.getElementById('footerSubjects').textContent = state.evalItems.length;
+      document.getElementById('footerClasses').textContent = state.classes.length;
     }
 
-    // Page 2: Institution
+    // Logo Upload
+    function handleLogoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxSide = 220;
+          const scale = Math.min(maxSide / img.width, maxSide / img.height, 1);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          tempLogoData = canvas.toDataURL('image/png');
+          document.getElementById('instLogoPreview').innerHTML = `<img src="${tempLogoData}" alt="Logo">`;
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearInstLogo() {
+      tempLogoData = '';
+      state.institution.logo = '';
+      document.getElementById('instLogoInput').value = '';
+      saveState();
+      showToast('Logo removed.');
+    }
+
+    // Page 2: Institution & Classes
     function saveInstitution(e) {
       e.preventDefault();
       const yr = document.getElementById('instYear').value.trim() || '2026-2027';
@@ -1479,10 +1945,76 @@ function doGet(e) {
         place: document.getElementById('instPlace').value.trim(),
         mobile: document.getElementById('instMobile').value.trim(),
         email: document.getElementById('instEmail').value.trim(),
-        year: yr
+        year: yr,
+        logo: tempLogoData || state.institution.logo || ''
       };
       saveState();
-      showToast('Institution details saved!');
+      showToast('Institution details & logo saved!');
+    }
+
+    function addNewClass(e) {
+      e.preventDefault();
+      const inp = document.getElementById('newClassNameInput');
+      const name = inp.value.trim();
+      if (!name) return;
+      if (state.classes.includes(name)) {
+        showToast('Class already exists!');
+        return;
+      }
+      state.classes.push(name);
+      getItemsForClass(name);
+      inp.value = '';
+      saveState();
+      showToast(`Class "${name}" added!`);
+    }
+
+    function removeClass(clsName) {
+      if (state.classes.length <= 1) {
+        showToast('At least one class is required.');
+        return;
+      }
+      if (!confirm(`Remove class "${clsName}"?`)) return;
+      state.classes = state.classes.filter(c => c !== clsName);
+      delete state.classEvalItems[clsName];
+      saveState();
+      showToast(`Class "${clsName}" removed.`);
+    }
+
+    function renderClassChips() {
+      const box = document.getElementById('classChipsContainer');
+      if (!box) return;
+      box.innerHTML = state.classes.map(c => {
+        const subCount = (state.classEvalItems[c] || []).length;
+        return `
+          <span class="badge badge-blue" style="padding:6px 12px; font-size:12.5px; display:inline-flex; align-items:center; gap:6px;">
+            <span>${c} (${subCount} subjects)</span>
+            <button type="button" onclick="removeClass('${c.replace(/'/g, "\\'")}')" title="Remove Class" style="background:none; border:none; font-weight:800; cursor:pointer; color:inherit; font-size:14px;">×</button>
+          </span>
+        `;
+      }).join('');
+    }
+
+    function populateAllClassDropdowns() {
+      // Single-class selectors (no ALL option)
+      const singleIds = ['stClass', 'ttClass', 'evalTargetClass'];
+      singleIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const cur = el.value;
+        el.innerHTML = state.classes.map(c => `<option value="${c}">${c}</option>`).join('');
+        if (state.classes.includes(cur)) el.value = cur;
+        else el.value = state.classes[0] || '';
+      });
+
+      // Filter selectors (with ALL option)
+      const filterIds = ['filterClassSelect', 'markClassFilter', 'waTargetClass', 'ttFilterClass', 'mdClassFilter', 'collClassFilter'];
+      filterIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const cur = el.value || 'ALL';
+        el.innerHTML = '<option value="ALL">All Classes</option>' + state.classes.map(c => `<option value="${c}">${c}</option>`).join('');
+        el.value = (cur === 'ALL' || state.classes.includes(cur)) ? cur : 'ALL';
+      });
     }
 
     // Photo & Proof Upload
@@ -1650,6 +2182,10 @@ function doGet(e) {
       document.getElementById('stSlNo').value = st.slNo;
       document.getElementById('stAdmNo').value = st.admNo;
       document.getElementById('stName').value = st.name;
+      if (!state.classes.includes(st.studentClass)) {
+        state.classes.push(st.studentClass);
+        populateAllClassDropdowns();
+      }
       document.getElementById('stClass').value = st.studentClass;
       document.getElementById('stAadhaar').value = st.aadhaar;
       document.getElementById('stParent').value = st.parentName;
@@ -1746,19 +2282,9 @@ function doGet(e) {
       showToast('Student record deleted.');
     }
 
-    function populateAllClassDropdowns() {
-      const ids = ['filterClassSelect', 'markClassFilter', 'waTargetClass'];
-      ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const cur = el.value || 'ALL';
-        el.innerHTML = '<option value="ALL">All Classes</option>' + ALL_CLASSES.map(c => `<option value="${c}">${c}</option>`).join('');
-        el.value = cur;
-      });
-    }
-
     function renderStudentsTable() {
       const tbody = document.getElementById('studentsTableBody');
+      if (!tbody) return;
       const q = (document.getElementById('searchStudentInput').value || '').toLowerCase();
       const cls = document.getElementById('filterClassSelect').value || 'ALL';
 
@@ -1814,7 +2340,7 @@ function doGet(e) {
       `).join('');
     }
 
-    // Page 4: Rules
+    // Page 4: Rules & Awards
     function addRule(e) {
       e.preventDefault();
       const inp = document.getElementById('newRuleText');
@@ -1843,6 +2369,7 @@ function doGet(e) {
 
     function renderRules() {
       const box = document.getElementById('rulesListContainer');
+      if (!box) return;
       if (!state.rules.length) {
         box.innerHTML = '<p style="color:var(--text-muted);">No rules configured yet.</p>';
         return;
@@ -1867,7 +2394,402 @@ function doGet(e) {
       setTimeout(() => document.body.classList.remove('print-rules-mode'), 500);
     }
 
-    // Page 5: Marks & Progress Card
+    function saveAward(e) {
+      e.preventDefault();
+      const title = document.getElementById('awardTitleInput').value.trim();
+      const year = document.getElementById('awardYearInput').value.trim();
+      const by = document.getElementById('awardByInput').value.trim();
+      if (!title || !year) return;
+
+      if (editingAwardId) {
+        state.awards = state.awards.map(a => a.id === editingAwardId ? { id: a.id, title, year, by } : a);
+        showToast('Award updated!');
+      } else {
+        state.awards.push({ id: 'aw_' + Date.now(), title, year, by });
+        showToast('Award added!');
+      }
+      resetAwardForm();
+      saveState();
+    }
+
+    function editAward(id) {
+      const aw = state.awards.find(a => a.id === id);
+      if (!aw) return;
+      editingAwardId = aw.id;
+      document.getElementById('awardTitleInput').value = aw.title;
+      document.getElementById('awardYearInput').value = aw.year;
+      document.getElementById('awardByInput').value = aw.by || '';
+      document.getElementById('awardFormTitle').textContent = '✏️ Edit Madrasa Award';
+      document.getElementById('saveAwardBtn').textContent = 'Update Award';
+      document.getElementById('cancelAwardEditBtn').style.display = 'inline-flex';
+    }
+
+    function resetAwardForm() {
+      editingAwardId = null;
+      document.getElementById('awardTitleInput').value = '';
+      document.getElementById('awardYearInput').value = '';
+      document.getElementById('awardByInput').value = '';
+      document.getElementById('awardFormTitle').textContent = '🏆 Madrasa Awards & Achievements';
+      document.getElementById('saveAwardBtn').textContent = '+ Add Award';
+      document.getElementById('cancelAwardEditBtn').style.display = 'none';
+    }
+
+    function deleteAward(id) {
+      if (!confirm('Delete this award?')) return;
+      if (editingAwardId === id) resetAwardForm();
+      state.awards = state.awards.filter(a => a.id !== id);
+      saveState();
+    }
+
+    function renderAwards() {
+      const box = document.getElementById('awardsListContainer');
+      if (!box) return;
+      if (!state.awards.length) {
+        box.innerHTML = '<p style="color:var(--text-muted); font-size:13.5px;">No awards added yet.</p>';
+        return;
+      }
+      box.innerHTML = state.awards.map((a, i) => `
+        <div class="rule-item">
+          <div style="display:flex; gap:10px; align-items:flex-start;">
+            <span class="rule-num">🏆 ${i + 1}</span>
+            <div>
+              <div style="font-weight:800; font-size:14.5px;">${a.title} <span class="badge badge-amber">${a.year}</span></div>
+              ${a.by ? `<div style="font-size:12.5px; color:var(--text-muted);">By: ${a.by}</div>` : ''}
+            </div>
+          </div>
+          <div style="display:flex; gap:6px; flex-shrink:0;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="editAward('${a.id}')">✏️ Edit</button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="deleteAward('${a.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Page 7: Timetable (Add & Edit)
+    function saveTimetableEntry(e) {
+      e.preventDefault();
+      const entry = {
+        day: document.getElementById('ttDay').value,
+        studentClass: document.getElementById('ttClass').value,
+        period: document.getElementById('ttPeriod').value.trim(),
+        subject: document.getElementById('ttSubject').value.trim(),
+        teacher: document.getElementById('ttTeacher').value.trim()
+      };
+      if (editingTtId) {
+        state.timetable = state.timetable.map(t => t.id === editingTtId ? Object.assign({}, t, entry) : t);
+        showToast('Timetable period updated!');
+      } else {
+        state.timetable.push(Object.assign({ id: 'tt_' + Date.now(), year: state.activeYear }, entry));
+        showToast('Timetable period added!');
+      }
+      resetTimetableForm();
+      saveState();
+    }
+
+    function editTimetableEntry(id) {
+      const t = state.timetable.find(x => x.id === id);
+      if (!t) return;
+      editingTtId = t.id;
+      document.getElementById('ttDay').value = t.day;
+      if (!state.classes.includes(t.studentClass)) {
+        state.classes.push(t.studentClass);
+        populateAllClassDropdowns();
+      }
+      document.getElementById('ttClass').value = t.studentClass;
+      document.getElementById('ttPeriod').value = t.period;
+      document.getElementById('ttSubject').value = t.subject;
+      document.getElementById('ttTeacher').value = t.teacher || '';
+      document.getElementById('ttFormTitle').textContent = '✏️ Edit Timetable Period';
+      document.getElementById('saveTtBtn').textContent = 'Update Period';
+      document.getElementById('cancelTtEditBtn').style.display = 'inline-flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetTimetableForm() {
+      editingTtId = null;
+      document.getElementById('ttPeriod').value = '';
+      document.getElementById('ttSubject').value = '';
+      document.getElementById('ttTeacher').value = '';
+      document.getElementById('ttFormTitle').textContent = 'Add Timetable Period';
+      document.getElementById('saveTtBtn').textContent = '+ Save Period';
+      document.getElementById('cancelTtEditBtn').style.display = 'none';
+    }
+
+    function deleteTimetableEntry(id) {
+      if (!confirm('Remove this timetable entry?')) return;
+      if (editingTtId === id) resetTimetableForm();
+      state.timetable = state.timetable.filter(t => t.id !== id);
+      saveState();
+    }
+
+    function renderTimetableTable() {
+      const tbody = document.getElementById('timetableTableBody');
+      if (!tbody) return;
+      const dayF = document.getElementById('ttFilterDay').value || 'ALL';
+      const clsF = document.getElementById('ttFilterClass').value || 'ALL';
+
+      const rows = state.timetable.filter(t => {
+        const matchDay = dayF === 'ALL' || t.day === dayF;
+        const matchCls = clsF === 'ALL' || t.studentClass === clsF;
+        return matchDay && matchCls;
+      });
+
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:18px;">No timetable entries found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows.map(t => `
+        <tr>
+          <td><strong>${t.day}</strong></td>
+          <td><span class="badge badge-blue">${t.studentClass}</span></td>
+          <td>${t.period}</td>
+          <td><strong>${t.subject}</strong></td>
+          <td>${t.teacher || '-'}</td>
+          <td>
+            <div style="display:flex; gap:5px;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="editTimetableEntry('${t.id}')">✏️ Edit</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="deleteTimetableEntry('${t.id}')">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Page 8: Merit & Demerit
+    function populateMdStudentDropdown() {
+      const clsF = document.getElementById('mdClassFilter');
+      const stSel = document.getElementById('mdStudentSelect');
+      if (!clsF || !stSel) return;
+      const cls = clsF.value || 'ALL';
+      const list = state.students.filter(s => {
+        const matchYear = (s.year || state.activeYear) === state.activeYear;
+        const matchCls = cls === 'ALL' || s.studentClass === cls;
+        return matchYear && matchCls;
+      });
+      stSel.innerHTML = '<option value="">-- Select Student --</option>' +
+        list.map(s => `<option value="${s.id}">${s.name} (${s.admNo} • ${s.studentClass})</option>`).join('');
+      const dateInp = document.getElementById('mdDateInput');
+      if (dateInp && !dateInp.value) dateInp.value = new Date().toISOString().slice(0, 10);
+    }
+
+    function saveMeritEntry(e) {
+      e.preventDefault();
+      const stId = document.getElementById('mdStudentSelect').value;
+      const st = state.students.find(s => s.id === stId);
+      if (!st) { showToast('Please select a student!'); return; }
+      state.meritDemerit.unshift({
+        id: 'md_' + Date.now(),
+        year: state.activeYear,
+        studentId: st.id,
+        studentName: st.name,
+        studentClass: st.studentClass,
+        type: document.getElementById('mdTypeSelect').value,
+        date: document.getElementById('mdDateInput').value,
+        note: document.getElementById('mdNoteInput').value.trim()
+      });
+      document.getElementById('mdNoteInput').value = '';
+      saveState();
+      showToast('Merit/Demerit note saved!');
+    }
+
+    function deleteMeritEntry(id) {
+      if (!confirm('Delete this entry?')) return;
+      state.meritDemerit = state.meritDemerit.filter(m => m.id !== id);
+      saveState();
+    }
+
+    function renderMeritTable() {
+      const tbody = document.getElementById('meritTableBody');
+      if (!tbody) return;
+      const typeF = document.getElementById('mdFilterType').value || 'ALL';
+      const rows = state.meritDemerit.filter(m => {
+        const matchYear = (m.year || state.activeYear) === state.activeYear;
+        const matchType = typeF === 'ALL' || m.type === typeF;
+        return matchYear && matchType;
+      });
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:18px;">No merit or demerit notes recorded yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map(m => `
+        <tr>
+          <td>${m.date}</td>
+          <td><strong>${m.studentName}</strong></td>
+          <td><span class="badge badge-blue">${m.studentClass}</span></td>
+          <td><span class="badge ${m.type === 'Merit' ? 'badge-green' : 'badge-red'}">${m.type}</span></td>
+          <td>${m.note}</td>
+          <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteMeritEntry('${m.id}')">Delete</button></td>
+        </tr>
+      `).join('');
+    }
+
+    // Page 9: Dedicated Cash Collection Board
+    function addCollectionHead(e) {
+      e.preventDefault();
+      const name = document.getElementById('collHeadName').value.trim();
+      const defAmt = parseFloat(document.getElementById('collHeadAmount').value) || 0;
+      if (!name) return;
+      state.collectionHeads.push({ id: 'ch_' + Date.now(), name, defaultAmount: defAmt });
+      document.getElementById('collHeadName').value = '';
+      document.getElementById('collHeadAmount').value = '';
+      saveState();
+      showToast(`Collection "${name}" added!`);
+    }
+
+    function removeCollectionHead(id) {
+      if (!confirm('Remove this collection head?')) return;
+      state.collectionHeads = state.collectionHeads.filter(h => h.id !== id);
+      saveState();
+    }
+
+    function renderCollectionHeadsChips() {
+      const box = document.getElementById('collHeadsChips');
+      if (!box) return;
+      if (!state.collectionHeads.length) {
+        box.innerHTML = '<span style="font-size:12.5px; color:var(--text-muted);">No collection heads created yet.</span>';
+        return;
+      }
+      box.innerHTML = state.collectionHeads.map(h => `
+        <span class="badge badge-blue" style="padding:6px 12px; font-size:12.5px; display:inline-flex; align-items:center; gap:6px;">
+          <span>${h.name}${h.defaultAmount ? ' (₹' + h.defaultAmount + ')' : ''}</span>
+          <button type="button" onclick="removeCollectionHead('${h.id}')" style="background:none; border:none; font-weight:800; cursor:pointer; color:inherit; font-size:14px;">×</button>
+        </span>
+      `).join('');
+    }
+
+    function populateCollHeadDropdowns() {
+      const paySel = document.getElementById('collPayHeadSelect');
+      const filterSel = document.getElementById('collFilterHead');
+      if (paySel) {
+        const cur = paySel.value;
+        paySel.innerHTML = state.collectionHeads.map(h => `<option value="${h.id}">${h.name}</option>`).join('');
+        if (state.collectionHeads.some(h => h.id === cur)) paySel.value = cur;
+        applyDefaultCollAmount();
+      }
+      if (filterSel) {
+        const curF = filterSel.value || 'ALL';
+        filterSel.innerHTML = '<option value="ALL">All Collection Heads</option>' +
+          state.collectionHeads.map(h => `<option value="${h.name}">${h.name}</option>`).join('');
+        filterSel.value = curF;
+      }
+      const dInp = document.getElementById('collPayDate');
+      if (dInp && !dInp.value) dInp.value = new Date().toISOString().slice(0, 10);
+    }
+
+    function applyDefaultCollAmount() {
+      const sel = document.getElementById('collPayHeadSelect');
+      const amtInp = document.getElementById('collPayAmount');
+      if (!sel || !amtInp) return;
+      const head = state.collectionHeads.find(h => h.id === sel.value);
+      if (head && head.defaultAmount > 0 && !amtInp.value) {
+        amtInp.value = head.defaultAmount;
+      }
+    }
+
+    function populateCollStudentDropdown() {
+      const clsF = document.getElementById('collClassFilter');
+      const stSel = document.getElementById('collStudentSelect');
+      if (!clsF || !stSel) return;
+      const cls = clsF.value || 'ALL';
+      const list = state.students.filter(s => {
+        const matchYear = (s.year || state.activeYear) === state.activeYear;
+        const matchCls = cls === 'ALL' || s.studentClass === cls;
+        return matchYear && matchCls;
+      });
+      stSel.innerHTML = '<option value="">-- Select Student --</option>' +
+        list.map(s => `<option value="${s.id}">${s.name} (${s.admNo} • ${s.studentClass})</option>`).join('');
+    }
+
+    function saveCashCollection(e) {
+      e.preventDefault();
+      const headId = document.getElementById('collPayHeadSelect').value;
+      const head = state.collectionHeads.find(h => h.id === headId);
+      const stId = document.getElementById('collStudentSelect').value;
+      const st = state.students.find(s => s.id === stId);
+      const amt = parseFloat(document.getElementById('collPayAmount').value) || 0;
+      const date = document.getElementById('collPayDate').value;
+      const note = document.getElementById('collPayNote').value.trim();
+
+      if (!head || !st) { showToast('Please select collection head and student!'); return; }
+
+      state.cashCollections.unshift({
+        id: 'cc_' + Date.now(),
+        year: state.activeYear,
+        headName: head.name,
+        studentId: st.id,
+        studentName: st.name,
+        studentClass: st.studentClass,
+        amount: amt,
+        date,
+        note
+      });
+      document.getElementById('collPayAmount').value = '';
+      document.getElementById('collPayNote').value = '';
+      saveState();
+      showToast('Cash collection recorded!');
+    }
+
+    function deleteCashCollection(id) {
+      if (!confirm('Delete this payment record?')) return;
+      state.cashCollections = state.cashCollections.filter(c => c.id !== id);
+      saveState();
+    }
+
+    function renderCashCollectionTable() {
+      const tbody = document.getElementById('cashCollTableBody');
+      const yearRows = state.cashCollections.filter(c => (c.year || state.activeYear) === state.activeYear);
+      const totalAmt = yearRows.reduce((acc, r) => acc + (parseFloat(r.amount) || 0), 0);
+
+      document.getElementById('kpiHeadsCount').textContent = state.collectionHeads.length;
+      document.getElementById('kpiTotalCollected').textContent = `₹${totalAmt.toLocaleString()}`;
+      document.getElementById('kpiPaymentsCount').textContent = yearRows.length;
+
+      if (!tbody) return;
+      const headFilter = document.getElementById('collFilterHead').value || 'ALL';
+      const rows = yearRows.filter(c => headFilter === 'ALL' || c.headName === headFilter);
+
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:18px;">No cash collection records for this year.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows.map(c => `
+        <tr>
+          <td>${c.date}</td>
+          <td><span class="badge badge-blue">${c.headName}</span></td>
+          <td><strong>${c.studentName}</strong></td>
+          <td>${c.studentClass}</td>
+          <td><strong style="color:var(--success);">₹${Number(c.amount).toLocaleString()}</strong></td>
+          <td>${c.note || '-'}</td>
+          <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteCashCollection('${c.id}')">Delete</button></td>
+        </tr>
+      `).join('');
+    }
+
+    // Page 5: Class-wise Subjects & 4-Term Marks
+    function syncEvalClassAndStudents() {
+      const markCls = document.getElementById('markClassFilter').value;
+      const evalClsSel = document.getElementById('evalTargetClass');
+      if (markCls && markCls !== 'ALL' && evalClsSel && state.classes.includes(markCls)) {
+        evalClsSel.value = markCls;
+        renderEvalChips();
+      }
+      populateMarkStudentDropdown();
+    }
+
+    function getActiveEvalClass() {
+      const stId = document.getElementById('markStudentSelect') ? document.getElementById('markStudentSelect').value : '';
+      if (stId) {
+        const st = state.students.find(s => s.id === stId);
+        if (st && st.studentClass) return st.studentClass;
+      }
+      const markCls = document.getElementById('markClassFilter') ? document.getElementById('markClassFilter').value : 'ALL';
+      if (markCls && markCls !== 'ALL') return markCls;
+      const evalSel = document.getElementById('evalTargetClass');
+      return (evalSel && evalSel.value) ? evalSel.value : (state.classes[0] || 'Class 1');
+    }
+
     function toggleMonthField() {
       const term = document.getElementById('markTermSelect').value;
       document.getElementById('monthSelectGroup').style.display = (term === 'Monthly Exam') ? 'flex' : 'none';
@@ -1884,20 +2806,23 @@ function doGet(e) {
 
     function addEvaluationItem(e) {
       e.preventDefault();
+      const clsName = document.getElementById('evalTargetClass').value || state.classes[0];
       const name = document.getElementById('evalItemName').value.trim();
       const type = document.getElementById('evalItemType').value;
       const max = parseInt(document.getElementById('evalItemMax').value, 10) || 50;
-      if (!name) return;
+      if (!name || !clsName) return;
 
-      state.evalItems.push({ id: 'ev_' + Date.now(), name, type, max });
+      const list = getItemsForClass(clsName);
+      list.push({ id: 'ev_' + Date.now(), name, type, max });
       document.getElementById('evalItemName').value = '';
       saveState();
       loadStudentMarksForm();
-      showToast(`${name} added!`);
+      showToast(`${name} added to ${clsName}!`);
     }
 
     function openEditEvalModal(id) {
-      const item = state.evalItems.find(it => it.id === id);
+      const clsName = document.getElementById('evalTargetClass').value || state.classes[0];
+      const item = getItemsForClass(clsName).find(it => it.id === id);
       if (!item) return;
       document.getElementById('editEvalId').value = item.id;
       document.getElementById('editEvalName').value = item.name;
@@ -1912,13 +2837,14 @@ function doGet(e) {
 
     function saveEditedEvalItem(e) {
       e.preventDefault();
+      const clsName = document.getElementById('evalTargetClass').value || state.classes[0];
       const id = document.getElementById('editEvalId').value;
       const name = document.getElementById('editEvalName').value.trim();
       const type = document.getElementById('editEvalType').value;
       const max = parseInt(document.getElementById('editEvalMax').value, 10) || 50;
       if (!name) return;
 
-      state.evalItems = state.evalItems.map(it =>
+      state.classEvalItems[clsName] = getItemsForClass(clsName).map(it =>
         it.id === id ? Object.assign({}, it, { name, type, max }) : it
       );
       closeEditEvalModal();
@@ -1928,14 +2854,18 @@ function doGet(e) {
     }
 
     function removeEvalItem(id) {
-      state.evalItems = state.evalItems.filter(it => it.id !== id);
+      const clsName = document.getElementById('evalTargetClass').value || state.classes[0];
+      state.classEvalItems[clsName] = getItemsForClass(clsName).filter(it => it.id !== id);
       saveState();
       loadStudentMarksForm();
     }
 
     function renderEvalChips() {
       const box = document.getElementById('evalItemsChips');
-      box.innerHTML = state.evalItems.map(it => `
+      if (!box) return;
+      const clsName = document.getElementById('evalTargetClass') ? document.getElementById('evalTargetClass').value : (state.classes[0] || 'Class 1');
+      const items = getItemsForClass(clsName);
+      box.innerHTML = items.map(it => `
         <span class="badge ${it.type === 'Skill' ? 'badge-green' : 'badge-blue'}" style="padding:6px 12px; font-size:12.5px; display:inline-flex; align-items:center; gap:6px;">
           <span>${it.name} (${it.type} • Max: ${it.max})</span>
           <button type="button" onclick="openEditEvalModal('${it.id}')" title="Edit" style="background:none; border:none; font-weight:800; cursor:pointer; color:inherit; font-size:12px;">✏️</button>
@@ -1946,6 +2876,7 @@ function doGet(e) {
 
     function populateMarkStudentDropdown() {
       const sel = document.getElementById('markStudentSelect');
+      if (!sel) return;
       const clsFilter = document.getElementById('markClassFilter').value || 'ALL';
       const cur = sel.value;
 
@@ -1979,6 +2910,7 @@ function doGet(e) {
     function loadStudentMarksForm() {
       const stId = document.getElementById('markStudentSelect').value;
       const area = document.getElementById('marksEntryArea');
+      if (!area) return;
 
       if (!stId) {
         area.innerHTML = '<p style="color:var(--text-muted); font-size:13.5px;">Select a Class and Student above to enter marks.</p>';
@@ -1986,10 +2918,17 @@ function doGet(e) {
         return;
       }
 
+      const st = state.students.find(s => s.id === stId);
+      const clsName = st ? st.studentClass : getActiveEvalClass();
+      const items = getItemsForClass(clsName);
+
       const key = getCurrentExamKey(stId);
       const existing = state.marks[key] || { scores: {}, grade: '' };
 
       area.innerHTML = `
+        <div style="margin-bottom:10px; font-size:13px; color:var(--text-muted);">
+          Showing subjects & skills for <strong>${clsName}</strong>:
+        </div>
         <div class="table-wrap">
           <table>
             <thead>
@@ -2002,7 +2941,7 @@ function doGet(e) {
               </tr>
             </thead>
             <tbody>
-              ${state.evalItems.map(it => {
+              ${items.map(it => {
                 const sc = existing.scores[it.id];
                 const subG = (sc !== undefined && sc !== '') ? calculateGrade((sc / it.max) * 100) : '-';
                 return `
@@ -2096,6 +3035,7 @@ function doGet(e) {
       const box = document.getElementById('reportCardContainer');
       box.style.display = 'block';
 
+      const items = getItemsForClass(st.studentClass);
       const selectedMonth = document.getElementById('markMonthSelect').value || 'November';
       const columns = [
         { label: 'Term 1', key: `${stId}__${state.activeYear}__Term 1` },
@@ -2105,14 +3045,14 @@ function doGet(e) {
         { label: `Monthly (${selectedMonth})`, key: `${stId}__${state.activeYear}__Monthly_${selectedMonth}` }
       ];
 
-      const maxTotal = state.evalItems.reduce((acc, it) => acc + (parseFloat(it.max) || 0), 0);
+      const maxTotal = items.reduce((acc, it) => acc + (parseFloat(it.max) || 0), 0);
 
       const colTotals = columns.map(col => {
         const rec = state.marks[col.key];
         if (!rec || !rec.scores) return null;
         let sum = 0;
         let hasAny = false;
-        state.evalItems.forEach(it => {
+        items.forEach(it => {
           if (rec.scores[it.id] !== undefined) {
             sum += parseFloat(rec.scores[it.id]) || 0;
             hasAny = true;
@@ -2121,12 +3061,19 @@ function doGet(e) {
         return hasAny ? sum : null;
       });
 
+      const logoHtml = state.institution.logo
+        ? `<img src="${state.institution.logo}" style="width:54px; height:54px; border-radius:10px; object-fit:cover; border:1px solid #cbd5e1;">`
+        : '';
+
       document.getElementById('reportCardContent').innerHTML = `
-        <div style="text-align:center; border-bottom:2px solid #0f172a; padding-bottom:10px; margin-bottom:12px;">
-          <h2 style="color:#0f172a; font-size:21px; font-weight:800;">${state.institution.name || 'SMART MADRASA'}</h2>
-          <p style="font-size:12.5px; color:#334155;">${state.institution.place || ''} ${state.institution.regNo ? '• Reg No: ' + state.institution.regNo : ''} ${state.institution.mobile ? '• Ph: ' + state.institution.mobile : ''}</p>
-          <div style="display:inline-block; margin-top:6px; padding:3px 16px; border:1.5px solid #0f172a; border-radius:999px; font-size:11.5px; font-weight:800; letter-spacing:0.04em;">
-            PROGRESS REPORT CARD • ${state.activeYear}
+        <div style="display:flex; align-items:center; justify-content:center; gap:14px; border-bottom:2px solid #0f172a; padding-bottom:10px; margin-bottom:12px;">
+          ${logoHtml}
+          <div style="text-align:center;">
+            <h2 style="color:#0f172a; font-size:21px; font-weight:800;">${state.institution.name || 'SMART MADRASA'}</h2>
+            <p style="font-size:12.5px; color:#334155;">${state.institution.place || ''} ${state.institution.regNo ? '• Reg No: ' + state.institution.regNo : ''} ${state.institution.mobile ? '• Ph: ' + state.institution.mobile : ''}</p>
+            <div style="display:inline-block; margin-top:6px; padding:3px 16px; border:1.5px solid #0f172a; border-radius:999px; font-size:11.5px; font-weight:800; letter-spacing:0.04em;">
+              PROGRESS REPORT CARD • ${state.activeYear}
+            </div>
           </div>
         </div>
 
@@ -2148,7 +3095,7 @@ function doGet(e) {
             </tr>
           </thead>
           <tbody>
-            ${state.evalItems.map(it => `
+            ${items.map(it => `
               <tr>
                 <td style="border:1px solid #cbd5e1; padding:7px 10px;"><strong>${it.name}</strong> <span style="font-size:11px; color:#64748b;">(${it.type})</span></td>
                 <td style="border:1px solid #cbd5e1; padding:7px 10px; text-align:center;">${it.max}</td>
@@ -2177,7 +3124,6 @@ function doGet(e) {
           </tbody>
         </table>
 
-        <!-- BLANK SIGNATURE BOXES FOR SIGNING WHEN HANDING OVER REPORT -->
         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:28px; padding-top:8px; text-align:center; font-size:12px;">
           <div>
             <div style="height:42px; border-bottom:1.5px dashed #64748b; margin:0 12px 5px;"></div>
@@ -2200,7 +3146,7 @@ function doGet(e) {
       window.print();
     }
 
-    // Page 6: WhatsApp Notices (Mobile + PC Web + Copy Fallback)
+    // Page 6: WhatsApp Notices
     function applyWaTemplate(type) {
       const dt = document.getElementById('waDateTime').value.trim() || '[തീയതിയും സമയവും]';
       const sadar = document.getElementById('waSadarMuallim').value.trim() || '[Sadar Muallim Name]';
@@ -2217,6 +3163,7 @@ function doGet(e) {
     function populateWaStudentDropdown() {
       const cls = document.getElementById('waTargetClass').value || 'ALL';
       const stSel = document.getElementById('waTargetStudent');
+      if (!stSel) return;
       const cur = stSel.value || 'ALL';
 
       const matching = state.students.filter(s => {
@@ -2306,9 +3253,10 @@ function doGet(e) {
     }
 
     function renderWaRecipients() {
+      const tbody = document.getElementById('waTableBody');
+      if (!tbody) return;
       const list = getFilteredWaStudents();
       document.getElementById('waRecipientCount').textContent = list.length;
-      const tbody = document.getElementById('waTableBody');
 
       if (!list.length) {
         tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:18px;">No students found for this filter.</td></tr>';
@@ -2424,6 +3372,7 @@ function doGet(e) {
         .then(data => {
           if (data && data.institution) {
             state = Object.assign({}, state, data);
+            ensureClassEvalMap(state);
             saveState();
             showToast('Data loaded from Google Sheet!');
           }
