@@ -901,13 +901,13 @@
                 <select id="stClass" required></select>
               </div>
               <div class="form-group">
-  <label>Gender (Male / Female) *</label>
-  <select id="stGender" required>
-    <option value="">-- Select --</option>
-    <option value="Male">Male (ആൺകുട്ടി)</option>
-    <option value="Female">Female (പെൺകുട്ടി)</option>
-  </select>
-</div>
+                <label>Gender (Male / Female) *</label>
+                <select id="stGender" required>
+                  <option value="">-- Select --</option>
+                  <option value="Male">Male (ആൺകുട്ടി)</option>
+                  <option value="Female">Female (പെൺകുട്ടി)</option>
+                </select>
+              </div>
               <div class="form-group">
                 <label>Aadhaar Number *</label>
                 <input type="text" id="stAadhaar" required placeholder="12-digit Aadhaar number">
@@ -988,6 +988,11 @@
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
               <input type="text" id="searchStudentInput" placeholder="Search name or Adm No..." oninput="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
               <select id="filterClassSelect" onchange="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;"></select>
+              <select id="filterGenderSelect" onchange="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
+                <option value="ALL">All Genders</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
             </div>
           </div>
           <div class="table-wrap">
@@ -998,6 +1003,7 @@
                   <th>Sl / Adm</th>
                   <th>Student Name</th>
                   <th>Class</th>
+                  <th>Gender</th>
                   <th>Aadhaar & Proof</th>
                   <th>Parent & Contact</th>
                   <th>Father Sign</th>
@@ -1209,7 +1215,6 @@
                   <th>Date</th>
                   <th>Student</th>
                   <th>Class</th>
-                  <th>Gender</th>
                   <th>Type</th>
                   <th>Note</th>
                   <th>Action</th>
@@ -1608,18 +1613,49 @@ Sadar Muallim: {sadar}
       </div>
       <details style="font-size:12.5px; background:var(--surface-soft); padding:10px; border-radius:10px; border:1px solid var(--border);">
         <summary style="font-weight:700; cursor:pointer;">View Google Apps Script Code</summary>
-        <pre style="margin-top:8px; overflow-x:auto; font-size:11px; background:#fff; padding:8px; border-radius:8px; border:1px solid var(--border);">function doPost(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName("MadrasaBackup") || ss.insertSheet("MadrasaBackup");
-  sheet.getRange("A1").setValue(new Date());
-  sheet.getRange("B1").setValue(e.postData.contents);
-  return ContentService.createTextOutput(JSON.stringify({status:"ok"})).setMimeType(ContentService.MimeType.JSON);
+        <pre style="margin-top:8px; overflow-x:auto; font-size:11px; background:#fff; padding:8px; border-radius:8px; border:1px solid var(--border);">const SHEET_NAME = "MadrasaData";
+
+function getOrCreateSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+    sheet.getRange("A1:C1").setValues([["Last Updated", "Payload JSON", "Summary"]]);
+  }
+  return sheet;
 }
+
+function doPost(e) {
+  try {
+    const raw = (e && e.postData && e.postData.contents) ? e.postData.contents : "{}";
+    const parsed = JSON.parse(raw);
+    const sheet = getOrCreateSheet_();
+    const now = new Date();
+    const studentCount = Array.isArray(parsed.students) ? parsed.students.length : 0;
+    const summary = `Year: ${parsed.activeYear || ""} | Students: ${studentCount}`;
+    sheet.getRange("A2:C2").setValues([[now, raw, summary]]);
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "ok", updatedAt: now.toISOString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "error", message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
 function doGet(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName("MadrasaBackup");
-  var val = sheet ? sheet.getRange("B1").getValue() : "{}";
-  return ContentService.createTextOutput(val || "{}").setMimeType(ContentService.MimeType.JSON);
+  try {
+    const sheet = getOrCreateSheet_();
+    const raw = sheet.getRange("B2").getValue();
+    return ContentService
+      .createTextOutput(raw ? String(raw) : "{}")
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "error", message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }</pre>
       </details>
     </div>
@@ -1653,7 +1689,6 @@ function doGet(e) {
         { id: 'col_prog', name: 'Program Fee', defaultAmount: 0 }
       ],
       cashCollections: [],
-      // Map of className -> array of { id, name, type, max }
       classEvalItems: {},
       marks: {},
       scriptUrl: ''
@@ -1676,7 +1711,6 @@ function doGet(e) {
       if (!parsed.classEvalItems || typeof parsed.classEvalItems !== 'object') {
         parsed.classEvalItems = {};
       }
-      // Migrate legacy global evalItems if present
       if (Array.isArray(parsed.evalItems) && parsed.evalItems.length && !Object.keys(parsed.classEvalItems).length) {
         parsed.classes.forEach(c => {
           parsed.classEvalItems[c] = parsed.evalItems.map((it, idx) => Object.assign({}, it, { id: it.id || ('ev_' + c + '_' + idx) }));
@@ -1865,7 +1899,6 @@ function doGet(e) {
         ? `${inst.name} - Rules & Regulations`
         : 'Madrasa Rules & Regulations';
 
-      // Logo display
       const wLogo = document.getElementById('welcomeLogoImg');
       const topIcon = document.getElementById('topBrandIcon');
       const logoPrev = document.getElementById('instLogoPreview');
@@ -2004,7 +2037,6 @@ function doGet(e) {
     }
 
     function populateAllClassDropdowns() {
-      // Single-class selectors (no ALL option)
       const singleIds = ['stClass', 'ttClass', 'evalTargetClass'];
       singleIds.forEach(id => {
         const el = document.getElementById(id);
@@ -2015,7 +2047,6 @@ function doGet(e) {
         else el.value = state.classes[0] || '';
       });
 
-      // Filter selectors (with ALL option)
       const filterIds = ['filterClassSelect', 'markClassFilter', 'waTargetClass', 'ttFilterClass', 'mdClassFilter', 'collClassFilter'];
       filterIds.forEach(id => {
         const el = document.getElementById(id);
@@ -2081,7 +2112,7 @@ function doGet(e) {
       document.getElementById('mediaModalTitle').textContent = `${st.name} (${st.admNo} • ${st.studentClass})`;
       document.getElementById('mediaModalBody').innerHTML = `
         <img src="${st.photo}" style="width:240px; height:240px; object-fit:cover; border-radius:16px; border:2px solid var(--border); margin-bottom:12px;">
-        <div style="font-size:13px; color:var(--text-muted);">Parent: <strong>${st.parentName}</strong> • Mobile: ${st.mobile}</div>
+        <div style="font-size:13px; color:var(--text-muted);">Parent: <strong>${st.parentName}</strong> • Gender: <strong>${st.gender || '-'}</strong> • Mobile: ${st.mobile}</div>
       `;
       document.getElementById('mediaModal').classList.add('open');
     }
@@ -2196,6 +2227,7 @@ function doGet(e) {
         populateAllClassDropdowns();
       }
       document.getElementById('stClass').value = st.studentClass;
+      document.getElementById('stGender').value = st.gender || '';
       document.getElementById('stAadhaar').value = st.aadhaar;
       document.getElementById('stParent').value = st.parentName;
       document.getElementById('stMobile').value = st.mobile;
@@ -2236,6 +2268,7 @@ function doGet(e) {
         admNo: document.getElementById('stAdmNo').value.trim(),
         name: document.getElementById('stName').value.trim(),
         studentClass: document.getElementById('stClass').value,
+        gender: document.getElementById('stGender').value,
         aadhaar: document.getElementById('stAadhaar').value.trim(),
         parentName: document.getElementById('stParent').value.trim(),
         mobile: document.getElementById('stMobile').value.trim(),
@@ -2273,6 +2306,7 @@ function doGet(e) {
       document.getElementById('editingStudentBadge').style.display = 'none';
       document.getElementById('saveStudentBtn').textContent = 'Save Student & Signatures';
       document.getElementById('studentForm').reset();
+      document.getElementById('stGender').value = '';
       document.getElementById('sameWaCheck').checked = true;
       tempPhotoData = '';
       tempProofData = '';
@@ -2296,18 +2330,20 @@ function doGet(e) {
       if (!tbody) return;
       const q = (document.getElementById('searchStudentInput').value || '').toLowerCase();
       const cls = document.getElementById('filterClassSelect').value || 'ALL';
+      const gen = document.getElementById('filterGenderSelect') ? document.getElementById('filterGenderSelect').value : 'ALL';
 
       const filtered = state.students.filter(s => {
         const matchYear = (s.year || state.activeYear) === state.activeYear;
         const matchQ = s.name.toLowerCase().includes(q) || s.admNo.toLowerCase().includes(q) || s.parentName.toLowerCase().includes(q);
         const matchC = cls === 'ALL' || s.studentClass === cls;
-        return matchYear && matchQ && matchC;
+        const matchG = gen === 'ALL' || s.gender === gen;
+        return matchYear && matchQ && matchC && matchG;
       });
 
       document.getElementById('studentCountBadge').textContent = filtered.length;
 
       if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:20px;">No students found for this academic year. Use the form above to register.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:var(--text-muted); padding:20px;">No students found for this academic year. Use the form above to register.</td></tr>';
         return;
       }
 
@@ -2325,6 +2361,7 @@ function doGet(e) {
             <span class="badge badge-green" style="font-size:10.5px;">Rules Agreed ✓</span>
           </td>
           <td><span class="badge badge-blue">${s.studentClass}</span></td>
+          <td>${s.gender ? `<span class="badge ${s.gender === 'Female' ? 'badge-amber' : 'badge-blue'}">${s.gender}</span>` : '-'}</td>
           <td>
             ${s.aadhaar}<br>
             ${s.proofData
@@ -3088,7 +3125,7 @@ function doGet(e) {
 
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px; font-size:13px; background:#f8fafc; padding:10px 14px; border-radius:8px; border:1px solid #cbd5e1;">
           <div style="line-height:1.75;">
-            <div><strong>Student Name:</strong> ${st.name}</div>
+            <div><strong>Student Name:</strong> ${st.name} ${st.gender ? `(${st.gender})` : ''}</div>
             <div><strong>Admission No:</strong> ${st.admNo} &nbsp;|&nbsp; <strong>Class:</strong> ${st.studentClass}</div>
             <div><strong>Parent Name:</strong> ${st.parentName} &nbsp;|&nbsp; <strong>Contact:</strong> ${st.mobile}</div>
           </div>
