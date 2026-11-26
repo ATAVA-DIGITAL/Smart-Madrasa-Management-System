@@ -314,7 +314,9 @@
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 15px;
     }
-.form-group input, .form-group select, .form-group textarea {
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12.5px; font-weight: 700; color: #334155; }
+    .form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 10px 13px;
       border: 1px solid var(--border-strong);
@@ -783,8 +785,16 @@
                 <input type="text" id="instReg" required placeholder="e.g., REG-2026-104">
               </div>
               <div class="form-group">
+                <label>Madrasa Range</label>
+                <input type="text" id="instRange" placeholder="e.g., Vazhakkad Range">
+              </div>
+              <div class="form-group">
                 <label>Place / Locality *</label>
-                <input type="text" id="instPlace" required placeholder="e.g., Vazhakkad, Malappuram">
+                <input type="text" id="instPlace" required placeholder="e.g., Vazhakkad">
+              </div>
+              <div class="form-group">
+                <label>District</label>
+                <input type="text" id="instDistrict" placeholder="e.g., Malappuram">
               </div>
               <div class="form-group">
                 <label>Mobile Number *</label>
@@ -833,7 +843,7 @@
             <div class="nav-board" onclick="showPage('page3')">
               <div class="tag">Board 03</div>
               <h3>Student Admission & Sign</h3>
-              <p>Register students with Photo, ID Proof, Aadhaar, Mobile, WhatsApp & Digital Signatures.</p>
+              <p>Register students with Date, Photo, ID Proof, House Name, Place, Aadhaar, Mobile, WhatsApp & Digital Signatures.</p>
             </div>
             <div class="nav-board" onclick="showPage('page4')">
               <div class="tag">Board 04</div>
@@ -874,7 +884,7 @@
         <div class="page-head">
           <div>
             <h1>Student Admission & Digital Signatures</h1>
-            <p>Register student records with photo, proof document, rules agreement, and signatures.</p>
+            <p>Register student records with registration date, photo, proof document, house/place, rules agreement, and signatures.</p>
           </div>
           <button type="button" class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>
         </div>
@@ -886,6 +896,10 @@
           </div>
           <form id="studentForm" onsubmit="saveStudent(event)">
             <div class="form-grid">
+              <div class="form-group">
+                <label>Registration Date (DD/MM/YYYY) *</label>
+                <input type="text" id="stRegDate" required placeholder="DD/MM/YYYY" maxlength="10" oninput="autoFormatDMY(this)">
+              </div>
               <div class="form-group">
                 <label>Serial No (Sl No) *</label>
                 <input type="text" id="stSlNo" required placeholder="01">
@@ -906,9 +920,17 @@
                 <label>Gender (Male / Female) *</label>
                 <select id="stGender" required>
                   <option value="">-- Select --</option>
-                  <option value="Male">Male (ആൺകുട്ടി)</option>
-                  <option value="Female">Female (പെൺകുട്ടി)</option>
+                  <option value="Male">Male </option>
+                  <option value="Female">Female </option>
                 </select>
+              </div>
+              <div class="form-group">
+                <label>House Name (വീട്ടുപേര്)</label>
+                <input type="text" id="stHouseName" placeholder="e.g., Darussalam">
+              </div>
+              <div class="form-group">
+                <label>Place </label>
+                <input type="text" id="stPlace" placeholder="e.g., Vazhakkad">
               </div>
               <div class="form-group">
                 <label>Aadhaar Number *</label>
@@ -949,7 +971,7 @@
             <div class="undertaking-box">
               <input type="checkbox" id="rulesAgreeCheck" required>
               <label for="rulesAgreeCheck">
-                മദ്രസയുടെ എല്ലാ നിയമങ്ങളും ചട്ടങ്ങളും (Madrasa Rules & Regulations) ഞങ്ങൾ വായിച്ചു മനസ്സിലാക്കുകയും, അവ പൂർണ്ണമായി പാലിച്ചുകൊള്ളാമെന്ന് സമ്മതിച്ച് താഴെ ഒപ്പുവെക്കുകയും ചെയ്യുന്നു.
+                മദ്രസയുടെ എല്ലാ നിയമങ്ങളും ചട്ടങ്ങളും (Madrasa Rules & Regulations) ഞങ്ങൾ വായിച്ചു മനസ്സിലാക്കുകയും, അവ പൂർണ്ണമായി പാലിച്ചുകൊള്ളാമെന്ന് സമ്മതിച്ച് താഴെ ഒപ്പുവെക്കുകയും ചെയ്യുന്നു. *
               </label>
             </div>
 
@@ -986,7 +1008,7 @@
 
         <div class="card">
           <div class="card-title">
-            <span>Registered Students Directory (<span id="studentCountBadge">0</span>)</span>
+            <span id="studentCountBadge">Total Students: Male 0, Female 0, Total 0</span>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
               <input type="text" id="searchStudentInput" placeholder="Search name or Adm No..." oninput="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;">
               <select id="filterClassSelect" onchange="renderStudentsTable()" style="padding:7px 11px; border:1px solid var(--border-strong); border-radius:8px; font-size:13px;"></select>
@@ -1002,10 +1024,11 @@
               <thead>
                 <tr>
                   <th>Photo</th>
-                  <th>Sl / Adm</th>
+                  <th>Reg Date & Sl / Adm</th>
                   <th>Student Name</th>
                   <th>Class</th>
                   <th>Gender</th>
+                  <th>House & Place</th>
                   <th>Aadhaar & Proof</th>
                   <th>Parent & Contact</th>
                   <th>Father Sign</th>
@@ -1536,7 +1559,7 @@ Sadar Muallim: {sadar}
       <div class="footer-inner">
         <div class="footer-stats">
           <div class="f-stat">Academic Year: <strong id="footerYear">2026-2027</strong></div>
-          <div class="f-stat">Total Students: <strong id="footerStudents">0</strong></div>
+          <div class="f-stat" id="footerStudents">Total Students: Male 0, Female 0, Total 0</div>
           <div class="f-stat">Classes: <strong id="footerClasses">0</strong></div>
         </div>
         <div style="font-size:12px; color:var(--text-muted); text-align:right;">
@@ -1701,7 +1724,7 @@ function doGet(e) {
     }
 
     let state = {
-      institution: { name: '', regNo: '', place: '', mobile: '', email: '', year: '2026-2027', logo: '' },
+      institution: { name: '', regNo: '', range: '', place: '', district: '', mobile: '', email: '', year: '2026-2027', logo: '' },
       classes: [...DEFAULT_CLASSES],
       academicYears: ['2026-2027', '2027-2028'],
       activeYear: '2026-2027',
@@ -1777,7 +1800,7 @@ function doGet(e) {
         if (saved) {
           const parsed = JSON.parse(saved);
           state = Object.assign({}, state, parsed);
-          state.institution = Object.assign({ name: '', regNo: '', place: '', mobile: '', email: '', year: '2026-2027', logo: '' }, parsed.institution || {});
+          state.institution = Object.assign({ name: '', regNo: '', range: '', place: '', district: '', mobile: '', email: '', year: '2026-2027', logo: '' }, parsed.institution || {});
         }
       } catch (e) { console.error(e); }
       ensureClassEvalMap(state);
@@ -1834,6 +1857,8 @@ function doGet(e) {
       if (pageHistory[pageHistory.length - 1] !== pageId) pageHistory.push(pageId);
 
       if (pageId === 'page3') {
+        const regDateInp = document.getElementById('stRegDate');
+        if (regDateInp && !regDateInp.value) regDateInp.value = getTodayDMY();
         setTimeout(() => {
           initCanvas('fatherCanvas');
           initCanvas('childCanvas');
@@ -1922,8 +1947,15 @@ function doGet(e) {
       const mName = inst.name ? inst.name : 'Smart Madrasa Register';
       document.getElementById('welcomeMadrasaDisplay').textContent = inst.name ? ('🕌 ' + inst.name) : '';
       document.getElementById('topMadrasaName').textContent = mName;
-      document.getElementById('topMadrasaSub').textContent = inst.regNo
-        ? `Reg: ${inst.regNo} • ${inst.place || ''} • ${inst.mobile || ''}`
+      const subParts = [
+        inst.regNo ? `Reg: ${inst.regNo}` : '',
+        inst.range ? `Range: ${inst.range}` : '',
+        inst.place || '',
+        inst.district || '',
+        inst.mobile || ''
+      ].filter(Boolean);
+      document.getElementById('topMadrasaSub').textContent = subParts.length
+        ? subParts.join(' • ')
         : 'Academic & Student Administration System';
       document.getElementById('rulesPrintHeader').textContent = inst.name
         ? `${inst.name} - Rules & Regulations`
@@ -1946,7 +1978,9 @@ function doGet(e) {
 
       document.getElementById('instName').value = inst.name || '';
       document.getElementById('instReg').value = inst.regNo || '';
+      document.getElementById('instRange').value = inst.range || '';
       document.getElementById('instPlace').value = inst.place || '';
+      document.getElementById('instDistrict').value = inst.district || '';
       document.getElementById('instMobile').value = inst.mobile || '';
       document.getElementById('instEmail').value = inst.email || '';
       document.getElementById('instYear').value = state.activeYear || '2026-2027';
@@ -1971,7 +2005,9 @@ function doGet(e) {
       renderWaRecipients();
 
       const yearStudents = state.students.filter(s => (s.year || state.activeYear) === state.activeYear);
-      document.getElementById('footerStudents').textContent = yearStudents.length;
+      const maleCount = yearStudents.filter(s => s.gender === 'Male').length;
+      const femaleCount = yearStudents.filter(s => s.gender === 'Female').length;
+      document.getElementById('footerStudents').textContent = `Total Students: Male ${maleCount}, Female ${femaleCount}, Total ${yearStudents.length}`;
       document.getElementById('footerClasses').textContent = state.classes.length;
     }
 
@@ -2011,10 +2047,12 @@ function doGet(e) {
       const yr = document.getElementById('instYear').value.trim() || '2026-2027';
       state.activeYear = yr;
       if (!state.academicYears.includes(yr)) state.academicYears.push(yr);
-state.institution = {
+      state.institution = {
         name: document.getElementById('instName').value.trim().toUpperCase(),
         regNo: document.getElementById('instReg').value.trim().toUpperCase(),
+        range: document.getElementById('instRange').value.trim().toUpperCase(),
         place: document.getElementById('instPlace').value.trim().toUpperCase(),
+        district: document.getElementById('instDistrict').value.trim().toUpperCase(),
         mobile: document.getElementById('instMobile').value.trim().toUpperCase(),
         email: document.getElementById('instEmail').value.trim(),
         year: yr.toUpperCase(),
@@ -2249,6 +2287,7 @@ state.institution = {
       document.getElementById('editingStudentBadge').style.display = 'inline-block';
       document.getElementById('saveStudentBtn').textContent = 'Update Student Record';
 
+      document.getElementById('stRegDate').value = formatDisplayDate(st.regDate || getTodayDMY());
       document.getElementById('stSlNo').value = st.slNo;
       document.getElementById('stAdmNo').value = st.admNo;
       document.getElementById('stName').value = st.name;
@@ -2258,6 +2297,8 @@ state.institution = {
       }
       document.getElementById('stClass').value = st.studentClass;
       document.getElementById('stGender').value = st.gender || '';
+      document.getElementById('stHouseName').value = st.houseName || '';
+      document.getElementById('stPlace').value = st.place || '';
       document.getElementById('stAadhaar').value = st.aadhaar;
       document.getElementById('stParent').value = st.parentName;
       document.getElementById('stMobile').value = st.mobile;
@@ -2293,12 +2334,15 @@ state.institution = {
       initCanvas('fatherCanvas');
       initCanvas('childCanvas');
 
-const recordData = {
+      const recordData = {
+        regDate: formatDisplayDate(document.getElementById('stRegDate').value.trim()) || getTodayDMY(),
         slNo: document.getElementById('stSlNo').value.trim().toUpperCase(),
         admNo: document.getElementById('stAdmNo').value.trim().toUpperCase(),
         name: document.getElementById('stName').value.trim().toUpperCase(),
-        studentClass: document.getElementById('stClass').value.toUpperCase(),
+        studentClass: document.getElementById('stClass').value,
         gender: document.getElementById('stGender').value,
+        houseName: document.getElementById('stHouseName').value.trim().toUpperCase(),
+        place: document.getElementById('stPlace').value.trim().toUpperCase(),
         aadhaar: document.getElementById('stAadhaar').value.trim().toUpperCase(),
         parentName: document.getElementById('stParent').value.trim().toUpperCase(),
         mobile: document.getElementById('stMobile').value.trim().toUpperCase(),
@@ -2311,6 +2355,7 @@ const recordData = {
         fatherSign: document.getElementById('fatherCanvas').toDataURL('image/png'),
         childSign: document.getElementById('childCanvas').toDataURL('image/png')
       };
+
       if (editingStudentId) {
         state.students = state.students.map(s =>
           s.id === editingStudentId ? Object.assign({}, s, recordData) : s
@@ -2335,6 +2380,7 @@ const recordData = {
       document.getElementById('editingStudentBadge').style.display = 'none';
       document.getElementById('saveStudentBtn').textContent = 'Save Student & Signatures';
       document.getElementById('studentForm').reset();
+      document.getElementById('stRegDate').value = getTodayDMY();
       document.getElementById('stGender').value = '';
       document.getElementById('sameWaCheck').checked = true;
       tempPhotoData = '';
@@ -2361,18 +2407,20 @@ const recordData = {
       const cls = document.getElementById('filterClassSelect').value || 'ALL';
       const gen = document.getElementById('filterGenderSelect') ? document.getElementById('filterGenderSelect').value : 'ALL';
 
-      const filtered = state.students.filter(s => {
-        const matchYear = (s.year || state.activeYear) === state.activeYear;
-        const matchQ = s.name.toLowerCase().includes(q) || s.admNo.toLowerCase().includes(q) || s.parentName.toLowerCase().includes(q);
+      const yearAll = state.students.filter(s => (s.year || state.activeYear) === state.activeYear);
+      const filtered = yearAll.filter(s => {
+        const matchQ = s.name.toLowerCase().includes(q) || s.admNo.toLowerCase().includes(q) || s.parentName.toLowerCase().includes(q) || (s.houseName || '').toLowerCase().includes(q) || (s.place || '').toLowerCase().includes(q);
         const matchC = cls === 'ALL' || s.studentClass === cls;
         const matchG = gen === 'ALL' || s.gender === gen;
-        return matchYear && matchQ && matchC && matchG;
+        return matchQ && matchC && matchG;
       });
 
-      document.getElementById('studentCountBadge').textContent = filtered.length;
+      const mCnt = filtered.filter(s => s.gender === 'Male').length;
+      const fCnt = filtered.filter(s => s.gender === 'Female').length;
+      document.getElementById('studentCountBadge').textContent = `Total Students: Male ${mCnt}, Female ${fCnt}, Total ${filtered.length}`;
 
       if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:var(--text-muted); padding:20px;">No students found for this academic year. Use the form above to register.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="11" style="text-align:center; color:var(--text-muted); padding:20px;">No students found for this academic year. Use the form above to register.</td></tr>';
         return;
       }
 
@@ -2384,13 +2432,17 @@ const recordData = {
               : `<div style="width:48px; height:48px; border-radius:10px; background:var(--surface-soft); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:10.5px; color:var(--text-muted);">No Photo</div>`
             }
           </td>
-          <td>Sl: ${s.slNo}<br><strong>${s.admNo}</strong></td>
+          <td><span style="font-size:11.5px; color:var(--text-muted);">${formatDisplayDate(s.regDate)}</span><br>Sl: ${s.slNo} | <strong>${s.admNo}</strong></td>
           <td>
             <strong>${s.name}</strong><br>
             <span class="badge badge-green" style="font-size:10.5px;">Rules Agreed ✓</span>
           </td>
           <td><span class="badge badge-blue">${s.studentClass}</span></td>
           <td>${s.gender ? `<span class="badge ${s.gender === 'Female' ? 'badge-amber' : 'badge-blue'}">${s.gender}</span>` : '-'}</td>
+          <td>
+            <strong>${s.houseName || '-'}</strong><br>
+            <span style="font-size:12px; color:var(--text-muted);">${s.place || '-'}</span>
+          </td>
           <td>
             ${s.aadhaar}<br>
             ${s.proofData
@@ -2605,7 +2657,7 @@ const recordData = {
 
       const rows = state.timetable.filter(t => {
         const matchDay = dayF === 'ALL' || t.day === dayF;
-        const matchCls = clsF === 'ALL' || t.studentClass === clsF;
+        const matchCls = clsF === 'ALL' || (t.studentClass || '').toLowerCase() === clsF.toLowerCase();
         return matchDay && matchCls;
       });
 
@@ -2639,7 +2691,7 @@ const recordData = {
       const cls = clsF.value || 'ALL';
       const list = state.students.filter(s => {
         const matchYear = (s.year || state.activeYear) === state.activeYear;
-        const matchCls = cls === 'ALL' || s.studentClass === cls;
+        const matchCls = cls === 'ALL' || (s.studentClass || '').toLowerCase() === cls.toLowerCase();
         return matchYear && matchCls;
       });
       stSel.innerHTML = '<option value="">-- Select Student --</option>' +
@@ -2769,7 +2821,7 @@ const recordData = {
       const cls = clsF.value || 'ALL';
       const list = state.students.filter(s => {
         const matchYear = (s.year || state.activeYear) === state.activeYear;
-        const matchCls = cls === 'ALL' || s.studentClass === cls;
+        const matchCls = cls === 'ALL' || (s.studentClass || '').toLowerCase() === cls.toLowerCase();
         return matchYear && matchCls;
       });
       stSel.innerHTML = '<option value="">-- Select Student --</option>' +
@@ -2957,7 +3009,7 @@ const recordData = {
 
       const filteredStudents = state.students.filter(s => {
         const matchYear = (s.year || state.activeYear) === state.activeYear;
-        const matchCls = clsFilter === 'ALL' || s.studentClass === clsFilter;
+        const matchCls = clsFilter === 'ALL' || (s.studentClass || '').toLowerCase() === clsFilter.toLowerCase();
         return matchYear && matchCls;
       });
 
@@ -3145,7 +3197,7 @@ const recordData = {
           ${logoHtml}
           <div style="text-align:center;">
             <h2 style="color:#0f172a; font-size:21px; font-weight:800;">${state.institution.name || 'SMART MADRASA'}</h2>
-            <p style="font-size:12.5px; color:#334155;">${state.institution.place || ''} ${state.institution.regNo ? '• Reg No: ' + state.institution.regNo : ''} ${state.institution.mobile ? '• Ph: ' + state.institution.mobile : ''}</p>
+            <p style="font-size:12.5px; color:#334155;">${state.institution.place || ''} ${state.institution.district ? ', ' + state.institution.district : ''} ${state.institution.range ? '• Range: ' + state.institution.range : ''} ${state.institution.regNo ? '• Reg No: ' + state.institution.regNo : ''} ${state.institution.mobile ? '• Ph: ' + state.institution.mobile : ''}</p>
             <div style="display:inline-block; margin-top:6px; padding:3px 16px; border:1.5px solid #0f172a; border-radius:999px; font-size:11.5px; font-weight:800; letter-spacing:0.04em;">
               PROGRESS REPORT CARD • ${state.activeYear}
             </div>
@@ -3243,7 +3295,7 @@ const recordData = {
 
       const matching = state.students.filter(s => {
         const matchYear = (s.year || state.activeYear) === state.activeYear;
-        const matchCls = cls === 'ALL' || s.studentClass === cls;
+        const matchCls = cls === 'ALL' || (s.studentClass || '').toLowerCase() === cls.toLowerCase();
         return matchYear && matchCls;
       });
 
@@ -3321,7 +3373,7 @@ const recordData = {
       const targetSt = document.getElementById('waTargetStudent').value || 'ALL';
       return state.students.filter(s => {
         const matchYear = (s.year || state.activeYear) === state.activeYear;
-        const matchCls = targetCls === 'ALL' || s.studentClass === targetCls;
+        const matchCls = targetCls === 'ALL' || (s.studentClass || '').toLowerCase() === targetCls.toLowerCase();
         const matchSt = targetSt === 'ALL' || s.id === targetSt;
         return matchYear && matchCls && matchSt;
       });
