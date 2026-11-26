@@ -314,9 +314,7 @@
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 15px;
     }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 12.5px; font-weight: 700; color: #334155; }
-    .form-group input, .form-group select, .form-group textarea {
+.form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 10px 13px;
       border: 1px solid var(--border-strong);
@@ -326,6 +324,10 @@
       background: #ffffff;
       color: var(--text);
       transition: 0.15s;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="tel"] {
+      text-transform: uppercase;
     }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
       outline: none;
@@ -901,11 +903,11 @@
                 <select id="stClass" required></select>
               </div>
               <div class="form-group">
-                <label>Gender ( / Fe) *</label>
+                <label>Gender (Male / Female) *</label>
                 <select id="stGender" required>
                   <option value="">-- Select --</option>
-                  <option value="Male">Male </option>
-                  <option value="Female">Female </option>
+                  <option value="Male">Male (ആൺകുട്ടി)</option>
+                  <option value="Female">Female (പെൺകുട്ടി)</option>
                 </select>
               </div>
               <div class="form-group">
@@ -1186,8 +1188,8 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Date *</label>
-              <input type="date" id="mdDateInput" required>
+              <label>Date (DD/MM/YYYY) *</label>
+              <input type="text" id="mdDateInput" placeholder="DD/MM/YYYY" maxlength="10" oninput="autoFormatDMY(this)" required>
             </div>
             <div class="form-group" style="grid-column: 1 / -1;">
               <label>Remark / Note *</label>
@@ -1291,8 +1293,8 @@
               <input type="number" id="collPayAmount" required min="0" step="0.01" placeholder="0.00">
             </div>
             <div class="form-group">
-              <label>Date *</label>
-              <input type="date" id="collPayDate" required>
+              <label>Date (DD/MM/YYYY) *</label>
+              <input type="text" id="collPayDate" placeholder="DD/MM/YYYY" maxlength="10" oninput="autoFormatDMY(this)" required>
             </div>
             <div class="form-group">
               <label>Remarks (Optional)</label>
@@ -1466,7 +1468,7 @@
             </div>
             <div class="form-group">
               <label>Date / Time (Optional)</label>
-              <input type="text" id="waDateTime" placeholder="e.g., Sunday 10:00 AM" oninput="renderWaRecipients()">
+              <input type="text" id="waDateTime" placeholder="e.g., 26/11/2026 10:00 AM" oninput="renderWaRecipients()">
             </div>
             <div class="form-group">
               <label>Sadar Muallim Name</label>
@@ -1662,13 +1664,41 @@ function doGet(e) {
   </div>
 
   <script>
-    const DEFAULT_CLASSES = ['Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Class 11','Class 12'];
+    const DEFAULT_CLASSES = ['Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8','Class 9','Class 10','Hifz'];
     const DEFAULT_EVAL_ITEMS = [
       { id: 'sub1', name: 'Quran & Tajweed', type: 'Subject', max: 50 },
       { id: 'sub2', name: 'Fiqh & Aqeedah', type: 'Subject', max: 50 },
       { id: 'skl1', name: 'Akhlaq & Discipline', type: 'Skill', max: 25 },
       { id: 'skl2', name: 'Namaz Practice', type: 'Skill', max: 25 }
     ];
+
+    function getTodayDMY() {
+      const d = new Date();
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      return `${dd}/${mm}/${yyyy}`;
+    }
+
+    function formatDisplayDate(val) {
+      if (!val) return '-';
+      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+        const [y, m, d] = val.split('-');
+        return `${d}/${m}/${y}`;
+      }
+      return val;
+    }
+
+    function autoFormatDMY(inp) {
+      let digits = inp.value.replace(/\D/g, '').slice(0, 8);
+      if (digits.length > 4) {
+        inp.value = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+      } else if (digits.length > 2) {
+        inp.value = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+      } else {
+        inp.value = digits;
+      }
+    }
 
     let state = {
       institution: { name: '', regNo: '', place: '', mobile: '', email: '', year: '2026-2027', logo: '' },
@@ -1981,13 +2011,13 @@ function doGet(e) {
       const yr = document.getElementById('instYear').value.trim() || '2026-2027';
       state.activeYear = yr;
       if (!state.academicYears.includes(yr)) state.academicYears.push(yr);
-      state.institution = {
-        name: document.getElementById('instName').value.trim(),
-        regNo: document.getElementById('instReg').value.trim(),
-        place: document.getElementById('instPlace').value.trim(),
-        mobile: document.getElementById('instMobile').value.trim(),
+state.institution = {
+        name: document.getElementById('instName').value.trim().toUpperCase(),
+        regNo: document.getElementById('instReg').value.trim().toUpperCase(),
+        place: document.getElementById('instPlace').value.trim().toUpperCase(),
+        mobile: document.getElementById('instMobile').value.trim().toUpperCase(),
         email: document.getElementById('instEmail').value.trim(),
-        year: yr,
+        year: yr.toUpperCase(),
         logo: tempLogoData || state.institution.logo || ''
       };
       saveState();
@@ -2263,16 +2293,16 @@ function doGet(e) {
       initCanvas('fatherCanvas');
       initCanvas('childCanvas');
 
-      const recordData = {
-        slNo: document.getElementById('stSlNo').value.trim(),
-        admNo: document.getElementById('stAdmNo').value.trim(),
-        name: document.getElementById('stName').value.trim(),
-        studentClass: document.getElementById('stClass').value,
+const recordData = {
+        slNo: document.getElementById('stSlNo').value.trim().toUpperCase(),
+        admNo: document.getElementById('stAdmNo').value.trim().toUpperCase(),
+        name: document.getElementById('stName').value.trim().toUpperCase(),
+        studentClass: document.getElementById('stClass').value.toUpperCase(),
         gender: document.getElementById('stGender').value,
-        aadhaar: document.getElementById('stAadhaar').value.trim(),
-        parentName: document.getElementById('stParent').value.trim(),
-        mobile: document.getElementById('stMobile').value.trim(),
-        whatsapp: document.getElementById('stWhatsapp').value.trim(),
+        aadhaar: document.getElementById('stAadhaar').value.trim().toUpperCase(),
+        parentName: document.getElementById('stParent').value.trim().toUpperCase(),
+        mobile: document.getElementById('stMobile').value.trim().toUpperCase(),
+        whatsapp: document.getElementById('stWhatsapp').value.trim().toUpperCase(),
         fatherGoogle: document.getElementById('stFatherGoogle').value.trim(),
         photo: tempPhotoData,
         proofData: tempProofData,
@@ -2281,7 +2311,6 @@ function doGet(e) {
         fatherSign: document.getElementById('fatherCanvas').toDataURL('image/png'),
         childSign: document.getElementById('childCanvas').toDataURL('image/png')
       };
-
       if (editingStudentId) {
         state.students = state.students.map(s =>
           s.id === editingStudentId ? Object.assign({}, s, recordData) : s
@@ -2616,7 +2645,7 @@ function doGet(e) {
       stSel.innerHTML = '<option value="">-- Select Student --</option>' +
         list.map(s => `<option value="${s.id}">${s.name} (${s.admNo} • ${s.studentClass})</option>`).join('');
       const dateInp = document.getElementById('mdDateInput');
-      if (dateInp && !dateInp.value) dateInp.value = new Date().toISOString().slice(0, 10);
+      if (dateInp && !dateInp.value) dateInp.value = getTodayDMY();
     }
 
     function saveMeritEntry(e) {
@@ -2631,7 +2660,7 @@ function doGet(e) {
         studentName: st.name,
         studentClass: st.studentClass,
         type: document.getElementById('mdTypeSelect').value,
-        date: document.getElementById('mdDateInput').value,
+        date: formatDisplayDate(document.getElementById('mdDateInput').value.trim()),
         note: document.getElementById('mdNoteInput').value.trim()
       });
       document.getElementById('mdNoteInput').value = '';
@@ -2660,7 +2689,7 @@ function doGet(e) {
       }
       tbody.innerHTML = rows.map(m => `
         <tr>
-          <td>${m.date}</td>
+          <td>${formatDisplayDate(m.date)}</td>
           <td><strong>${m.studentName}</strong></td>
           <td><span class="badge badge-blue">${m.studentClass}</span></td>
           <td><span class="badge ${m.type === 'Merit' ? 'badge-green' : 'badge-red'}">${m.type}</span></td>
@@ -2720,7 +2749,7 @@ function doGet(e) {
         filterSel.value = curF;
       }
       const dInp = document.getElementById('collPayDate');
-      if (dInp && !dInp.value) dInp.value = new Date().toISOString().slice(0, 10);
+      if (dInp && !dInp.value) dInp.value = getTodayDMY();
     }
 
     function applyDefaultCollAmount() {
@@ -2754,7 +2783,7 @@ function doGet(e) {
       const stId = document.getElementById('collStudentSelect').value;
       const st = state.students.find(s => s.id === stId);
       const amt = parseFloat(document.getElementById('collPayAmount').value) || 0;
-      const date = document.getElementById('collPayDate').value;
+      const date = formatDisplayDate(document.getElementById('collPayDate').value.trim());
       const note = document.getElementById('collPayNote').value.trim();
 
       if (!head || !st) { showToast('Please select collection head and student!'); return; }
@@ -2802,7 +2831,7 @@ function doGet(e) {
 
       tbody.innerHTML = rows.map(c => `
         <tr>
-          <td>${c.date}</td>
+          <td>${formatDisplayDate(c.date)}</td>
           <td><span class="badge badge-blue">${c.headName}</span></td>
           <td><strong>${c.studentName}</strong></td>
           <td>${c.studentClass}</td>
